@@ -6,12 +6,19 @@ using UnityEngine;
 public class BeyBaseSO : ScriptableObject
 {
     [Header("Stats")]
+    public float maxVelocity = 15f;
+    public float dashStrength = 50f;
     public float maxRPM = 3000f;
-    public float currentRPM = 3000f;
-    public float moveSpeed = 10f;
-
-    [Header("Combat")]
+    public float acceleration = 25f;
+    public float dashRPMCost = 50f;
+    public float dashImpulse = 10f;
     public float attack = 10f;
-    public float defense = 5f;
     public float weight = 5f;
+    public SpinDirection spinDirection = SpinDirection.Clockwise;
+}
+
+public enum SpinDirection
+{
+    Clockwise,
+    CounterClockwise
 }

@@ -14,7 +14,7 @@ public class AIBeyInput : MonoBehaviour, IBeyInput
 
     private void Update()
     {
-        MoveTarget =
-            MoveTarget = player.position;
+        MoveTarget = Vector2.zero;
+            // MoveTarget = player.position;
     }
 }

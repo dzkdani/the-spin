@@ -3,6 +3,9 @@ using System;
 
 public class BeyData : MonoBehaviour
 {
+    [SerializeField]
+    private float _currentRPM;
+
     [field: SerializeField]
     public BeyBaseSO Base { get; private set; }
     public event Action<float> OnRPMChanged;
@@ -40,6 +43,7 @@ public class BeyData : MonoBehaviour
         bool wasAlive = CurrentRPM > 0;
 
         CurrentRPM = newRPM;
+        _currentRPM = CurrentRPM;
 
         OnRPMChanged?.Invoke(CurrentRPM);
 

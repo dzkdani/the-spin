@@ -7,6 +7,7 @@ public class BeyController : MonoBehaviour
     public BeyCombat Combat { get; private set; }
     public BeyVisual Visual { get; private set; }
     public IBeyInput Input { get; private set; }
+    public BeyUI UI { get; private set; }
 
     private void Awake()
     {
@@ -15,10 +16,12 @@ public class BeyController : MonoBehaviour
         Combat = GetComponent<BeyCombat>();
         Input = GetComponent<IBeyInput>();
         Visual = GetComponentInChildren<BeyVisual>();
+        UI = GetComponentInChildren<BeyUI>();
 
         Physics.Initialize(Data, Input);
         Combat.Initialize(Data, Physics);
         Visual.Initialize(Data);
+        UI.Initialize(Data);
     }
 
     private void Update()
@@ -31,10 +34,7 @@ public class BeyController : MonoBehaviour
 
     private void OnClickAction()
     {
-        // TODO:
-        // Dash
-        // Boost
-        // Spin Injection
-        // Attack Trigger
+        Physics.Dash(Input.MoveTarget - (Vector2)transform.position);
+        Combat.AddChargedHit();
     }
 }

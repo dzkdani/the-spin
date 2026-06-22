@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb8703be1e7bf74383a4101b954d6ee, type: 3}
   m_Name: BasedAF
   m_EditorClassIdentifier: Assembly-CSharp::BeyBaseSO
+  maxVelocity: 12
+  dashStrength: 100
   maxRPM: 3600
-  currentRPM: 3600
-  moveSpeed: 10
+  acceleration: 25
+  dashRPMCost: 50
+  dashImpulse: 10
   attack: 10
-  defense: 5
   weight: 5
+  spinDirection: 0

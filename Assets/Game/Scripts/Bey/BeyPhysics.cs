@@ -5,14 +5,14 @@ using System;
 public class BeyPhysics : MonoBehaviour
 {
     Rigidbody2D rb;
+    public Rigidbody2D Rigidbody => rb;
     BeyData data;
     IBeyInput input;
 
-    public event Action<float> OnImpact;
+    public event Action<BeyController, Collision2D> OnImpact;
+    public event Action<BeyController, Collision2D> OnGrind;
 
-    [SerializeField]
-    [Tooltip("How quickly the Bey follows the input target. Higher values will be more responsive but less smooth.")]
-    private float followStrength = 10f;
+    private float dashTimer;
 
     private void Awake()
     {
@@ -23,11 +23,25 @@ public class BeyPhysics : MonoBehaviour
     {
         this.data = data;
         this.input = input;
+
+        data.OnRPMDepleted -= Stop;
+        data.OnRPMDepleted += Stop;
     }
 
     private void FixedUpdate()
     {
+        if (dashTimer > 0)
+        {
+            dashTimer -= Time.fixedDeltaTime;
+            return;
+        }
+
         Move();
+    }
+
+    private void Stop()
+    {
+        rb.linearVelocity = Vector2.zero;
     }
 
     private void Move()
@@ -35,21 +49,62 @@ public class BeyPhysics : MonoBehaviour
         Vector2 delta =
             input.MoveTarget - rb.position;
 
-        Vector2 desiredVelocity =
-            delta * followStrength;
+        if (delta.sqrMagnitude < 0.01f)
+            return;
 
-        desiredVelocity =
-            Vector2.ClampMagnitude(
-                desiredVelocity,
-                data.Base.moveSpeed);
+        float rpmFactor =
+            data.RPMNormalized;
 
-        rb.linearVelocity = desiredVelocity;
+        Vector2 direction =
+            delta.normalized;
+
+        float currentAcceleration =
+            data.Base.acceleration * rpmFactor;
+
+        float currentMaxVelocity =
+            data.Base.maxVelocity * rpmFactor;
+
+        rb.AddForce(direction * currentAcceleration, ForceMode2D.Force);
+
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, currentMaxVelocity);
+    }
+
+    public void Dash(Vector2 direction)
+    {
+        if (data.CurrentRPM < data.Base.dashRPMCost)
+            return;
+
+        float rpmFactor = 
+            Mathf.Clamp(data.RPMNormalized, 0.3f, 1f);
+
+        rb.linearVelocity +=
+            data.Base.dashImpulse * rpmFactor * direction.normalized;
+        
+        dashTimer = 0.2f;
+
+        data.ReduceRPM(data.Base.dashRPMCost);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        float impact =
-            collision.relativeVelocity.magnitude;
-        OnImpact?.Invoke(impact);
+        BeyController other =
+            collision.gameObject.GetComponent<BeyController>();
+
+        if (other == null)
+            return;
+
+        OnImpact?.Invoke(other, collision);
+        Debug.Log($"{gameObject.name} collided with {other.gameObject.name}");
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        BeyController other =
+            collision.gameObject.GetComponent<BeyController>();
+
+        if (other == null)
+            return;
+
+        OnGrind?.Invoke(other, collision);
     }
 }
