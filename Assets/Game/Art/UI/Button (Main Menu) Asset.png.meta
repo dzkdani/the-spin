@@ -1,0 +1,949 @@
+fileFormatVersion: 2
+guid: eee69c21896551248bc2ae61e8c35f67
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7422231738166532612
+    second: Button (Main Menu) Asset_0
+  - first:
+      213: -8535180702034708932
+    second: Button (Main Menu) Asset_1
+  - first:
+      213: -1827010613517322028
+    second: Button (Main Menu) Asset_2
+  - first:
+      213: 2372113660005978787
+    second: Button (Main Menu) Asset_3
+  - first:
+      213: -5693457801246087984
+    second: Button (Main Menu) Asset_4
+  - first:
+      213: -420351415177368871
+    second: Button (Main Menu) Asset_5
+  - first:
+      213: 3234107588462256998
+    second: Button (Main Menu) Asset_6
+  - first:
+      213: -5278558548967281148
+    second: Button (Main Menu) Asset_7
+  - first:
+      213: -3202152730223771449
+    second: Button (Main Menu) Asset_8
+  - first:
+      213: -8935749799530136847
+    second: Button (Main Menu) Asset_9
+  - first:
+      213: 227917460746386477
+    second: Button (Main Menu) Asset_10
+  - first:
+      213: -2491652296866158954
+    second: Button (Main Menu) Asset_11
+  - first:
+      213: 6542862474186024136
+    second: Button (Main Menu) Asset_12
+  - first:
+      213: 6696984538562389413
+    second: Button (Main Menu) Asset_13
+  - first:
+      213: 6017806268610527749
+    second: Button (Main Menu) Asset_14
+  - first:
+      213: -145362519818217541
+    second: Button (Main Menu) Asset_15
+  - first:
+      213: -1392521308686091912
+    second: Button (Main Menu) Asset_16
+  - first:
+      213: -5928015275856962955
+    second: Button (Main Menu) Asset_17
+  - first:
+      213: -7315210069225058787
+    second: Button (Main Menu) Asset_18
+  - first:
+      213: 5534535871207305673
+    second: Button (Main Menu) Asset_19
+  - first:
+      213: 4821033696596964401
+    second: Button (Main Menu) Asset_20
+  - first:
+      213: 3718515643515010545
+    second: Button (Main Menu) Asset_21
+  - first:
+      213: 8071339609480544817
+    second: Button (Main Menu) Asset_22
+  - first:
+      213: 102379965996247323
+    second: Button (Main Menu) Asset_23
+  - first:
+      213: 4925164751633464192
+    second: Button (Main Menu) Asset_24
+  - first:
+      213: -1745341431678742906
+    second: Button (Main Menu) Asset_25
+  - first:
+      213: -7365134565350969303
+    second: Button (Main Menu) Asset_26
+  - first:
+      213: -7843345910844597050
+    second: Button (Main Menu) Asset_27
+  - first:
+      213: -2923370924683053195
+    second: Button (Main Menu) Asset_28
+  - first:
+      213: 7259772294414468916
+    second: Button (Main Menu) Asset_29
+  - first:
+      213: 7418475389221513490
+    second: Button (Main Menu) Asset_30
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_0
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 1505
+        width: 252
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf524fd0f8feef890800000000000000
+      internalID: -7422231738166532612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_1
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 1507
+        width: 348
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c36b3717f52fc8980800000000000000
+      internalID: -8535180702034708932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_2
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 1511
+        width: 290
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d87e64e68725a6e0800000000000000
+      internalID: -1827010613517322028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_3
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 1234
+        width: 260
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a212874ec07be020800000000000000
+      internalID: 2372113660005978787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_4
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 1241
+        width: 363
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d4ec058b46ccf0b0800000000000000
+      internalID: -5693457801246087984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_5
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 1243
+        width: 303
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9da25817d9c9a2af0800000000000000
+      internalID: -420351415177368871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_6
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 1013
+        width: 261
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66320b777bbd1ec20800000000000000
+      internalID: 3234107588462256998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_7
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 975
+        width: 335
+        height: 140
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40e24ba77faceb6b0800000000000000
+      internalID: -5278558548967281148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_8
+      rect:
+        serializedVersion: 2
+        x: 1011
+        y: 986
+        width: 279
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c0077ebe0baf83d0800000000000000
+      internalID: -3202152730223771449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_9
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 736
+        width: 260
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fafc35a6e6ddf380800000000000000
+      internalID: -8935749799530136847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_10
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 670
+        width: 364
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2cb5e519b9b92300800000000000000
+      internalID: 227917460746386477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_11
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 693
+        width: 304
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 696a185ff6fdb6dd0800000000000000
+      internalID: -2491652296866158954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_12
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 433
+        width: 252
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c4671431caecca50800000000000000
+      internalID: 6542862474186024136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_13
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 316
+        width: 347
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a56b47a4f770fc50800000000000000
+      internalID: 6696984538562389413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_14
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 358
+        width: 290
+        height: 209
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50246a7eaea838350800000000000000
+      internalID: 6017806268610527749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_15
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 116
+        width: 39
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb75492fe819bfdf0800000000000000
+      internalID: -145362519818217541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_16
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 115
+        width: 40
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8797a956f35ccace0800000000000000
+      internalID: -1392521308686091912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_17
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 116
+        width: 42
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57ad47bb3857bbda0800000000000000
+      internalID: -5928015275856962955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_18
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 116
+        width: 46
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1eca7e13372b7a90800000000000000
+      internalID: -7315210069225058787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_19
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 116
+        width: 40
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c1f7f73d0f9ecc40800000000000000
+      internalID: 5534535871207305673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_20
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 116
+        width: 35
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 134b9d7aa90c7e240800000000000000
+      internalID: 4821033696596964401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_21
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 116
+        width: 40
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fdf177b642da9330800000000000000
+      internalID: 3718515643515010545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_22
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 115
+        width: 40
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 132c0ac6c98230070800000000000000
+      internalID: 8071339609480544817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_23
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 116
+        width: 41
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b19a251690abb6100800000000000000
+      internalID: 102379965996247323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_24
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 116
+        width: 35
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08b33693f33b95440800000000000000
+      internalID: 4925164751633464192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_25
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 116
+        width: 42
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68e4401173d47c7e0800000000000000
+      internalID: -1745341431678742906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_26
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 115
+        width: 40
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 920fd4d8229c9c990800000000000000
+      internalID: -7365134565350969303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_27
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 116
+        width: 34
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cc589d2376d62390800000000000000
+      internalID: -7843345910844597050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_28
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 116
+        width: 14
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 577bf87f1a91e67d0800000000000000
+      internalID: -2923370924683053195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_29
+      rect:
+        serializedVersion: 2
+        x: 1105
+        y: 115
+        width: 40
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4370cc61074efb460800000000000000
+      internalID: 7259772294414468916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button (Main Menu) Asset_30
+      rect:
+        serializedVersion: 2
+        x: 1149
+        y: 116
+        width: 44
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 219a68dcf08b3f660800000000000000
+      internalID: 7418475389221513490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Button (Main Menu) Asset_0: -7422231738166532612
+      Button (Main Menu) Asset_1: -8535180702034708932
+      Button (Main Menu) Asset_10: 227917460746386477
+      Button (Main Menu) Asset_11: -2491652296866158954
+      Button (Main Menu) Asset_12: 6542862474186024136
+      Button (Main Menu) Asset_13: 6696984538562389413
+      Button (Main Menu) Asset_14: 6017806268610527749
+      Button (Main Menu) Asset_15: -145362519818217541
+      Button (Main Menu) Asset_16: -1392521308686091912
+      Button (Main Menu) Asset_17: -5928015275856962955
+      Button (Main Menu) Asset_18: -7315210069225058787
+      Button (Main Menu) Asset_19: 5534535871207305673
+      Button (Main Menu) Asset_2: -1827010613517322028
+      Button (Main Menu) Asset_20: 4821033696596964401
+      Button (Main Menu) Asset_21: 3718515643515010545
+      Button (Main Menu) Asset_22: 8071339609480544817
+      Button (Main Menu) Asset_23: 102379965996247323
+      Button (Main Menu) Asset_24: 4925164751633464192
+      Button (Main Menu) Asset_25: -1745341431678742906
+      Button (Main Menu) Asset_26: -7365134565350969303
+      Button (Main Menu) Asset_27: -7843345910844597050
+      Button (Main Menu) Asset_28: -2923370924683053195
+      Button (Main Menu) Asset_29: 7259772294414468916
+      Button (Main Menu) Asset_3: 2372113660005978787
+      Button (Main Menu) Asset_30: 7418475389221513490
+      Button (Main Menu) Asset_4: -5693457801246087984
+      Button (Main Menu) Asset_5: -420351415177368871
+      Button (Main Menu) Asset_6: 3234107588462256998
+      Button (Main Menu) Asset_7: -5278558548967281148
+      Button (Main Menu) Asset_8: -3202152730223771449
+      Button (Main Menu) Asset_9: -8935749799530136847
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
