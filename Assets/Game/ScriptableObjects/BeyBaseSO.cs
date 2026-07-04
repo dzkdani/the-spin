@@ -14,6 +14,8 @@ public class BeyBaseSO : ScriptableObject
     public float dashImpulse = 10f;
     public float attack = 10f;
     public float weight = 5f;
+    public float minMoveAccelerationMultiplier = 0.6f;
+    public float minDashMultiplier = 0.3f;
     public SpinDirection spinDirection = SpinDirection.Clockwise;
 }
 

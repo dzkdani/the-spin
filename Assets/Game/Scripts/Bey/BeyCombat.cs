@@ -22,8 +22,6 @@ public class BeyCombat : MonoBehaviour
         this.data = data;
         this.physics = physics;
 
-        data.OnRPMDepleted += LoseHandler;
-
         physics.OnImpact += ResolveImpact;
         physics.OnGrind += ResolveGrind;
     }
@@ -122,7 +120,20 @@ public class BeyCombat : MonoBehaviour
         data.ReduceRPM(
             damageToMe);
 
-        Debug.Log($"{gameObject.name} hit {other.gameObject.name} for {damageToEnemy} RPM damage");
+        ResolveEffect(speed, collision);
+    }
+
+    private void ResolveEffect(float speed, Collision2D collision)
+    {
+        SFXPlayer.Instance?.PlayHit();
+
+        CameraShake.Instance?.Shake(
+            Mathf.Clamp(speed * 0.02f, 0.05f, 0.35f));
+
+        Vector3 point =
+            collision.GetContact(0).point;
+
+        HitEffectSpawner.Instance?.Spawn(point);
     }
 
     private void ResolveGrind(BeyController other, Collision2D collision)
@@ -145,8 +156,6 @@ public class BeyCombat : MonoBehaviour
 
         other.Data.ReduceRPM(
             grindDamage);
-
-        Debug.Log($"{gameObject.name} is grinding against {other.gameObject.name}, losing {grindDamage} RPM");
     }
 
     private float GetEffectiveWeight(BeyData target)
@@ -156,14 +165,5 @@ public class BeyCombat : MonoBehaviour
                 0.5f,
                 1.5f,
                 target.RPMNormalized);
-    }
-
-
-    [SerializeField]
-    TMP_Text debugText;
-    private void LoseHandler()
-    {
-        Debug.Log($"{gameObject.name} is defeated!");
-        debugText.text = $"{gameObject.name} is defeated!";
     }
 }

@@ -52,17 +52,22 @@ public class BeyPhysics : MonoBehaviour
         if (delta.sqrMagnitude < 0.01f)
             return;
 
-        float rpmFactor =
-            data.RPMNormalized;
-
         Vector2 direction =
             delta.normalized;
 
+        float moveFactor =
+            Mathf.Lerp
+            (
+                data.Base.minMoveAccelerationMultiplier,
+                1f,
+                data.RPMNormalized
+            );
+
         float currentAcceleration =
-            data.Base.acceleration * rpmFactor;
+            data.Base.acceleration * moveFactor;
 
         float currentMaxVelocity =
-            data.Base.maxVelocity * rpmFactor;
+            data.Base.maxVelocity;
 
         rb.AddForce(direction * currentAcceleration, ForceMode2D.Force);
 
@@ -74,12 +79,10 @@ public class BeyPhysics : MonoBehaviour
         if (data.CurrentRPM < data.Base.dashRPMCost)
             return;
 
-        float rpmFactor = 
-            Mathf.Clamp(data.RPMNormalized, 0.3f, 1f);
+        rb.AddForce(
+            direction.normalized * data.Base.dashImpulse,
+            ForceMode2D.Impulse);
 
-        rb.linearVelocity +=
-            data.Base.dashImpulse * rpmFactor * direction.normalized;
-        
         dashTimer = 0.2f;
 
         data.ReduceRPM(data.Base.dashRPMCost);
@@ -94,7 +97,6 @@ public class BeyPhysics : MonoBehaviour
             return;
 
         OnImpact?.Invoke(other, collision);
-        Debug.Log($"{gameObject.name} collided with {other.gameObject.name}");
     }
 
     private void OnCollisionStay2D(Collision2D collision)
