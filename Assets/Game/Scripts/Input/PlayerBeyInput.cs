@@ -6,6 +6,15 @@ public class PlayerBeyInput : MonoBehaviour, IBeyInput
 
     public bool DashRequested { get; private set; }
 
+    private int abilitySlotRequest = -1;
+
+    public int ConsumeAbilityRequest()
+    {
+        int slot = abilitySlotRequest;
+        abilitySlotRequest = -1;
+        return slot;
+    }
+
     private Camera cam;
 
     private void Awake()
@@ -39,5 +48,14 @@ public class PlayerBeyInput : MonoBehaviour, IBeyInput
 
         DashRequested =
             Input.GetMouseButtonDown(0);
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            abilitySlotRequest = 0;
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            abilitySlotRequest = 1;
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            abilitySlotRequest = 2;
     }
 }

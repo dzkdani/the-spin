@@ -29,6 +29,10 @@ public class BeyStats : ContentDefinition
     public BeyTypeDefinition type;
 
     public ElementDefinition baseElement;
+
+    [Header("Loadout")]
+    public System.Collections.Generic.List<AbilityDefinition> equippedAbilities =
+        new System.Collections.Generic.List<AbilityDefinition>();
 }
 
 public enum SpinDirection

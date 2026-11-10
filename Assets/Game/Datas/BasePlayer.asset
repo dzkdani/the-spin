@@ -25,3 +25,5 @@ MonoBehaviour:
   spinDirection: 0
   type: {fileID: 11400000, guid: 8b9c0d1e2f3a44b5c6d7e8f9a0b1c2d3, type: 2}
   baseElement: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+  equippedAbilities:
+  - {fileID: 11400000, guid: 9e2f4a6b8c1d40e3f5a7b9c1d3e6f8a0, type: 2}

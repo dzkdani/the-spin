@@ -78,6 +78,26 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
     private void Start()
     {
         InstallInnate();
+        InstallEquipped();
+    }
+
+    private void InstallEquipped()
+    {
+        if (data == null || data.Base == null ||
+            data.Base.equippedAbilities == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < data.Base.equippedAbilities.Count; i++)
+        {
+            AbilityDefinition ability = data.Base.equippedAbilities[i];
+
+            if (ability == null)
+                continue;
+
+            Install(ability, "equipped:" + ability.id);
+        }
     }
 
     public void SetOpponent(IBeyView view)

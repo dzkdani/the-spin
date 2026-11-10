@@ -10,6 +10,11 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
     public bool DashRequested { get; private set; }
 
+    public int ConsumeAbilityRequest()
+    {
+        return -1;
+    }
+
     public bool IsWindingUp => windUpTimer > 0f;
 
     public string CurrentBehavior =>
@@ -69,7 +74,13 @@ public class EnemyInput : MonoBehaviour, IBeyInput
             windUpTimer -= Time.deltaTime;
 
             if (windUpTimer <= 0f)
+            {
                 DashRequested = true;
+
+                dashCooldown = random.Range(
+                    profile.dashIntervalMin,
+                    profile.dashIntervalMax);
+            }
 
             return;
         }

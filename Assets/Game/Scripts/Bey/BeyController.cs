@@ -56,6 +56,11 @@ public class BeyController : MonoBehaviour
         if (gate != null && !gate.CanReceiveGameplayInput)
             return;
 
+        int abilitySlot = Input.ConsumeAbilityRequest();
+
+        if (abilitySlot >= 0 && abilityRunner != null)
+            abilityRunner.TryActivate(abilitySlot);
+
         if (!Input.DashRequested)
             return;
 

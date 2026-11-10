@@ -28,5 +28,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a2b3c4d5e6f708192a3b4c5d6e7f809, type: 2}
   - {fileID: 11400000, guid: 2b3c4d5e6f708192a3b4c5d6e7f8091a, type: 2}
   - {fileID: 11400000, guid: 3c4d5e6f708192a3b4c5d6e7f8091a2b, type: 2}
+  - {fileID: 11400000, guid: 9e2f4a6b8c1d40e3f5a7b9c1d3e6f8a0, type: 2}
+  - {fileID: 11400000, guid: af3a5b7c9d2e41f4a6b8c0d2e4f7a9b1, type: 2}
   combatTuning: {fileID: 11400000, guid: 1a2b3c4d5e6f47a8b9c0d1e2f3a4b5c6, type: 2}
   matchupTable: {fileID: 11400000, guid: 4d5e6f7a8b9c40d1e2f3a4b5c6d7e8f9, type: 2}

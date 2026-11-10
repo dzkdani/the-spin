@@ -1105,7 +1105,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Migrate the charge call sites to `ScaleNextImpact`. Golden unchanged for the migrated path.
 - Implement the equipped and innate examples from §12.8.
 - **Exit:** ability tests pass, including aura apply and cleanup. Each equipped example works in the sandbox.
-- **Status: core complete (partial).** Added `AbilityDefinition`, triggers, conditions, effects, `AbilityContext`, `IBeyActions`/`IBeyView`, and `AbilityRunner` (triggered passives, aura mode with source cleanup, active lifecycle with scoped cost/cooldown/power, source limits). Innate abilities install from `BeyTypeDefinition.innatePassiveId`. Charge remains the pre-ability source. Deferred: player ability input binding, example ability assets, granted/equipped installation, balance sim.
+- **Status: core complete.** Added `AbilityDefinition`, triggers, conditions, effects, `AbilityContext`, `IBeyActions`/`IBeyView`, and `AbilityRunner` (triggered passives, aura mode with source cleanup, active lifecycle with scoped cost/cooldown/power, source limits). Innate abilities install from `BeyTypeDefinition.innatePassiveId`; equipped abilities install from `BeyStats.equippedAbilities`. Player ability requests (`1/2/3`) flow through `IBeyInput.ConsumeAbilityRequest` and `BeyController`. Guard Spin and Charge Strike assets added. Remaining: balance simulation and the rest of the §12.8 kit.
 
 **Phase 8: Parts and blueprints**
 - **8a: Parts as contributions.** `PartSlotDefinition` and `PartDefinition`. Stats, static element claims, and scoped skill tuning.
