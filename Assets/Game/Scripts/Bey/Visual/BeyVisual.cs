@@ -5,9 +5,6 @@ public class BeyVisual : MonoBehaviour
     [SerializeField]
     Transform visualPivot;
 
-    [SerializeField] 
-    float maxRPM = 3000f;
-    
     BeyData data;
 
     public void Initialize(BeyData data)
@@ -17,8 +14,11 @@ public class BeyVisual : MonoBehaviour
 
     private void Update()
     {
+        if (data == null || data.Base == null || visualPivot == null)
+            return;
+
         float spinSpeed =
-            data.RPMNormalized * maxRPM;
+            data.RPMNormalized * data.Base.maxRPM;
 
         visualPivot.Rotate(
             Vector3.forward,

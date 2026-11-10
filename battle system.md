@@ -1058,6 +1058,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - B1: pair dedupe (§14.5). B2: each side spends its own pending modifiers. B4: guard `GetContact`. B5: delete the dead `GameManager.Update`. M3: input gating through `IBattleStateGate`. M5: remove `opposite`, unused `using`, dead initializer. M6: remove the `_currentRPM` mirror. M8: `BeyVisual` reads `BeyData.Base.maxRPM`.
 - **Removed from v3 scope:** B3 (retired) and the double-subscription item (retired).
 - **Exit:** the golden diff contains only the intended charge change. Recorded in §23.
+- **Status: complete.** B1 now compares the two `BeyData` instance IDs symmetrically (the `BattleCombat` pair key lands in Phase 5). B2 consumes both sides' charges. B4 guards zero-contact impacts. B5 deleted. M3 gated through `IBattleStateGate` (GameUIManager registers it). M5/M6/M8 cleaned; `BeyVisual` guards missing data/pivot. Golden diff: charged row only, `560/320 → 560/560`.
 
 **Phase 2: Content foundation and tuning (no gameplay change)**
 - Create `ContentDefinition`, `ContentRegistry`, `ContentManifest`, `BeyStats` (including `movement`), `BeyTypeDefinition` (empty profile), `ElementDefinition` with Neutral flagged as index 0, an empty `MatchupTable`, `CombatTuning`, and `AiProfile`.
@@ -1236,8 +1237,10 @@ Fill in as each phase lands.
 | Phase | Change | Reason |
 |---|---|---|
 | 1 | Each side spends its own pending modifiers | Fixes B2 |
-| 1 | Dash and ability requests are edge-triggered | Removes Update-order ambiguity (B3 retired as a bug) |
+| 1 | Collision ownership compares the two `BeyData` IDs symmetrically | Fixes B1 in place; `BattleCombat` pair key lands in Phase 5 |
+| 1 | Input gating resolves `IBattleStateGate` instead of `GameUIManager` | Fixes M3 |
 | 1 | Visual spin reads `BeyData.Base.maxRPM` | Fixes M8 |
+| 7 | Dash and ability requests are edge-triggered | Arrives with `ConsumeDash()`/`ConsumeAbilityRequest` |
 | 2 | Neutral becomes element index 0 | §11.3 |
 | 3 | Element resolves through claims, with Neutral as the floor. Golden unchanged. | §8.5 |
 | 4 | Knockback uses the contact normal and is clamped | Fixes D3 |

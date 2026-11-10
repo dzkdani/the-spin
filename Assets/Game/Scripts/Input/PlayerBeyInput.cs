@@ -15,9 +15,9 @@ public class PlayerBeyInput : MonoBehaviour, IBeyInput
 
     private void Update()
     {
-        GameUIManager ui = ServiceLocator.Get<GameUIManager>();
+        IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
 
-        if (ui != null && !ui.CanReceiveGameplayInput)
+        if (gate != null && !gate.CanReceiveGameplayInput)
         {
             DashRequested = false;
             return;

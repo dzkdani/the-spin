@@ -77,6 +77,26 @@ public class GameplaySafetyTests
 
     }
 
+    [UnityTest]
+    public IEnumerator BeyVisualDoesNotThrowWithoutData()
+    {
+        GameObject visualObject = new GameObject("IncompleteVisual");
+        try
+        {
+            visualObject.SetActive(false);
+            Type visualType = GetProductionType("BeyVisual");
+            visualObject.AddComponent(visualType);
+
+            visualObject.SetActive(true);
+
+            yield return null;
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(visualObject);
+        }
+    }
+
     private static void SetPrivateField(object instance, string fieldName, object value)
     {
         FieldInfo field = instance.GetType().GetField(

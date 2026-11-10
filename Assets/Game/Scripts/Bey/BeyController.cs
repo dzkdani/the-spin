@@ -43,9 +43,9 @@ public class BeyController : MonoBehaviour
 
     private void Update()
     {
-        GameUIManager ui = ServiceLocator.Get<GameUIManager>();
+        IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
 
-        if (ui != null && !ui.CanReceiveGameplayInput)
+        if (gate != null && !gate.CanReceiveGameplayInput)
             return;
 
         if (!Input.DashRequested)

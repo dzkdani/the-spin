@@ -123,17 +123,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("YOU LOSE");
     }
 
-    private void Update()
-    {
-        if (!finished)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            //pause game
-        }
-    }
-
     private void OnDestroy()
     {
         if (subscribedPlayer != null)

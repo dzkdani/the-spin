@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public class BeyCombat : MonoBehaviour
 {
@@ -7,14 +6,12 @@ public class BeyCombat : MonoBehaviour
     BeyPhysics physics;
 
     [SerializeField]
-    bool opposite;
-    [SerializeField]
     int chargedHits = 0;
     
     private bool IsCollisionOwner(BeyController other)
     {
-        return GetInstanceID() <
-            other.GetInstanceID();
+        return data.GetInstanceID() <
+            other.Data.GetInstanceID();
     }
 
     public void Initialize(BeyData data, BeyPhysics physics)
@@ -40,6 +37,11 @@ public class BeyCombat : MonoBehaviour
         chargedHits += amount;
     }
 
+    public float ConsumeChargeBonus(float hitPower)
+    {
+        return ApplyChargeBonus(hitPower);
+    }
+
     private float ApplyChargeBonus(float hitPower)
     {
         if (chargedHits <= 0)
@@ -52,6 +54,9 @@ public class BeyCombat : MonoBehaviour
 
     private void ResolveImpact(BeyController other, Collision2D collision)
     {
+        if (data == null || other == null || other.Data == null)
+            return;
+
         if (!IsCollisionOwner(other))
             return;
 
@@ -82,6 +87,10 @@ public class BeyCombat : MonoBehaviour
             speed *
             enemyAttack *
             Mathf.Lerp(0.5f, 1f, enemyRPM);
+
+        enemyHitPower = other.Combat != null
+            ? other.Combat.ConsumeChargeBonus(enemyHitPower)
+            : enemyHitPower;
 
         bool oppositeSpin =
             data.Base.spinDirection !=
@@ -139,6 +148,9 @@ public class BeyCombat : MonoBehaviour
         ServiceLocator.Get<CameraShake>()?.Shake(
             Mathf.Clamp(speed * 0.02f, 0.05f, 0.35f));
 
+        if (collision.contactCount == 0)
+            return;
+
         Vector3 point =
             collision.GetContact(0).point;
 
@@ -147,6 +159,9 @@ public class BeyCombat : MonoBehaviour
 
     private void ResolveGrind(BeyController other, Collision2D collision)
     {
+        if (data == null || other == null || other.Data == null)
+            return;
+
         if (!IsCollisionOwner(other))
             return;
 

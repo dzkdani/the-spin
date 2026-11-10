@@ -13,7 +13,7 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     float dashTimer;
     Vector2 offset;
     float offsetTimer;
-    float dashChance = 0.3f;
+    float dashChance;
     private IRandom random;
 
     private void Awake()
@@ -38,9 +38,9 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
     private void Update()
     {
-        GameUIManager ui = ServiceLocator.Get<GameUIManager>();
+        IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
 
-        if (ui != null && !ui.CanReceiveGameplayInput)
+        if (gate != null && !gate.CanReceiveGameplayInput)
         {
             shouldDash = false;
             return;

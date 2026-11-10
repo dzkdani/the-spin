@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameUIManager : MonoBehaviour
+public class GameUIManager : MonoBehaviour, IBattleStateGate
 {
     [Header("Panels")]
     [SerializeField] private GameObject pausePanel;
@@ -25,6 +25,8 @@ public class GameUIManager : MonoBehaviour
             return;
         }
 
+        ServiceLocator.Register<IBattleStateGate>(this);
+
         Time.timeScale = 1f;
 
         if (pausePanel == null || gameOverPanel == null || resultText == null)
@@ -39,6 +41,7 @@ public class GameUIManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        ServiceLocator.Unregister<IBattleStateGate>(this);
         ServiceLocator.Unregister(this);
     }
 
