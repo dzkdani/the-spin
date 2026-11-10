@@ -1093,6 +1093,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - **6a:** Infrastructure with neutral defaults. Empty type profiles, empty matrix. Golden unchanged.
 - **6a status: complete.** `BeyTypeDefinition.ApplyTo` installs `type:<id>` modifiers; identity `Atk`/`Def`/`Bal` assets exist (unassigned). Multiplicative baselines seeded (`RpmDecay`, `MatchupScale`, `TipFriction` = 1). Golden unchanged.
 - **6b:** Populate the type profiles (§10), innate passives, the ring (§11.2), and the matchup values. Golden changes, documented.
+- **6b status: core complete.** Type profiles populated with innate passives; Surge Strike, Hard Shell, and Steady Core shipped as ability assets. Five ring elements + 10 matchup entries added; validator reports a clean manifest. Player = BAL/Crye, enemy = ATK/Pyre. The synthetic golden harness is asset-independent and stays unchanged; real scene beys now use types/elements. Balance simulation remains deferred.
 - Validator rules for Neutral (§11.3) and matchup entries (§9.4).
 - **Exit (6b):** the matchup and type simulations run (§20.4). Every reference build is inside the balance band.
 

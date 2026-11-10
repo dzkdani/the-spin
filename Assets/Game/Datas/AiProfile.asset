@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f6b8c0e2a1357b9d1f3a5c7e9b2d4f, type: 3}
   m_Name: AiProfile
   m_EditorClassIdentifier: Assembly-CSharp::AiProfile
+  id: ai_default
+  displayName: Default AI
   jitterRadius: 1.2
   jitterInterval: 1
   farDistance: 4

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BeyTypeDefinition
   id: atk
   displayName: ATK
-  attackMultiplier: 1
+  attackMultiplier: 1.25
   defenseFlat: 0
-  weightMultiplier: 1
-  rpmDecayMultiplier: 1
-  innatePassiveId: 
+  weightMultiplier: 0.9
+  rpmDecayMultiplier: 1.15
+  innatePassiveId: surge_strike

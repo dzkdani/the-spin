@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BeyTypeDefinition
   id: def
   displayName: DEF
-  attackMultiplier: 1
-  defenseFlat: 0
-  weightMultiplier: 1
-  rpmDecayMultiplier: 1
-  innatePassiveId: 
+  attackMultiplier: 0.8
+  defenseFlat: 20
+  weightMultiplier: 1.2
+  rpmDecayMultiplier: 0.85
+  innatePassiveId: hard_shell

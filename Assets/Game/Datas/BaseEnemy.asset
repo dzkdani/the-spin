@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb8703be1e7bf74383a4101b954d6ee, type: 3}
   m_Name: BaseEnemy
   m_EditorClassIdentifier: Assembly-CSharp::BeyStats
+  id: base_enemy
+  displayName: Enemy
   maxVelocity: 10
   maxRPM: 800
   acceleration: 25
@@ -21,4 +23,5 @@ MonoBehaviour:
   weight: 5
   minMoveAccelerationMultiplier: 0.6
   spinDirection: 1
-  baseElement: {fileID: 11400000, guid: 3c4d5e6f7a8b49c0d1e2f3a4b5c6d7e8, type: 2}
+  type: {fileID: 11400000, guid: 6f7a8b9c0d1e42f3a4b5c6d7e8f9a0b1, type: 2}
+  baseElement: {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}

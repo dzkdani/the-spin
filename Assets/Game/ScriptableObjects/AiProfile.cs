@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(
     fileName = "AiProfile",
     menuName = "Bey/AI Profile")]
-public class AiProfile : ScriptableObject
+public class AiProfile : ContentDefinition
 {
     [Header("Wander")]
     public float jitterRadius = 1.2f;

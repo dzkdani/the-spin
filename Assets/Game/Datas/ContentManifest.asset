@@ -17,5 +17,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 54de1d331e23bd044b4cb2f8aa721a78, type: 2}
   - {fileID: 11400000, guid: 3c4d5e6f7a8b49c0d1e2f3a4b5c6d7e8, type: 2}
   - {fileID: 11400000, guid: 2b3c4d5e6f7a48b9c0d1e2f3a4b5c6d7, type: 2}
+  - {fileID: 11400000, guid: 6f7a8b9c0d1e42f3a4b5c6d7e8f9a0b1, type: 2}
+  - {fileID: 11400000, guid: 7a8b9c0d1e2f43a4b5c6d7e8f9a0b1c2, type: 2}
+  - {fileID: 11400000, guid: 8b9c0d1e2f3a44b5c6d7e8f9a0b1c2d3, type: 2}
+  - {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}
+  - {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+  - {fileID: 11400000, guid: 6f708192a3b4c5d6e7f8091a2b3c4d5e, type: 2}
+  - {fileID: 11400000, guid: 708192a3b4c5d6e7f8091a2b3c4d5e6f, type: 2}
+  - {fileID: 11400000, guid: 8192a3b4c5d6e7f8091a2b3c4d5e6f70, type: 2}
+  - {fileID: 11400000, guid: 1a2b3c4d5e6f708192a3b4c5d6e7f809, type: 2}
+  - {fileID: 11400000, guid: 2b3c4d5e6f708192a3b4c5d6e7f8091a, type: 2}
+  - {fileID: 11400000, guid: 3c4d5e6f708192a3b4c5d6e7f8091a2b, type: 2}
   combatTuning: {fileID: 11400000, guid: 1a2b3c4d5e6f47a8b9c0d1e2f3a4b5c6, type: 2}
   matchupTable: {fileID: 11400000, guid: 4d5e6f7a8b9c40d1e2f3a4b5c6d7e8f9, type: 2}

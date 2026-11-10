@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum GameResult
 {
@@ -31,10 +32,18 @@ public class GameManager : MonoBehaviour
     private BeyData subscribedPlayer;
     private bool finished;
 
-    private void Start()
+    private void Awake()
     {
         ContentRegistry.Initialize(contentManifest);
 
+        List<string> errors = ContentValidator.Validate(contentManifest);
+
+        for (int i = 0; i < errors.Count; i++)
+            Debug.LogError("Content: " + errors[i], this);
+    }
+
+    private void Start()
+    {
         if (player == null || player.Data == null || spawner == null ||
             playerUI == null || enemyUI == null || totalEnemies <= 0)
         {

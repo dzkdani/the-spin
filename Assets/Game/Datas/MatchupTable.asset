@@ -12,4 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6b8d0e2a4c1357d9b1e3f5a7c9d2b4e, type: 3}
   m_Name: MatchupTable
   m_EditorClassIdentifier: Assembly-CSharp::MatchupTable
-  entries: []
+  entries:
+  - attacker: {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}
+    defender: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+    multiplier: 1.25
+  - attacker: {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}
+    defender: {fileID: 11400000, guid: 708192a3b4c5d6e7f8091a2b3c4d5e6f, type: 2}
+    multiplier: 0.8
+  - attacker: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+    defender: {fileID: 11400000, guid: 6f708192a3b4c5d6e7f8091a2b3c4d5e, type: 2}
+    multiplier: 1.25
+  - attacker: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+    defender: {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}
+    multiplier: 0.8
+  - attacker: {fileID: 11400000, guid: 6f708192a3b4c5d6e7f8091a2b3c4d5e, type: 2}
+    defender: {fileID: 11400000, guid: 8192a3b4c5d6e7f8091a2b3c4d5e6f70, type: 2}
+    multiplier: 1.25
+  - attacker: {fileID: 11400000, guid: 6f708192a3b4c5d6e7f8091a2b3c4d5e, type: 2}
+    defender: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+    multiplier: 0.8
+  - attacker: {fileID: 11400000, guid: 8192a3b4c5d6e7f8091a2b3c4d5e6f70, type: 2}
+    defender: {fileID: 11400000, guid: 708192a3b4c5d6e7f8091a2b3c4d5e6f, type: 2}
+    multiplier: 1.25
+  - attacker: {fileID: 11400000, guid: 8192a3b4c5d6e7f8091a2b3c4d5e6f70, type: 2}
+    defender: {fileID: 11400000, guid: 6f708192a3b4c5d6e7f8091a2b3c4d5e, type: 2}
+    multiplier: 0.8
+  - attacker: {fileID: 11400000, guid: 708192a3b4c5d6e7f8091a2b3c4d5e6f, type: 2}
+    defender: {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}
+    multiplier: 1.25
+  - attacker: {fileID: 11400000, guid: 708192a3b4c5d6e7f8091a2b3c4d5e6f, type: 2}
+    defender: {fileID: 11400000, guid: 8192a3b4c5d6e7f8091a2b3c4d5e6f70, type: 2}
+    multiplier: 0.8

@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(
     fileName = "BeyStats",
     menuName = "Bey/Bey Stats")]
-public class BeyStats : ScriptableObject
+public class BeyStats : ContentDefinition
 {
     [Header("Movement")]
     public float maxVelocity = 15f;

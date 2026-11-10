@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb8703be1e7bf74383a4101b954d6ee, type: 3}
   m_Name: BasePlayer
   m_EditorClassIdentifier: Assembly-CSharp::BeyStats
+  id: base_player
+  displayName: Player
   maxVelocity: 12
   maxRPM: 5200
   acceleration: 25
@@ -21,4 +23,5 @@ MonoBehaviour:
   weight: 5
   minMoveAccelerationMultiplier: 0.6
   spinDirection: 0
-  baseElement: {fileID: 11400000, guid: 3c4d5e6f7a8b49c0d1e2f3a4b5c6d7e8, type: 2}
+  type: {fileID: 11400000, guid: 8b9c0d1e2f3a44b5c6d7e8f9a0b1c2d3, type: 2}
+  baseElement: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}

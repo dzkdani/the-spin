@@ -73,6 +73,10 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
         this.input = input;
 
         Subscribe();
+    }
+
+    private void Start()
+    {
         InstallInnate();
     }
 

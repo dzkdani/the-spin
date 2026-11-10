@@ -15,7 +15,7 @@ MonoBehaviour:
   id: bal
   displayName: BAL
   attackMultiplier: 1
-  defenseFlat: 0
+  defenseFlat: 8
   weightMultiplier: 1
   rpmDecayMultiplier: 1
-  innatePassiveId: 
+  innatePassiveId: steady_core
