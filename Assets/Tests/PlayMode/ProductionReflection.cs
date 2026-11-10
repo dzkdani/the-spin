@@ -54,6 +54,13 @@ public static class ProductionReflection
             .GetValue(instance);
     }
 
+    public static object StaticProperty(string typeName, string propertyName)
+    {
+        return TypeOf(typeName)
+            .GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static)
+            .GetValue(null);
+    }
+
     public static object Field(object instance, string fieldName)
     {
         return instance

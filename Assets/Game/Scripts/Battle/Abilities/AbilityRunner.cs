@@ -514,6 +514,17 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
             combat.RemovePendingBySource(sourceId);
     }
 
+    public void RemoveSource(string sourceId)
+    {
+        for (int i = abilities.Count - 1; i >= 0; i--)
+        {
+            if (abilities[i].SourceId == sourceId)
+                abilities.RemoveAt(i);
+        }
+
+        RemoveEffects(sourceId);
+    }
+
     public void AddPendingImpact(PendingImpactMod mod)
     {
         if (combat != null)
