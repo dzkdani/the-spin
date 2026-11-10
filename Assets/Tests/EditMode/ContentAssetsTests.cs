@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEditor;
 
@@ -48,6 +49,31 @@ public class ContentAssetsTests
         Assert.AreEqual(1.25f, FindMultiplier(entries, "pyre", "crye"), 0.0001f);
         Assert.AreEqual(0.8f, FindMultiplier(entries, "crye", "pyre"), 0.0001f);
         Assert.AreEqual(1.25f, FindMultiplier(entries, "hydre", "pyre"), 0.0001f);
+    }
+
+    [Test]
+    public void ExampleAbilityKitIsAuthored()
+    {
+        string[] guids = AssetDatabase.FindAssets(
+            "t:AbilityDefinition",
+            new[] { "Assets/Game/Datas/Abilities" });
+
+        List<string> ids = new List<string>();
+
+        for (int i = 0; i < guids.Length; i++)
+        {
+            object ability = AssetDatabase.LoadAssetAtPath(
+                AssetDatabase.GUIDToAssetPath(guids[i]),
+                typeof(UnityEngine.ScriptableObject));
+
+            Assert.IsNotNull(ability);
+            ids.Add(Id(ability));
+        }
+
+        CollectionAssert.Contains(ids, "counter_spin");
+        CollectionAssert.Contains(ids, "ember_core");
+        CollectionAssert.Contains(ids, "last_spin");
+        CollectionAssert.Contains(ids, "ignition");
     }
 
     [Test]

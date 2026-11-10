@@ -1105,7 +1105,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Migrate the charge call sites to `ScaleNextImpact`. Golden unchanged for the migrated path.
 - Implement the equipped and innate examples from §12.8.
 - **Exit:** ability tests pass, including aura apply and cleanup. Each equipped example works in the sandbox.
-- **Status: core complete.** Added `AbilityDefinition`, triggers, conditions, effects, `AbilityContext`, `IBeyActions`/`IBeyView`, and `AbilityRunner` (triggered passives, aura mode with source cleanup, active lifecycle with scoped cost/cooldown/power, source limits). Innate abilities install from `BeyTypeDefinition.innatePassiveId`; equipped abilities install from `BeyStats.equippedAbilities`. Player ability requests (`1/2/3`) flow through `IBeyInput.ConsumeAbilityRequest` and `BeyController`. Guard Spin and Charge Strike assets added. Remaining: balance simulation and the rest of the §12.8 kit.
+- **Status: complete.** Added `AbilityDefinition`, triggers, conditions, effects, `AbilityContext`, `IBeyActions`/`IBeyView`, and `AbilityRunner` (triggered passives, aura mode with source cleanup, active lifecycle with scoped cost/cooldown/power, source limits). Innate abilities install from `BeyTypeDefinition.innatePassiveId`; equipped abilities install from `BeyStats.equippedAbilities`. Player ability requests (`1/2/3`) flow through `IBeyInput.ConsumeAbilityRequest` and `BeyController`. All twelve §12.8 abilities are authored: Surge Strike, Hard Shell, Steady Core, Counter Spin, Ember Core, Last Spin, Charge Strike, Guard Spin, Ignition, Frost Guard, Ember Aura, and Burst Dash.
 
 **Phase 8: Parts and blueprints**
 - **8a: Parts as contributions.** `PartSlotDefinition` and `PartDefinition`. Stats, static element claims, and scoped skill tuning.
@@ -1120,7 +1120,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Sensors (§16), behaviors, scoring with commit time, dash wind-up telegraph, `AiProfile`.
 - Inject the target; remove `GameObject.FindWithTag` (M9).
 - **Exit:** enemy dashes depend on the player's state. The telegraph is visible. The enemy reacts to element changes, including aura flips. Profiles produce measurably different results in simulation.
-- **Status: core complete (partial).** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter with a wind-up before dashing; `BeyVisual` pulses on `DashWindUpStarted`. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. Use Active and a full simulation harness remain deferred.
+- **Status: complete.** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter with a wind-up before dashing; `BeyVisual` pulses on `DashWindUpStarted`. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. `UseActiveBehavior` requests an active slot when the opponent is below 45% RPM; `EnemyInput` throttles requests. `AiSimulation` runs headless profile comparisons. 5 PlayMode brain tests.
 
 **Phase 10: Battle flow**
 - `BattleController`, `IWinCondition`, migration of `RpmDepletedCondition` from `GameManager`.
@@ -1136,7 +1136,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Element-typed damage (optional).
 - Part synergies (optional). Pairs of parts that unlock a bonus.
 - **Exit per feature:** adds new files only. The solver, `BattleCombat`, and the existing rules are unchanged.
-- **Status: partial — six features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, and `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`) through `BattleController`/`GameUIManager`. 5 EditMode rule/ring-out tests. Still deferred: element-typed damage and part synergies; no condition emits `Burst` yet.
+- **Status: partial - seven features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`), and a `BurstCondition` triggered when one impact deals at least 50% of the target's max RPM. Element-typed damage and part synergies are deferred by decision; the notes stay in §20.4/§13.
 
 ---
 
@@ -1165,6 +1165,8 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 ### 20.3 Debug Tooling
 
+**Status: implemented.** `Bey/Battle Debug` opens an editor window with the build inspector, element claims, stat contributions, abilities, current matchup, and a 30-entry impact trace. `Bey/Add Debug Overlay` adds a runtime overlay that shows both beys' RPM, element, abilities, and the matchup.
+
 - **Build inspector:** for any bey, shows its parts, the element claim stack with priorities and sources, its innate, granted, and equipped abilities with their sources, and each stat's contributions.
 - **Impact trace:** for each impact, shows each rule's effect on outgoing power and on damage. First place to look when a fight feels wrong.
 - **Ability HUD:** state, cooldown, and pending modifiers for each ability on screen.
@@ -1185,19 +1187,15 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Part simulation.** `PartSimulation.Run(...)` swaps each part into the `bal_neutral` control, applies its stat modifiers, element claim, granted `AddModifierEffect`/`ClaimElementEffect` values, and grants any active abilities. `BalanceActives` now simulates those actives: RPM cost, cooldown, `ForceDash`, `ScaleNextImpact`, and `DrainRpm`, with `AbilityCost`, `AbilityCooldown`, and scoped `AbilityPower` from the build's stats. `Bey/Run Part Simulation` writes `Logs/PartSimulation.csv`. Slot-band check: every part's delta within ±5 points of its slot average.
 
-**Part run with actives (25 seeds, start variance 0.2).** Control 51.3%. Heavy Ratchet +48.7, Crye Ratchet +41.6, Neutral Blade +28.2, Pyre Blade +27.2, Ember Bit −0.5, Grip Bit 0.0, **Burst Bit −51.3**. Burst Dash now activates automatically: it spends 25% RPM for one forced dash plus a 1.2× next impact. In a pure damage race that trade is a loss, so Burst Bit underreads because its real value is mobility/ring-out, which the sim does not model. Grip Bit stays at 0 because it only tunes dash-tagged actives and the control has none. Slot band now flags all three Bits; budgets remain unchanged until positioning or a standard dash-active control lands.
+**Part run with actives and ring-out (25 seeds, start variance 0.2, arena radius 8).** Control 51.9%. Heavy Ratchet +48.1, Crye Ratchet +43.7, **Grip Bit +29.7**, Neutral Blade +21.1, Pyre Blade +24.8, Ember Bit −0.2, **Burst Bit −51.9**. Grip Bit now reads because its Tip Friction ×1.25 reduces knockback, and the ring-out model values that. Burst Bit is still negative: Burst Dash spends 25% RPM for one boosted hit, and the model's exchanges are fixed-rate, so closing distance does not create extra hits.
+
+**Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement scaled by `StepSeconds` and divided by `TipFriction`, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
+
+**Still open.** Burst Bit is outside the Bit slot band. Valuing mobility fairly needs variable hit frequency (distance-gated impacts), not just ring-out. `budgetCost` stays unchanged until then.
 
 **Adjusted from playtest.** Enemy `maxRPM` 800 → 600 to shorten wave clears.
 
-**Deferred: mobility and ring-out valuation.** The part run prices Burst Dash at −51.3 because it spends 25% RPM for one boosted hit; the model has no positions. Before tuning Bit budgets, add:
-
-- 2D positions for both beys, starting apart, with `BattleContext.ArenaRadius` as the ring boundary.
-- Impact impulses (`ImpactResult.ImpulseOnA/B`) move positions; `Weight` resists displacement.
-- Forced dashes close distance and can push the opponent toward or over the boundary.
-- Ring-out as a loss condition (`RingOutCondition` already exists).
-- `TipFriction` and dash-scoped `AbilityPower` as mobility/impact modifiers.
-
-Exit: Burst Bit and Grip Bit land inside the Bit slot band, the 18-build reference matrix stays 40–60%, and the golden row stays unchanged. Until then, `budgetCost` stays unchanged.
+**Bit exit criteria.** Burst Bit and Grip Bit inside the Bit slot band, the 18-build reference matrix stays 40–60%, and the golden row stays unchanged. Grip is in; Burst Bit needs distance-gated hit frequency before budgets are tuned.
 
 Simulation drives numbers. Playtests decide whether fights feel readable. Both are needed.
 
@@ -1285,6 +1283,11 @@ Fill in as each phase lands.
 | 8b | Part simulation: per-part swap, slot-band report, CSV | §20.4 |
 | 8b | Active abilities simulated: cost, cooldown, forced dash, next-impact scaling | §20.4 |
 | 8b | Deferred: position/ring-out model to value mobility and Burst Dash | §20.4 |
+| 8b | Mobility/ring-out model in part sim; Grip Bit now in band, Burst Bit still negative | §20.4 |
+| 11 | Burst condition: one impact ≥ 50% of max RPM | §17 |
+| 7 | Counter Spin, Ember Core, Last Spin, Ignition authored | §12.8 |
+| 9 | AI Use Active behavior and headless profile simulation | §16 |
+| 20 | Battle Debug window, impact trace, overlay | §20.3 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |

@@ -9,6 +9,8 @@ public static class BalanceActives
         public readonly bool Dashing;
         public readonly float RpmAfter;
         public readonly float CooldownUntil;
+        public readonly float Approach;
+        public readonly float Push;
         public readonly List<PendingImpactMod> Pending;
 
         public UseResult(
@@ -16,12 +18,16 @@ public static class BalanceActives
             bool dashing,
             float rpmAfter,
             float cooldownUntil,
+            float approach,
+            float push,
             List<PendingImpactMod> pending)
         {
             Used = used;
             Dashing = dashing;
             RpmAfter = rpmAfter;
             CooldownUntil = cooldownUntil;
+            Approach = approach;
+            Push = push;
             Pending = pending;
         }
     }
@@ -67,12 +73,18 @@ public static class BalanceActives
         float power = build.Stats.Get(StatId.AbilityPower, scope);
         List<PendingImpactMod> pending = new List<PendingImpactMod>();
         bool dashing = false;
+        float approach = 0f;
+        float push = 0f;
 
         for (int i = 0; i < ability.effects.Count; i++)
         {
             if (ability.effects[i] is ForceDashEffect force)
             {
                 dashing = true;
+
+                float mobility = 0.5f * force.power * power;
+                approach += mobility;
+                push += mobility;
 
                 pending.Add(new PendingImpactMod(
                     "active:" + ability.id + ":dash",
@@ -101,11 +113,20 @@ public static class BalanceActives
             dashing,
             Mathf.Max(0f, rpmAfter),
             nextCooldown,
+            approach,
+            push,
             pending);
     }
 
     private static UseResult Reject(float rpm, float cooldownUntil)
     {
-        return new UseResult(false, false, rpm, cooldownUntil, null);
+        return new UseResult(
+            false,
+            false,
+            rpm,
+            cooldownUntil,
+            0f,
+            0f,
+            null);
     }
 }

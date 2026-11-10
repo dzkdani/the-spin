@@ -5,6 +5,7 @@ using System.Text;
 public sealed class PartSimulation
 {
     private const float StartVariance = 0.2f;
+    private const float ArenaRadius = 8f;
 
     public readonly struct Row
     {
@@ -236,7 +237,8 @@ public sealed class PartSimulation
                 seeds,
                 matchups,
                 tuning,
-                StartVariance);
+                StartVariance,
+                ArenaRadius);
 
             BalanceSimulator.Result reverse = BalanceSimulator.Run(
                 opponents[i],
@@ -244,7 +246,8 @@ public sealed class PartSimulation
                 seeds,
                 matchups,
                 tuning,
-                StartVariance);
+                StartVariance,
+                ArenaRadius);
 
             wins += forward.WinsA + reverse.WinsB;
             games +=

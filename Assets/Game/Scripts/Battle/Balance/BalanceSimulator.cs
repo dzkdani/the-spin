@@ -40,9 +40,24 @@ public static class BalanceSimulator
         CombatTuning tuning,
         float startVariance)
     {
+        return Run(
+            a, b, seeds, matchups, tuning, startVariance, 0f);
+    }
+
+    public static Result Run(
+        BalanceBuild a,
+        BalanceBuild b,
+        int seeds,
+        MatchupTable matchups,
+        CombatTuning tuning,
+        float startVariance,
+        float arenaRadius)
+    {
         int winsA = 0;
         int winsB = 0;
         int draws = 0;
+
+        float radius = Mathf.Max(0f, arenaRadius);
 
         for (int seed = 0; seed < seeds; seed++)
         {
@@ -56,6 +71,10 @@ public static class BalanceSimulator
                 rpmA *= random.Range(1f - startVariance, 1f);
                 rpmB *= random.Range(1f - startVariance, 1f);
             }
+
+            Vector2 posA = new Vector2(-radius * 0.25f, 0f);
+            Vector2 posB = new Vector2(radius * 0.25f, 0f);
+            bool ringOut = false;
 
             float[] cooldownsA = new float[a.Actives.Count];
             float[] cooldownsB = new float[b.Actives.Count];
@@ -75,14 +94,29 @@ public static class BalanceSimulator
                 List<PendingImpactMod> activePendingB =
                     new List<PendingImpactMod>();
 
-                bool activeDashA = UseActives(
+                Motion motionA = UseActives(
                     a, cooldownsA, ref rpmA, now, activePendingA);
 
-                bool activeDashB = UseActives(
+                Motion motionB = UseActives(
                     b, cooldownsB, ref rpmB, now, activePendingB);
 
-                bool dashingA = activeDashA || rolledA;
-                bool dashingB = activeDashB || rolledB;
+                Vector2 normal = posB - posA;
+
+                normal = normal.sqrMagnitude > 0.0001f
+                    ? normal.normalized
+                    : Vector2.right;
+
+                if (radius > 0f)
+                {
+                    posA += normal * motionA.Approach;
+                    posB += normal * motionA.Push;
+
+                    posB -= normal * motionB.Approach;
+                    posA -= normal * motionB.Push;
+                }
+
+                bool dashingA = motionA.Dashing || rolledA;
+                bool dashingB = motionB.Dashing || rolledB;
 
                 ImpactInput input = new ImpactInput
                 {
@@ -97,7 +131,7 @@ public static class BalanceSimulator
                     OppositeSpin = oppositeSpin,
                     DashingA = dashingA,
                     DashingB = dashingB,
-                    Normal = Vector2.right,
+                    Normal = normal,
                     Now = now,
                     Tuning = tuning
                 };
@@ -147,9 +181,45 @@ public static class BalanceSimulator
                     0f,
                     b.MaxRpm);
 
+                if (radius > 0f)
+                {
+                    float frictionA = Mathf.Max(
+                        0.1f,
+                        a.Stats.Get(StatId.TipFriction));
+
+                    float frictionB = Mathf.Max(
+                        0.1f,
+                        b.Stats.Get(StatId.TipFriction));
+
+                    posA += result.ImpulseOnA *
+                        (StepSeconds * 0.15f) / frictionA;
+
+                    posB += result.ImpulseOnB *
+                        (StepSeconds * 0.15f) / frictionB;
+
+                    bool outA = posA.magnitude > radius;
+                    bool outB = posB.magnitude > radius;
+
+                    if (outA || outB)
+                    {
+                        if (outA && outB)
+                            draws++;
+                        else if (outB)
+                            winsA++;
+                        else
+                            winsB++;
+
+                        ringOut = true;
+                        break;
+                    }
+                }
+
                 now += StepSeconds;
                 steps++;
             }
+
+            if (ringOut)
+                continue;
 
             if (rpmA <= 0f && rpmB <= 0f)
                 draws++;
@@ -164,14 +234,21 @@ public static class BalanceSimulator
         return new Result(winsA, winsB, draws);
     }
 
-    private static bool UseActives(
+    private struct Motion
+    {
+        public bool Dashing;
+        public float Approach;
+        public float Push;
+    }
+
+    private static Motion UseActives(
         BalanceBuild build,
         float[] cooldowns,
         ref float rpm,
         float now,
         List<PendingImpactMod> pending)
     {
-        bool dashing = false;
+        Motion motion = new Motion();
 
         for (int i = 0; i < build.Actives.Count; i++)
         {
@@ -187,12 +264,14 @@ public static class BalanceSimulator
 
             rpm = use.RpmAfter;
             cooldowns[i] = use.CooldownUntil;
-            dashing |= use.Dashing;
+            motion.Dashing |= use.Dashing;
+            motion.Approach += use.Approach;
+            motion.Push += use.Push;
 
             if (use.Pending != null)
                 pending.AddRange(use.Pending);
         }
 
-        return dashing;
+        return motion;
     }
 }

@@ -146,6 +146,25 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
         return TryActivate(actives[slot]);
     }
 
+    public List<string> DescribeAbilities()
+    {
+        List<string> lines = new List<string>();
+
+        for (int i = 0; i < abilities.Count; i++)
+        {
+            Runtime runtime = abilities[i];
+            float cooldown = Mathf.Max(0f, runtime.CooldownUntil - now);
+
+            lines.Add(
+                $"{runtime.Definition.id} " +
+                $"[{runtime.Definition.kind}/{runtime.Definition.mode}] " +
+                $"src={runtime.SourceId} state={runtime.State} " +
+                $"cd={cooldown:F1}s");
+        }
+
+        return lines;
+    }
+
     public bool Install(AbilityDefinition definition, string sourceId)
     {
         if (definition == null || string.IsNullOrEmpty(sourceId))
