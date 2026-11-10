@@ -61,6 +61,12 @@ public class BeyUI : MonoBehaviour
 
     private void UpdateRPM(float rpm)
     {
+        if (data == null || data.Base == null || data.Base.maxRPM <= 0f)
+        {
+            Debug.LogError("BeyUI cannot display RPM without valid BeyData tuning.", this);
+            return;
+        }
+
         rpmBar.fillAmount = rpm / data.Base.maxRPM;
         rpmText.text = Mathf.RoundToInt(rpm).ToString();
 

@@ -15,6 +15,25 @@ public class PlayerBeyInput : MonoBehaviour, IBeyInput
 
     private void Update()
     {
+        GameUIManager ui = ServiceLocator.Get<GameUIManager>();
+
+        if (ui != null && !ui.CanReceiveGameplayInput)
+        {
+            DashRequested = false;
+            return;
+        }
+
+        if (cam == null)
+        {
+            cam = Camera.main;
+
+            if (cam == null)
+            {
+                DashRequested = false;
+                return;
+            }
+        }
+
         MoveTarget =
             cam.ScreenToWorldPoint(Input.mousePosition);
 

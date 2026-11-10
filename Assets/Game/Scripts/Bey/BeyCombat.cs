@@ -26,6 +26,15 @@ public class BeyCombat : MonoBehaviour
         physics.OnGrind += ResolveGrind;
     }
 
+    private void OnDestroy()
+    {
+        if (physics == null)
+            return;
+
+        physics.OnImpact -= ResolveImpact;
+        physics.OnGrind -= ResolveGrind;
+    }
+
     public void AddChargedHit(int amount = 1)
     {
         chargedHits += amount;
@@ -125,15 +134,15 @@ public class BeyCombat : MonoBehaviour
 
     private void ResolveEffect(float speed, Collision2D collision)
     {
-        SFXPlayer.Instance?.PlayHit();
+        ServiceLocator.Get<SFXPlayer>()?.PlayHit();
 
-        CameraShake.Instance?.Shake(
+        ServiceLocator.Get<CameraShake>()?.Shake(
             Mathf.Clamp(speed * 0.02f, 0.05f, 0.35f));
 
         Vector3 point =
             collision.GetContact(0).point;
 
-        HitEffectSpawner.Instance?.Spawn(point);
+        ServiceLocator.Get<HitEffectSpawner>()?.Spawn(point);
     }
 
     private void ResolveGrind(BeyController other, Collision2D collision)

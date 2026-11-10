@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class SFXPlayer : MonoBehaviour
 {
-    public static SFXPlayer Instance { get; private set; }
-
     [SerializeField] private AudioSource audioSource;
 
     [Header("Hit")]
@@ -11,13 +9,16 @@ public class SFXPlayer : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (!ServiceLocator.TryRegister(this))
         {
             Destroy(gameObject);
             return;
         }
+    }
 
-        Instance = this;
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister(this);
     }
 
     public void PlayHit()
@@ -33,6 +34,12 @@ public class SFXPlayer : MonoBehaviour
     {
         if (clips == null || clips.Length == 0)
             return;
+
+        if (audioSource == null)
+        {
+            Debug.LogError("SFXPlayer requires an AudioSource reference.", this);
+            return;
+        }
 
         audioSource.pitch = Random.Range(minPitch, maxPitch);
 

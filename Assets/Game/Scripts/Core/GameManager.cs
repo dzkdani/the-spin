@@ -25,17 +25,23 @@ public class GameManager : MonoBehaviour
 
     private int enemiesDefeated;
     private BeyData currentEnemy;
+    private BeyData subscribedPlayer;
     private bool finished;
 
     private void Start()
     {
-        if (player == null || player.Data == null)
+        if (player == null || player.Data == null || spawner == null ||
+            playerUI == null || enemyUI == null || totalEnemies <= 0)
         {
-            Debug.LogError("Player or Player.Data is not assigned.");
+            Debug.LogError(
+                "GameManager requires a player with BeyData, an EnemySpawner, both BeyUIs, and at least one enemy.",
+                this);
             return;
         }
 
-        player.Data.OnRPMDepleted += PlayerLose;
+        subscribedPlayer = player.Data;
+        subscribedPlayer.OnRPMDepleted -= PlayerLose;
+        subscribedPlayer.OnRPMDepleted += PlayerLose;
         playerUI.Bind(player.Data);
 
         SpawnNextEnemy();
@@ -43,7 +49,19 @@ public class GameManager : MonoBehaviour
 
     private void SpawnNextEnemy()
     {
+        if (spawner == null || enemyUI == null)
+        {
+            Debug.LogError("GameManager cannot spawn an enemy because its spawner or enemy UI is missing.", this);
+            return;
+        }
+
         BeyController enemy = spawner.SpawnEnemy();
+
+        if (enemy == null || enemy.Data == null)
+        {
+            Debug.LogError("EnemySpawner returned an enemy without a BeyController or BeyData.", this);
+            return;
+        }
 
         currentEnemy = enemy.Data;
 
@@ -88,7 +106,7 @@ public class GameManager : MonoBehaviour
 
         finished = true;
 
-        GameUIManager.Instance.ShowGameOver(GameResult.Win);
+        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(GameResult.Win);
         
         Debug.Log("YOU WIN");
     }
@@ -100,7 +118,7 @@ public class GameManager : MonoBehaviour
 
         finished = true;
 
-        GameUIManager.Instance.ShowGameOver(GameResult.Lose);
+        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(GameResult.Lose);
 
         Debug.Log("YOU LOSE");
     }
@@ -118,8 +136,8 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (player != null)
-            player.Data.OnRPMDepleted -= PlayerLose;
+        if (subscribedPlayer != null)
+            subscribedPlayer.OnRPMDepleted -= PlayerLose;
 
         if (currentEnemy != null)
             currentEnemy.OnRPMDepleted -= EnemyDefeated;

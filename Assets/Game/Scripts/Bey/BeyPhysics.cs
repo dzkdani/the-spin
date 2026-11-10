@@ -28,8 +28,17 @@ public class BeyPhysics : MonoBehaviour
         data.OnRPMDepleted += Stop;
     }
 
+    private void OnDestroy()
+    {
+        if (data != null)
+            data.OnRPMDepleted -= Stop;
+    }
+
     private void FixedUpdate()
     {
+        if (data == null || input == null || data.Base == null)
+            return;
+
         if (dashTimer > 0)
         {
             dashTimer -= Time.fixedDeltaTime;
@@ -74,10 +83,10 @@ public class BeyPhysics : MonoBehaviour
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, currentMaxVelocity);
     }
 
-    public void Dash(Vector2 direction)
+    public bool Dash(Vector2 direction)
     {
         if (data.CurrentRPM < data.Base.dashRPMCost)
-            return;
+            return false;
 
         rb.AddForce(
             direction.normalized * data.Base.dashImpulse,
@@ -86,6 +95,8 @@ public class BeyPhysics : MonoBehaviour
         dashTimer = 0.2f;
 
         data.ReduceRPM(data.Base.dashRPMCost);
+
+        return true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

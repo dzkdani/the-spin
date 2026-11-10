@@ -3,37 +3,41 @@ using UnityEngine;
 
 public class TitleAnimator : MonoBehaviour
 {
+    private Tween rotateTween;
     private Tween scaleTween;
+    private Sequence shakeSequence;
 
     void Start()
     {
-        scaleTween = transform
+        rotateTween = transform
             .DORotate(new Vector3(0,0,3),1.2f)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1,LoopType.Yoyo)
-            .SetLink(gameObject);;
+            .SetLink(gameObject);
         
         scaleTween = transform
             .DOScale(0.08f,0.8f)
             .SetLoops(-1,LoopType.Yoyo)
             .SetEase(Ease.InOutSine)
-            .SetLink(gameObject);;
+            .SetLink(gameObject);
 
-        Sequence seq = DOTween.Sequence();
+        shakeSequence = DOTween.Sequence();
 
-        seq.AppendInterval(3f);
+        shakeSequence.AppendInterval(3f);
 
-        seq.Append(transform.DOShakeRotation(
+        shakeSequence.Append(transform.DOShakeRotation(
             0.25f,
             4f,
             20));
 
-        seq.SetLoops(-1).SetLink(gameObject);
+        shakeSequence.SetLoops(-1).SetLink(gameObject);
     
     }
 
     private void OnDestroy()
     {
+        rotateTween?.Kill();
         scaleTween?.Kill();
+        shakeSequence?.Kill();
     }
 }

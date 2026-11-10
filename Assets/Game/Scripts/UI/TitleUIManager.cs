@@ -31,7 +31,7 @@ public class TitleUIManager : MonoBehaviour
 
     public void CloseOption()
     {
-        TitleAudioManager.Instance?.PlayClick();
+        ServiceLocator.Get<TitleAudioManager>()?.PlayClick();
         optionPanel.SetActive(false);
     }
 

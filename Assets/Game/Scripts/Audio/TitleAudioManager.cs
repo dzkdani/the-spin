@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class TitleAudioManager : MonoBehaviour
 {
-    public static TitleAudioManager Instance;
-
     [Header("Audio Sources")]
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource sfxSource;
@@ -19,13 +17,16 @@ public class TitleAudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (!ServiceLocator.TryRegister(this))
         {
             Destroy(gameObject);
             return;
         }
+    }
 
-        Instance = this;
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister(this);
     }
 
     private void Start()

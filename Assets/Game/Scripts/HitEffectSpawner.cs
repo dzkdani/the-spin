@@ -2,18 +2,27 @@ using UnityEngine;
 
 public class HitEffectSpawner : MonoBehaviour
 {
-    public static HitEffectSpawner Instance;
-
     [SerializeField]
     ParticleSystem hitPrefab;
 
     private void Awake()
     {
-        Instance = this;
+        ServiceLocator.Register(this);
+    }
+
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister(this);
     }
 
     public void Spawn(Vector3 pos)
     {
+        if (hitPrefab == null)
+        {
+            Debug.LogError("HitEffectSpawner requires a hit particle prefab.", this);
+            return;
+        }
+
         Instantiate(hitPrefab, pos, Quaternion.identity);
     }
 }

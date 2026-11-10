@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
-    public static CameraShake Instance { get; private set; }
-
     [SerializeField] private float damping = 25f;
 
     private Vector3 originalLocalPos;
@@ -11,8 +9,14 @@ public class CameraShake : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        ServiceLocator.Register(this);
+
         originalLocalPos = transform.localPosition;
+    }
+
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister(this);
     }
 
     private void LateUpdate()

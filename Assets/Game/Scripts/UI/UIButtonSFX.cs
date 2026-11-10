@@ -10,11 +10,11 @@ public class UIButtonSFX : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        TitleAudioManager.Instance.PlayHover();
+        ServiceLocator.Get<TitleAudioManager>()?.PlayHover();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        TitleAudioManager.Instance.PlayClick();
+        ServiceLocator.Get<TitleAudioManager>()?.PlayClick();
     }
 }

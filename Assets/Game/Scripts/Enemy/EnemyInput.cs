@@ -12,22 +12,36 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     float dashTimer;
     Vector2 offset;
     float offsetTimer;
-    bool active = true;
     float dashChance = 0.3f;
 
     private void Start()
     {
         if(target == null)
         {
-            target =
-                GameObject.FindWithTag("Player").transform;
+            GameObject player = GameObject.FindWithTag("Player");
+
+            if (player != null)
+                target = player.transform;
+            else
+                Debug.LogError("EnemyInput could not find a GameObject with the Player tag.");
         }
     }
 
     private void Update()
     {
-        if (target == null || !active)
+        GameUIManager ui = ServiceLocator.Get<GameUIManager>();
+
+        if (ui != null && !ui.CanReceiveGameplayInput)
+        {
+            shouldDash = false;
             return;
+        }
+
+        if (target == null)
+        {
+            shouldDash = false;
+            return;
+        }
 
         // Update wander offset every second
         offsetTimer -= Time.deltaTime;
@@ -55,10 +69,5 @@ public class EnemyInput : MonoBehaviour, IBeyInput
             shouldDash = Random.value < dashChance;
             dashTimer = Random.Range(1.5f, 3f);
         }
-    }
-
-    public void DisableAI()
-    {
-        active = false;
     }
 }

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(BeyData))]
+[RequireComponent(typeof(BeyPhysics))]
+[RequireComponent(typeof(BeyCombat))]
 public class BeyController : MonoBehaviour
 {
     public BeyData Data { get; private set; }
@@ -16,6 +19,23 @@ public class BeyController : MonoBehaviour
         Input = GetComponent<IBeyInput>();
         Visual = GetComponentInChildren<BeyVisual>();
 
+        if (Data == null || Physics == null || Combat == null || Input == null || Visual == null)
+        {
+            Debug.LogError(
+                "BeyController requires BeyData, BeyPhysics, BeyCombat, an IBeyInput, and a child BeyVisual.",
+                this);
+
+            enabled = false;
+
+            if (Physics != null)
+                Physics.enabled = false;
+
+            if (Combat != null)
+                Combat.enabled = false;
+
+            return;
+        }
+
         Physics.Initialize(Data, Input);
         Combat.Initialize(Data, Physics);
         Visual.Initialize(Data);
@@ -23,10 +43,15 @@ public class BeyController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.DashRequested)
-        {
-            Physics.Dash(Input.MoveTarget - (Vector2)transform.position);
+        GameUIManager ui = ServiceLocator.Get<GameUIManager>();
+
+        if (ui != null && !ui.CanReceiveGameplayInput)
+            return;
+
+        if (!Input.DashRequested)
+            return;
+
+        if (Physics.Dash(Input.MoveTarget - (Vector2)transform.position))
             Combat.AddChargedHit();
-        }
     }
 }
