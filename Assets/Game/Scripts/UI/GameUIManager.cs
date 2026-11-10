@@ -84,16 +84,22 @@ public class GameUIManager : MonoBehaviour, IBattleStateGate
         Time.timeScale = 1f;
     }
 
-    public void ShowGameOver(GameResult result)
+    public void ShowGameOver(
+        GameResult result,
+        FinishReason reason = FinishReason.RpmDepleted)
     {
         gameEnded = true;
         Time.timeScale = 0f;
 
         if (resultText != null)
         {
-            resultText.text = result == GameResult.Win
-                ? "YOU WIN!"
-                : "YOU LOSE!";
+            resultText.text = reason == FinishReason.RingOut
+                ? "RING OUT!"
+                : reason == FinishReason.Burst
+                    ? "BURST!"
+                    : result == GameResult.Win
+                        ? "YOU WIN!"
+                        : "YOU LOSE!";
         }
 
         gameOverPanel?.SetActive(true);

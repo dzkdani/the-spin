@@ -20,6 +20,7 @@ MonoBehaviour:
   sameSpinMultiplier: 1
   dashHitMultiplier: 1.25
   clashMultiplier: 1.5
+  spinStealRate: 0.1
   minWeightFactor: 0.5
   maxWeightFactor: 1.5
   grindMode: 1

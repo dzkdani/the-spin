@@ -9,6 +9,8 @@ public sealed class BattleController
 
     public GameResult? Result { get; private set; }
 
+    public FinishReason? Reason { get; private set; }
+
     public void AddCondition(IWinCondition condition)
     {
         if (condition != null)
@@ -27,6 +29,7 @@ public sealed class BattleController
 
             Finished = true;
             Result = conditions[i].Result;
+            Reason = conditions[i].Reason;
 
             return Result;
         }

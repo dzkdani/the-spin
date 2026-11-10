@@ -9,6 +9,7 @@ public static class ImpactSolver
         new MatchupRule(),
         new SpinRule(),
         new SameSpinRule(),
+        new SpinStealRule(),
         new PendingImpactRule(),
         new ClashRule(),
         new DashHitRule()
@@ -63,6 +64,8 @@ public static class ImpactSolver
         {
             DamageToA = damageToA,
             DamageToB = damageToB,
+            RpmGainA = state.StealToA,
+            RpmGainB = state.StealToB,
             ImpulseOnA = impulseOnA,
             ImpulseOnB = impulseOnB,
             PendingModsUsedA = state.PendingUsedA,

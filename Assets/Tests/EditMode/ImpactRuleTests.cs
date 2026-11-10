@@ -4,6 +4,19 @@ using UnityEngine;
 public class ImpactRuleTests
 {
     [Test]
+    public void SpinStealRuleGainsOnOppositeSpin()
+    {
+        object state = State();
+        object input = Input(oppositeSpin: true, dashingA: false, dashingB: false);
+        object rule = ProductionReflection.New("SpinStealRule");
+
+        ProductionReflection.Call(rule, "Apply", state, input);
+
+        Assert.AreEqual(10f, (float)ProductionReflection.Field(state, "StealToA"), 0.0001f);
+        Assert.AreEqual(10f, (float)ProductionReflection.Field(state, "StealToB"), 0.0001f);
+    }
+
+    [Test]
     public void SameSpinRuleMultipliesBothSides()
     {
         object state = State();
@@ -63,6 +76,7 @@ public class ImpactRuleTests
         ProductionReflection.SetField(tuning, "sameSpinMultiplier", 1.1f);
         ProductionReflection.SetField(tuning, "dashHitMultiplier", 1.25f);
         ProductionReflection.SetField(tuning, "clashMultiplier", 1.5f);
+        ProductionReflection.SetField(tuning, "spinStealRate", 0.1f);
 
         object input = ProductionReflection.New("ImpactInput");
 

@@ -114,6 +114,9 @@ public class BeyCombat : MonoBehaviour
         data.ReduceRPM(result.DamageToA);
         other.Data.ReduceRPM(result.DamageToB);
 
+        data.AddRPM(result.RpmGainA);
+        other.Data.AddRPM(result.RpmGainB);
+
         physics.Rigidbody.AddForce(
             result.ImpulseOnA,
             ForceMode2D.Impulse);

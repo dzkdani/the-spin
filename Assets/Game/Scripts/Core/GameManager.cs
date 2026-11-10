@@ -141,7 +141,9 @@ public class GameManager : MonoBehaviour
         if (!result.HasValue)
             return;
 
-        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(result.Value);
+        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(
+            result.Value,
+            battle.Reason ?? FinishReason.RpmDepleted);
     }
 
     private void OnDestroy()

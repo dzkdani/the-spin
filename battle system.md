@@ -1136,7 +1136,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Element-typed damage (optional).
 - Part synergies (optional). Pairs of parts that unlock a bonus.
 - **Exit per feature:** adds new files only. The solver, `BattleCombat`, and the existing rules are unchanged.
-- **Status: partial — four features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), and `RingOutCondition` with an arena radius in `BattleContext`/`GameManager`. 4 EditMode rule/ring-out tests. Still deferred: `SpinStealRule`, burst finish, element-typed damage, part synergies.
+- **Status: partial — six features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, and `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`) through `BattleController`/`GameUIManager`. 5 EditMode rule/ring-out tests. Still deferred: element-typed damage and part synergies; no condition emits `Burst` yet.
 
 ---
 
@@ -1263,6 +1263,8 @@ Fill in as each phase lands.
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
 | 11 | Each feature recorded as it lands | Phase 11 |
 | 11 | Same-spin, clash, and dash-hit multipliers added (same-spin neutral by default) | §14.1, §15 |
+| 11 | Opposite spin steals RPM | §14.1 |
+| 11 | Finish reasons: RPM depleted, ring-out, burst | §17 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 
 **v4 re-baseline note (no runtime change):** audit re-run at `63a0a0e`; B3 and the double-subscription item retired; M3 widened to both input producers; M5 corrected; B5, D7, M6, M7, M8, M9 added; Phase 1 scope updated; Open Questions 19–22 and 24 answered from code.

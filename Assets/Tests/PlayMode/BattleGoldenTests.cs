@@ -12,7 +12,7 @@ public class BattleGoldenTests
     // Phase 1 must change only the documented entries in battle system.md §23.
     private const string Expected =
         "equal dmgA=320.00 dmgB=320.00 velA=-12.00,0.00 velB=12.00,0.00 | " +
-        "opposite dmgA=480.00 dmgB=480.00 velA=-12.00,0.00 velB=12.00,0.00 | " +
+        "opposite dmgA=456.00 dmgB=456.00 velA=-12.00,0.00 velB=12.00,0.00 | " +
         "charged dmgA=560.00 dmgB=560.00 velA=-12.00,0.00 velB=12.00,0.00";
 
     [UnityTest]

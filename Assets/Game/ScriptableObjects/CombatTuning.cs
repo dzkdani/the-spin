@@ -29,6 +29,8 @@ public class CombatTuning : ScriptableObject
 
     public float clashMultiplier = 1.5f;
 
+    public float spinStealRate = 0.1f;
+
     [Header("Weights")]
     public float minWeightFactor = 0.5f;
 

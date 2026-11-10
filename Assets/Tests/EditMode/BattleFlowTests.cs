@@ -123,6 +123,10 @@ public class BattleFlowTests
         Assert.AreEqual(
             "Lose",
             ProductionReflection.Property(condition, "Result").ToString());
+
+        Assert.AreEqual(
+            "RingOut",
+            ProductionReflection.Property(condition, "Reason").ToString());
     }
 
     private static object Context(
