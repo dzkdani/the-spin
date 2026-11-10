@@ -79,6 +79,9 @@ public class GameManager : MonoBehaviour
 
         currentEnemy = enemy.Data;
 
+        if (enemy.Input is EnemyInput enemyInput)
+            enemyInput.SetTarget(player);
+
         enemyUI.Bind(currentEnemy);
 
         currentEnemy.OnRPMDepleted += EnemyDefeated;

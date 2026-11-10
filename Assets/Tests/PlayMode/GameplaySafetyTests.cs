@@ -11,7 +11,6 @@ public class GameplaySafetyTests
     public IEnumerator EnemyInputDoesNotUpdateWhileGameplayInputIsBlocked()
     {
         GameObject enemyObject = new GameObject("Enemy");
-        GameObject targetObject = new GameObject("Player");
         GameObject uiObject = new GameObject("GameUI");
         GameObject pausePanel = new GameObject("PausePanel");
         GameObject gameOverPanel = new GameObject("GameOverPanel");
@@ -20,8 +19,6 @@ public class GameplaySafetyTests
         {
             Type enemyInputType = GetProductionType("EnemyInput");
             Component enemyInput = enemyObject.AddComponent(enemyInputType);
-            targetObject.transform.position = new Vector3(10f, 0f, 0f);
-            SetPrivateField(enemyInput, "target", targetObject.transform);
 
             uiObject.SetActive(false);
             Type uiType = GetProductionType("GameUIManager");
@@ -45,7 +42,6 @@ public class GameplaySafetyTests
         finally
         {
             UnityEngine.Object.DestroyImmediate(enemyObject);
-            UnityEngine.Object.DestroyImmediate(targetObject);
             UnityEngine.Object.DestroyImmediate(uiObject);
             UnityEngine.Object.DestroyImmediate(pausePanel);
             UnityEngine.Object.DestroyImmediate(gameOverPanel);

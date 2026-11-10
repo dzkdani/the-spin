@@ -20,4 +20,29 @@ public class AiProfile : ContentDefinition
     public float dashIntervalMin = 1.5f;
 
     public float dashIntervalMax = 3f;
+
+    [Header("Decision")]
+    public float decisionInterval = 0.15f;
+
+    public float commitTime = 0.6f;
+
+    public float dashWindUp = 0.35f;
+
+    [Header("Behavior Weights")]
+    public float pressureWeight = 1f;
+
+    public float elementWeight = 0.8f;
+
+    public float baitWeight = 0.7f;
+
+    public float strikeWeight = 1f;
+
+    public float retreatWeight = 1.2f;
+
+    [Header("Thresholds")]
+    public float strikeRange = 4f;
+
+    public float retreatRpm = 0.25f;
+
+    public float dashAggression = 0.5f;
 }

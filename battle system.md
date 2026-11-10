@@ -1120,6 +1120,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Sensors (§16), behaviors, scoring with commit time, dash wind-up telegraph, `AiProfile`.
 - Inject the target; remove `GameObject.FindWithTag` (M9).
 - **Exit:** enemy dashes depend on the player's state. The telegraph is visible. The enemy reacts to element changes, including aura flips. Profiles produce measurably different results in simulation.
+- **Status: core complete (partial).** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter with a wind-up before dashing; `BeyVisual` pulses on `DashWindUpStarted`. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. Use Active and a full simulation harness remain deferred.
 
 **Phase 10: Battle flow**
 - `BattleController`, `IWinCondition`, migration of `RpmDepletedCondition` from `GameManager`.

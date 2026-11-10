@@ -2,41 +2,42 @@ using UnityEngine;
 
 public class EnemyInput : MonoBehaviour, IBeyInput
 {
-    [SerializeField] private Transform target;
+    [SerializeField] private BeyController target;
     [SerializeField] private AiProfile profile;
     [SerializeField] private int seed = 0;
 
     public Vector2 MoveTarget { get; private set; }
-    public bool DashRequested => shouldDash;
 
-    bool shouldDash;
-    float dashTimer;
-    Vector2 offset;
-    float offsetTimer;
-    float dashChance;
+    public bool DashRequested { get; private set; }
+
+    public bool IsWindingUp => windUpTimer > 0f;
+
+    public string CurrentBehavior =>
+        brain != null ? brain.CurrentBehavior : "none";
+
+    private BeyData data;
     private IRandom random;
+    private EnemyBrain brain;
+    private float windUpTimer;
+    private float dashCooldown;
 
     private void Awake()
     {
+        data = GetComponent<BeyData>();
+
         random = seed == 0
             ? (IRandom)new UnityRandom()
             : new SeededRandom(seed);
 
         if (profile == null)
             profile = ScriptableObject.CreateInstance<AiProfile>();
+
+        brain = new EnemyBrain(profile, random);
     }
 
-    private void Start()
+    public void SetTarget(BeyController newTarget)
     {
-        if(target == null)
-        {
-            GameObject player = GameObject.FindWithTag("Player");
-
-            if (player != null)
-                target = player.transform;
-            else
-                Debug.LogError("EnemyInput could not find a GameObject with the Player tag.");
-        }
+        target = newTarget;
     }
 
     private void Update()
@@ -45,45 +46,59 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
         if (gate != null && !gate.CanReceiveGameplayInput)
         {
-            shouldDash = false;
+            DashRequested = false;
             return;
         }
 
-        if (target == null)
+        if (target == null || target.Data == null || data == null)
         {
-            shouldDash = false;
+            DashRequested = false;
             return;
         }
 
-        // Update wander offset every second
-        offsetTimer -= Time.deltaTime;
+        BattleSnapshot snapshot = BuildSnapshot();
+        AiCommand command = brain.Tick(snapshot, Time.deltaTime);
 
-        if (offsetTimer <= 0f)
+        MoveTarget = command.MoveTarget;
+        DashRequested = false;
+
+        dashCooldown -= Time.deltaTime;
+
+        if (windUpTimer > 0f)
         {
-            offset = random.InsideUnitCircle() * profile.jitterRadius;
-            offsetTimer = profile.jitterInterval;
+            windUpTimer -= Time.deltaTime;
+
+            if (windUpTimer <= 0f)
+                DashRequested = true;
+
+            return;
         }
 
-        MoveTarget = (Vector2)target.position + offset;
-
-        // Increase dash chance when far away
-        float distance = Vector2.Distance(transform.position, target.position);
-
-        dashChance = distance > profile.farDistance
-            ? profile.dashChanceFar
-            : profile.dashChanceNear;
-
-        // Dash timer
-        dashTimer -= Time.deltaTime;
-
-        shouldDash = false;
-
-        if (dashTimer <= 0f)
+        if (command.RequestDash && dashCooldown <= 0f)
         {
-            shouldDash = random.Value() < dashChance;
-            dashTimer = random.Range(
-                profile.dashIntervalMin,
-                profile.dashIntervalMax);
+            windUpTimer = profile.dashWindUp;
+            BattleEvents.RaiseDashWindUpStarted(data);
         }
+    }
+
+    private BattleSnapshot BuildSnapshot()
+    {
+        Vector2 selfPosition = transform.position;
+        Vector2 opponentPosition = target.transform.position;
+
+        return new BattleSnapshot(
+            data.RPMNormalized,
+            target.Data.RPMNormalized,
+            selfPosition,
+            opponentPosition,
+            Vector2.Distance(selfPosition, opponentPosition),
+            data.Elements.Current,
+            target.Data.Elements.Current,
+            target.Physics != null && target.Physics.IsDashing,
+            MatchupResolver.Get(
+                ContentRegistry.Matchups,
+                data.Elements.Current,
+                target.Data.Elements.Current),
+            Time.time);
     }
 }

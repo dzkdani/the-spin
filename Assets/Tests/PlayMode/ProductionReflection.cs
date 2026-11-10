@@ -97,8 +97,13 @@ public static class ProductionReflection
 
                 for (int i = 0; i < parameters.Length; i++)
                 {
+                    Type parameterType = parameters[i].ParameterType;
+
+                    if (parameterType.IsByRef)
+                        parameterType = parameterType.GetElementType();
+
                     if (args[i] != null &&
-                        !parameters[i].ParameterType.IsInstanceOfType(args[i]))
+                        !parameterType.IsInstanceOfType(args[i]))
                     {
                         return false;
                     }
