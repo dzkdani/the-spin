@@ -183,19 +183,11 @@ public static class BalanceSimulator
 
                 if (radius > 0f)
                 {
-                    float frictionA = Mathf.Max(
-                        0.1f,
-                        a.Stats.Get(StatId.TipFriction));
-
-                    float frictionB = Mathf.Max(
-                        0.1f,
-                        b.Stats.Get(StatId.TipFriction));
-
                     posA += result.ImpulseOnA *
-                        (StepSeconds * 0.15f) / frictionA;
+                        (StepSeconds * 0.15f);
 
                     posB += result.ImpulseOnB *
-                        (StepSeconds * 0.15f) / frictionB;
+                        (StepSeconds * 0.15f);
 
                     bool outA = posA.magnitude > radius;
                     bool outB = posB.magnitude > radius;

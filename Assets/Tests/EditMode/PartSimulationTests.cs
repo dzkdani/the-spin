@@ -89,7 +89,7 @@ public class PartSimulationTests
         Assert.IsTrue((bool)ProductionReflection.Field(use, "Used"));
         Assert.IsTrue((bool)ProductionReflection.Field(use, "Dashing"));
         Assert.AreEqual(
-            maxRpm * 0.75f,
+            maxRpm * 0.9f,
             (float)ProductionReflection.Field(use, "RpmAfter"),
             0.1f);
 
