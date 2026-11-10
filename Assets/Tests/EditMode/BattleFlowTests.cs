@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using UnityEngine;
 
 public class BattleFlowTests
 {
@@ -86,6 +87,42 @@ public class BattleFlowTests
 
         Assert.IsNull(result);
         Assert.IsFalse((bool)ProductionReflection.Property(controller, "Finished"));
+    }
+
+    [Test]
+    public void PlayerOutsideArenaLoses()
+    {
+        object condition = ProductionReflection.New("RingOutCondition");
+
+        object outside = ProductionReflection.New(
+            "BattleContext",
+            100f,
+            0,
+            4,
+            new Vector2(9f, 0f),
+            8f);
+
+        object inside = ProductionReflection.New(
+            "BattleContext",
+            100f,
+            0,
+            4,
+            new Vector2(1f, 0f),
+            8f);
+
+        Assert.IsTrue((bool)ProductionReflection.Call(
+            condition,
+            "IsSatisfied",
+            outside));
+
+        Assert.IsFalse((bool)ProductionReflection.Call(
+            condition,
+            "IsSatisfied",
+            inside));
+
+        Assert.AreEqual(
+            "Lose",
+            ProductionReflection.Property(condition, "Result").ToString());
     }
 
     private static object Context(

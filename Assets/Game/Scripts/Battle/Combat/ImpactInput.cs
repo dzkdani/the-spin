@@ -15,6 +15,8 @@ public sealed class ImpactInput
     public MatchupTable Matchups;
 
     public bool OppositeSpin;
+    public bool DashingA;
+    public bool DashingB;
     public Vector2 Normal;
 
     public List<PendingImpactMod> PendingA = new List<PendingImpactMod>();

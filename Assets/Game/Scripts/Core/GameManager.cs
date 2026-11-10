@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("Enemy")]
     [SerializeField] private EnemySpawner spawner;
     [SerializeField] private int totalEnemies = 2;
+    [SerializeField] private float arenaRadius = 8f;
 
     [Header("UI")]
     [SerializeField] private BeyUI playerUI;
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
 
         battle = new BattleController();
         battle.AddCondition(new RpmDepletedCondition());
+        battle.AddCondition(new RingOutCondition());
         battle.AddCondition(new EnemiesClearedCondition());
 
         subscribedPlayer.OnRPMDepleted -= ResolveBattle;
@@ -128,7 +130,11 @@ public class GameManager : MonoBehaviour
         BattleContext context = new BattleContext(
             subscribedPlayer != null ? subscribedPlayer.CurrentRPM : 0f,
             enemiesDefeated,
-            totalEnemies);
+            totalEnemies,
+            player != null
+                ? (Vector2)player.transform.position
+                : Vector2.zero,
+            arenaRadius);
 
         GameResult? result = battle.Evaluate(context);
 

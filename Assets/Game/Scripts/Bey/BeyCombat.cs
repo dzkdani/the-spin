@@ -72,6 +72,10 @@ public class BeyCombat : MonoBehaviour
             OppositeSpin =
                 data.Base.spinDirection !=
                 other.Data.Base.spinDirection,
+            DashingA = physics.IsDashing,
+            DashingB =
+                other.Physics != null &&
+                other.Physics.IsDashing,
             Normal = GetNormal(other, collision),
             Now = Time.time,
             Tuning = tuning

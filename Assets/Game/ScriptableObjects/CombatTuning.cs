@@ -22,6 +22,13 @@ public class CombatTuning : ScriptableObject
 
     public float chargeMultiplier = 1.75f;
 
+    [Header("Spin and Dash")]
+    public float sameSpinMultiplier = 1f;
+
+    public float dashHitMultiplier = 1.25f;
+
+    public float clashMultiplier = 1.5f;
+
     [Header("Weights")]
     public float minWeightFactor = 0.5f;
 

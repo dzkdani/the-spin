@@ -8,7 +8,10 @@ public static class ImpactSolver
         new BaseHitPowerRule(),
         new MatchupRule(),
         new SpinRule(),
-        new PendingImpactRule()
+        new SameSpinRule(),
+        new PendingImpactRule(),
+        new ClashRule(),
+        new DashHitRule()
     };
 
     static ImpactSolver()
