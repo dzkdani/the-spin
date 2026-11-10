@@ -21,6 +21,21 @@ public class SFXPlayer : MonoBehaviour
         ServiceLocator.Unregister(this);
     }
 
+    private void OnEnable()
+    {
+        BattleEvents.ImpactResolved += OnImpactResolved;
+    }
+
+    private void OnDisable()
+    {
+        BattleEvents.ImpactResolved -= OnImpactResolved;
+    }
+
+    private void OnImpactResolved(ImpactEvent impact)
+    {
+        PlayHit();
+    }
+
     public void PlayHit()
     {
         Play(hitClips, 1f, 0.9f, 1.1f);

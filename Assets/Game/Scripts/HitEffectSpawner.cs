@@ -15,6 +15,21 @@ public class HitEffectSpawner : MonoBehaviour
         ServiceLocator.Unregister(this);
     }
 
+    private void OnEnable()
+    {
+        BattleEvents.ImpactResolved += OnImpactResolved;
+    }
+
+    private void OnDisable()
+    {
+        BattleEvents.ImpactResolved -= OnImpactResolved;
+    }
+
+    private void OnImpactResolved(ImpactEvent impact)
+    {
+        Spawn(impact.Point);
+    }
+
     public void Spawn(Vector3 pos)
     {
         if (hitPrefab == null)

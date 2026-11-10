@@ -81,6 +81,16 @@ public class BeyCombat : MonoBehaviour
 
         ImpactResult result = ImpactSolver.Resolve(input);
 
+        Vector2 point = GetPoint(collision);
+
+        float shake = Mathf.Lerp(
+            tuning.shakeMin,
+            tuning.shakeMax,
+            result.Intensity);
+
+        BattleEvents.RaiseImpactPending(
+            new ImpactEvent(data, other.Data, result, point, shake));
+
         data.ReduceRPM(result.DamageToA);
         other.Data.ReduceRPM(result.DamageToB);
 
@@ -101,7 +111,8 @@ public class BeyCombat : MonoBehaviour
             other.Combat.ConsumeCharge();
         }
 
-        ResolveEffect(result.Intensity, collision);
+        BattleEvents.RaiseImpactResolved(
+            new ImpactEvent(data, other.Data, result, point, shake));
     }
 
     private static PendingImpactMod CreateChargeMod(CombatTuning tuning)
@@ -127,25 +138,11 @@ public class BeyCombat : MonoBehaviour
             : Vector2.right;
     }
 
-    private void ResolveEffect(float intensity, Collision2D collision)
+    private Vector2 GetPoint(Collision2D collision)
     {
-        CombatTuning tuning = ContentRegistry.Tuning;
-
-        ServiceLocator.Get<SFXPlayer>()?.PlayHit();
-
-        ServiceLocator.Get<CameraShake>()?.Shake(
-            Mathf.Lerp(
-                tuning.shakeMin,
-                tuning.shakeMax,
-                intensity));
-
-        if (collision.contactCount == 0)
-            return;
-
-        Vector3 point =
-            collision.GetContact(0).point;
-
-        ServiceLocator.Get<HitEffectSpawner>()?.Spawn(point);
+        return collision.contactCount > 0
+            ? (Vector2)collision.GetContact(0).point
+            : (Vector2)transform.position;
     }
 
     private void ResolveGrind(BeyController other, Collision2D collision)

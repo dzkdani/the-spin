@@ -38,6 +38,21 @@ public class CameraShake : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        BattleEvents.ImpactResolved += OnImpactResolved;
+    }
+
+    private void OnDisable()
+    {
+        BattleEvents.ImpactResolved -= OnImpactResolved;
+    }
+
+    private void OnImpactResolved(ImpactEvent impact)
+    {
+        Shake(impact.Shake);
+    }
+
     public void Shake(float amount)
     {
         intensity = Mathf.Max(intensity, amount);

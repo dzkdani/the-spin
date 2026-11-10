@@ -1085,6 +1085,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - `BattleEvents` for `ImpactPending`, `ImpactResolved`, `DashStarted`, `DashEnded`, `RpmChanged`, `AbilityActivated`, `CastComplete`.
 - Move SFX, shake, and VFX to subscribers. Remove `ServiceLocator` from combat.
 - **Exit:** combat tests run with no presentation attached.
+- **Status: complete.** `BattleEvents` + `ImpactEvent` (attacker/defender/result/point/shake). `SFXPlayer`, `CameraShake`, and `HitEffectSpawner` subscribe in `OnEnable` and unsubscribe in `OnDisable`; `BeyData` raises `RpmChanged`, `BeyPhysics` raises `DashStarted`/`DashEnded`, and `BeyCombat` raises `ImpactPending`/`ImpactResolved`. No `ServiceLocator` reference remains in combat. Golden unchanged.
 
 ### Track B: Systems
 

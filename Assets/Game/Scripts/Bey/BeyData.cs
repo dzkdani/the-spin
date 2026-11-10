@@ -76,6 +76,8 @@ public class BeyData : MonoBehaviour
 
         OnRPMChanged?.Invoke(CurrentRPM);
 
+        BattleEvents.RaiseRpmChanged(this, CurrentRPM);
+
         if (wasAlive && CurrentRPM <= 0)
         {
             OnRPMDepleted?.Invoke();

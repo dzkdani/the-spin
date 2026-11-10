@@ -42,6 +42,10 @@ public class BeyPhysics : MonoBehaviour
         if (dashTimer > 0)
         {
             dashTimer -= Time.fixedDeltaTime;
+
+            if (dashTimer <= 0f)
+                BattleEvents.RaiseDashEnded(data);
+
             return;
         }
 
@@ -95,6 +99,8 @@ public class BeyPhysics : MonoBehaviour
         dashTimer = 0.2f;
 
         data.ReduceRPM(data.Base.dashRPMCost);
+
+        BattleEvents.RaiseDashStarted(data);
 
         return true;
     }
