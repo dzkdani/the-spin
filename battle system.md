@@ -1093,9 +1093,9 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - **6a:** Infrastructure with neutral defaults. Empty type profiles, empty matrix. Golden unchanged.
 - **6a status: complete.** `BeyTypeDefinition.ApplyTo` installs `type:<id>` modifiers; identity `Atk`/`Def`/`Bal` assets exist (unassigned). Multiplicative baselines seeded (`RpmDecay`, `MatchupScale`, `TipFriction` = 1). Golden unchanged.
 - **6b:** Populate the type profiles (§10), innate passives, the ring (§11.2), and the matchup values. Golden changes, documented.
-- **6b status: core complete.** Type profiles populated with innate passives; Surge Strike, Hard Shell, and Steady Core shipped as ability assets. Five ring elements + 10 matchup entries added; validator reports a clean manifest. Player = BAL/Crye, enemy = ATK/Pyre. The synthetic golden harness is asset-independent and stays unchanged; real scene beys now use types/elements. Balance simulation remains deferred.
+- **6b status: core complete; band exit not met.** Type profiles populated with innate passives; Surge Strike, Hard Shell, and Steady Core shipped as ability assets. Five ring elements + 10 matchup entries added; validator reports a clean manifest. Player = BAL/Crye, enemy = ATK/Pyre. The synthetic golden harness is asset-independent and stays unchanged; real scene beys now use types/elements. The 18×18 matrix now runs (§20.4), but the first reference run put **18 of 18 builds outside the 40–60% band**: ATK swept its non-mirror matches, while BAL/DEF lost theirs. Type numbers are still placeholders, and the simulator does not install innate passives (so Steady Core's matchup softening and Hard Shell's defense are absent). Tuning is the open item.
 - Validator rules for Neutral (§11.3) and matchup entries (§9.4).
-- **Exit (6b):** the matchup and type simulations run (§20.4). Every reference build is inside the balance band.
+- **Exit (6b):** the matchup and type simulations run (§20.4). Every reference build is inside the balance band. *(Simulations run; tuning outstanding.)*
 
 **Phase 7: Ability system**
 - `AbilityDefinition` with tags and mode. Conditions and effects, including `ClaimElement`.
@@ -1112,7 +1112,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
   - **Exit:** a part changes stats and the element. Removing it restores the exact previous values, with no residue.
 - **8b: Granted skills, budget, assembly.** Granted abilities with their limits. The budget validator. `BeyBlueprint` and `BeyBuilder`, with full loadout validation across all three sources.
   - **Exit:** any bey can be assembled from assets. Invalid builds are rejected with clear messages. The reference parts (§13.5) work in the sandbox.
-- **Status: core complete (partial).** Added `PartSlotDefinition`, `PartDefinition`, `StatModifierSpec`, `BeyBlueprint`, `BeyBuilder`, and `BeyBlueprintValidator`. Parts install stat/element contributions with `part:<id>` sources; granted abilities install with `grant:<part>/<ability>` and are removed with the part. Validation covers duplicate slots, budget, granted/equipped limits, duplicate ability ids, and active cost. Reference content added: 3 slots, 7 parts, and Frost Guard / Ember Aura / Burst Dash. 3 PlayMode part tests. A deterministic `BalanceSimulator` (seeded impact exchanges) and 2 tests are in. Full 18×18 matrix tooling remains deferred; golden unchanged.
+- **Status: core complete (partial).** Added `PartSlotDefinition`, `PartDefinition`, `StatModifierSpec`, `BeyBlueprint`, `BeyBuilder`, and `BeyBlueprintValidator`. Parts install stat/element contributions with `part:<id>` sources; granted abilities install with `grant:<part>/<ability>` and are removed with the part. Validation covers duplicate slots, budget, granted/equipped limits, duplicate ability ids, and active cost. Reference content added: 3 slots, 7 parts, and Frost Guard / Ember Aura / Burst Dash. 3 PlayMode part tests. A deterministic `BalanceSimulator` (seeded impact exchanges) and 2 tests are in. `BalanceCatalog` generates the 18 type × element reference builds, `BalanceMatrix` runs the round-robin and emits CSV, and `Bey/Run Balance Matrix` writes `Logs/BalanceMatrix.csv` with the 40–60% band report. First run: 18/18 outside the band (ATK dominates); tuning remains. Golden unchanged.
 
 ### Track C: Intelligence and Flow
 
@@ -1173,9 +1173,13 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 ### 20.4 Balance Simulation
 
-**Reference builds.** Three types × six elements = **18 reference builds**. Each type uses a standard part set. Round-robin is 18 × 18 = 324 pairings, with N seeds each, recorded as a win matrix.
+**Reference builds.** Three types × six elements = **18 reference builds**. Current reference builds use **no parts** so the matrix isolates type × element. Round-robin is 18 × 18 = 324 pairings, with **25 seeds** each, recorded as a win matrix.
+
+**Tooling.** `BalanceCatalog.CreateReferenceBuilds()` builds the 18 references from the content manifest. `BalanceMatrix.Run(...)` fills the win/loss/draw matrices through `BalanceSimulator`, `WinRate(i)` aggregates each build, `BuildsOutsideBand(min, max)` lists offenders, and `ToCsv()` emits the matrix. Run `Bey/Run Balance Matrix` from the editor; the CSV lands at `Logs/BalanceMatrix.csv` (gitignored).
 
 **Band.** Placeholder: every reference build between 40% and 60% overall. Tune until every build is inside the band.
+
+**First reference run (25 seeds, no parts).** 18 of 18 builds outside the band. ATK builds won 79–100% of decisive games; BAL/DEF builds won 0–30%. Two causes: ATK's ×1.25 attack beats the placeholder BAL/DEF profiles, and the simulator does not install innate passives (Steady Core and Hard Shell are absent). Mirror-type pairings mostly draw because both sides use the same impact speed.
 
 **Part simulation.** For each part, swap it into a control build and measure the win-rate change across the reference matchups. Placeholder target: each part's change within ±5 points of its slot average. Adjust `budgetCost` to match.
 
@@ -1260,6 +1264,7 @@ Fill in as each phase lands.
 | 7 | Auras, scoped skill stats, ability sources. Charge Strike replaces charges. | §12 |
 | 8a | Parts take effect: stats and element claims | §13 |
 | 8b | Granted skills take effect. Budget cap enforced. | §12.7, §13.6 |
+| 8b | 18×18 balance matrix tooling: catalog, matrix, CSV, band report | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
 | 11 | Each feature recorded as it lands | Phase 11 |
 | 11 | Same-spin, clash, and dash-hit multipliers added (same-spin neutral by default) | §14.1, §15 |
