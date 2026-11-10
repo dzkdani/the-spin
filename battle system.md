@@ -1189,6 +1189,16 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Adjusted from playtest.** Enemy `maxRPM` 800 → 600 to shorten wave clears.
 
+**Deferred: mobility and ring-out valuation.** The part run prices Burst Dash at −51.3 because it spends 25% RPM for one boosted hit; the model has no positions. Before tuning Bit budgets, add:
+
+- 2D positions for both beys, starting apart, with `BattleContext.ArenaRadius` as the ring boundary.
+- Impact impulses (`ImpactResult.ImpulseOnA/B`) move positions; `Weight` resists displacement.
+- Forced dashes close distance and can push the opponent toward or over the boundary.
+- Ring-out as a loss condition (`RingOutCondition` already exists).
+- `TipFriction` and dash-scoped `AbilityPower` as mobility/impact modifiers.
+
+Exit: Burst Bit and Grip Bit land inside the Bit slot band, the 18-build reference matrix stays 40–60%, and the golden row stays unchanged. Until then, `budgetCost` stays unchanged.
+
 Simulation drives numbers. Playtests decide whether fights feel readable. Both are needed.
 
 ---
@@ -1274,6 +1284,7 @@ Fill in as each phase lands.
 | 8b | Simulator installs innates, models dashes/contact variance, symmetrizes pairings; all 18 builds inside 40–60% | §20.4 |
 | 8b | Part simulation: per-part swap, slot-band report, CSV | §20.4 |
 | 8b | Active abilities simulated: cost, cooldown, forced dash, next-impact scaling | §20.4 |
+| 8b | Deferred: position/ring-out model to value mobility and Burst Dash | §20.4 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
