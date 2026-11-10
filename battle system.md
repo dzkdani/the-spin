@@ -1125,6 +1125,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 **Phase 10: Battle flow**
 - `BattleController`, `IWinCondition`, migration of `RpmDepletedCondition` from `GameManager`.
 - **Exit:** outcomes come from conditions. `GameManager` only orchestrates waves.
+- **Status: core complete.** Added `BattleContext`, `IWinCondition`, `RpmDepletedCondition`, `EnemiesClearedCondition`, and `BattleController`. `GameManager` now builds the context and resolves outcomes through conditions; it retains wave spawning/destruction only. 4 EditMode tests cover lose/win conditions and controller ordering. `RingOutCondition` remains a Phase 11 feature.
 
 ### Track D: Features
 

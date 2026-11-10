@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private int enemiesDefeated;
     private BeyData currentEnemy;
     private BeyData subscribedPlayer;
-    private bool finished;
+    private BattleController battle;
 
     private void Awake()
     {
@@ -54,8 +54,13 @@ public class GameManager : MonoBehaviour
         }
 
         subscribedPlayer = player.Data;
-        subscribedPlayer.OnRPMDepleted -= PlayerLose;
-        subscribedPlayer.OnRPMDepleted += PlayerLose;
+
+        battle = new BattleController();
+        battle.AddCondition(new RpmDepletedCondition());
+        battle.AddCondition(new EnemiesClearedCondition());
+
+        subscribedPlayer.OnRPMDepleted -= ResolveBattle;
+        subscribedPlayer.OnRPMDepleted += ResolveBattle;
         playerUI.Bind(player.Data);
 
         SpawnNextEnemy();
@@ -95,16 +100,15 @@ public class GameManager : MonoBehaviour
 
         Destroy(currentEnemy.gameObject);
 
-        if (finished)
+        if (battle == null || battle.Finished)
             return;
 
         enemiesDefeated++;
 
-        if (enemiesDefeated >= totalEnemies)
-        {
-            PlayerWin();
+        ResolveBattle();
+
+        if (battle.Finished)
             return;
-        }
 
         StartCoroutine(SpawnNextAfterDelay(1f));
     }
@@ -116,34 +120,28 @@ public class GameManager : MonoBehaviour
         SpawnNextEnemy();
     }
 
-    private void PlayerWin()
+    private void ResolveBattle()
     {
-        if (finished)
+        if (battle == null || battle.Finished)
             return;
 
-        finished = true;
+        BattleContext context = new BattleContext(
+            subscribedPlayer != null ? subscribedPlayer.CurrentRPM : 0f,
+            enemiesDefeated,
+            totalEnemies);
 
-        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(GameResult.Win);
-        
-        Debug.Log("YOU WIN");
-    }
+        GameResult? result = battle.Evaluate(context);
 
-    private void PlayerLose()
-    {
-        if (finished)
+        if (!result.HasValue)
             return;
 
-        finished = true;
-
-        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(GameResult.Lose);
-
-        Debug.Log("YOU LOSE");
+        ServiceLocator.Get<GameUIManager>()?.ShowGameOver(result.Value);
     }
 
     private void OnDestroy()
     {
         if (subscribedPlayer != null)
-            subscribedPlayer.OnRPMDepleted -= PlayerLose;
+            subscribedPlayer.OnRPMDepleted -= ResolveBattle;
 
         if (currentEnemy != null)
             currentEnemy.OnRPMDepleted -= EnemyDefeated;
