@@ -21,3 +21,4 @@ MonoBehaviour:
   weight: 5
   minMoveAccelerationMultiplier: 0.6
   spinDirection: 0
+  baseElement: {fileID: 11400000, guid: 3c4d5e6f7a8b49c0d1e2f3a4b5c6d7e8, type: 2}

@@ -5,6 +5,10 @@ public class BeyData : MonoBehaviour
 {
     [field: SerializeField]
     public BeyStats Base { get; private set; }
+
+    public StatBlock Stats { get; } = new StatBlock();
+
+    public ElementStack Elements { get; } = new ElementStack();
     public event Action<float> OnRPMChanged;
     public event Action OnRPMDepleted;
 
@@ -28,6 +32,20 @@ public class BeyData : MonoBehaviour
         }
 
         CurrentRPM = Base.maxRPM;
+
+        Stats.SetBase(StatId.Attack, Base.attack);
+        Stats.SetBase(StatId.Weight, Base.weight);
+        Stats.SetBase(StatId.Defense, 0f);
+
+        if (Base.baseElement != null)
+        {
+            Elements.Add(new ElementClaim(
+                Base.baseElement,
+                0,
+                "base:chassis",
+                float.PositiveInfinity,
+                0));
+        }
 
         OnRPMChanged?.Invoke(CurrentRPM);
     }

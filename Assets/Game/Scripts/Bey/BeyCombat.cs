@@ -72,10 +72,10 @@ public class BeyCombat : MonoBehaviour
             other.Data.RPMNormalized;
 
         float myAttack =
-            data.Base.attack;
+            data.Stats.Get(StatId.Attack);
 
         float enemyAttack =
-            other.Data.Base.attack;
+            other.Data.Stats.Get(StatId.Attack);
 
         float myHitPower =
             speed *
@@ -191,7 +191,7 @@ public class BeyCombat : MonoBehaviour
 
     private float GetEffectiveWeight(BeyData target, CombatTuning tuning)
     {
-        return target.Base.weight *
+        return target.Stats.Get(StatId.Weight) *
             Mathf.Lerp(
                 tuning.minWeightFactor,
                 tuning.maxWeightFactor,

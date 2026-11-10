@@ -1071,6 +1071,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - `ElementClaim` and `ElementStack`, with the Neutral base claim and `Explain`.
 - Route attack and weight through `StatBlock`. Add defense at 0. Route the element through `ElementStack` with only the Neutral base claim.
 - **Exit:** EditMode tests cover the formula, order independence, scope rules, stacking, expiry, claim priority, and claim removal. Golden unchanged.
+- **Status: complete.** `StatBlock` (base + Add/PercentAdd/Multiply, scoped ability stats, Refresh/Stack/Ignore, `Tick`, `RemoveBySource`, `Explain`) and `ElementStack` (`ElementClaim`, priority/sequence resolution, expiry, `Explain`). Attack and weight now resolve through `StatBlock`; defense is seeded at 0. `BeyStats.baseElement` installs the Neutral base claim in `BeyData.Elements`. EditMode 26/26 (14 new), PlayMode 4/4, golden unchanged.
 
 **Phase 4: Pure solver and impact rules**
 - `ImpactInput`, `ImpactResult`, `ImpactSolver`.

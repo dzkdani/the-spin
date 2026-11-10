@@ -24,6 +24,9 @@ public class BeyStats : ScriptableObject
     public float weight = 5f;
 
     public SpinDirection spinDirection = SpinDirection.Clockwise;
+
+    [Header("Identity")]
+    public ElementDefinition baseElement;
 }
 
 public enum SpinDirection
