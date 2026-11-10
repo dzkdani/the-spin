@@ -43,5 +43,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e1d1a2b3c4d5e6f708192a3b4c5d6e7f, type: 2}
   - {fileID: 11400000, guid: e2d2a2b3c4d5e6f708192a3b4c5d6e7f, type: 2}
   - {fileID: 11400000, guid: e3d3a2b3c4d5e6f708192a3b4c5d6e7f, type: 2}
+  - {fileID: 11400000, guid: f1a2b3c4d5e6f708192a3b4c5d6e7f80, type: 2}
+  - {fileID: 11400000, guid: f2b3c4d5e6f708192a3b4c5d6e7f8091, type: 2}
+  - {fileID: 11400000, guid: f3c4d5e6f708192a3b4c5d6e7f8091a2, type: 2}
+  - {fileID: 11400000, guid: f4d5e6f708192a3b4c5d6e7f8091a2b3, type: 2}
   combatTuning: {fileID: 11400000, guid: 1a2b3c4d5e6f47a8b9c0d1e2f3a4b5c6, type: 2}
   matchupTable: {fileID: 11400000, guid: 4d5e6f7a8b9c40d1e2f3a4b5c6d7e8f9, type: 2}

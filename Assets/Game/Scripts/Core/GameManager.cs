@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     private BeyData currentEnemy;
     private BeyData subscribedPlayer;
     private BattleController battle;
+    private bool playerBurst;
+    private bool enemyBurst;
 
     private void Awake()
     {
@@ -57,9 +59,14 @@ public class GameManager : MonoBehaviour
         subscribedPlayer = player.Data;
 
         battle = new BattleController();
+        battle.AddCondition(new BurstCondition(true));
+        battle.AddCondition(new BurstCondition(false));
         battle.AddCondition(new RpmDepletedCondition());
         battle.AddCondition(new RingOutCondition());
         battle.AddCondition(new EnemiesClearedCondition());
+
+        BattleEvents.ImpactPending -= OnImpactPending;
+        BattleEvents.ImpactPending += OnImpactPending;
 
         subscribedPlayer.OnRPMDepleted -= ResolveBattle;
         subscribedPlayer.OnRPMDepleted += ResolveBattle;
@@ -134,7 +141,9 @@ public class GameManager : MonoBehaviour
             player != null
                 ? (Vector2)player.transform.position
                 : Vector2.zero,
-            arenaRadius);
+            arenaRadius,
+            playerBurst,
+            enemyBurst);
 
         GameResult? result = battle.Evaluate(context);
 
@@ -148,10 +157,58 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        BattleEvents.ImpactPending -= OnImpactPending;
+
         if (subscribedPlayer != null)
             subscribedPlayer.OnRPMDepleted -= ResolveBattle;
 
         if (currentEnemy != null)
             currentEnemy.OnRPMDepleted -= EnemyDefeated;
+    }
+
+    private void OnImpactPending(ImpactEvent impact)
+    {
+        if (subscribedPlayer == null)
+            return;
+
+        if (impact.Defender == subscribedPlayer)
+        {
+            playerBurst |= IsBurst(
+                impact.Result.DamageToB,
+                subscribedPlayer);
+        }
+        else if (impact.Attacker == subscribedPlayer)
+        {
+            playerBurst |= IsBurst(
+                impact.Result.DamageToA,
+                subscribedPlayer);
+        }
+
+        if (currentEnemy != null)
+        {
+            if (impact.Defender == currentEnemy)
+            {
+                enemyBurst |= IsBurst(
+                    impact.Result.DamageToB,
+                    currentEnemy);
+            }
+            else if (impact.Attacker == currentEnemy)
+            {
+                enemyBurst |= IsBurst(
+                    impact.Result.DamageToA,
+                    currentEnemy);
+            }
+        }
+
+        if (playerBurst || enemyBurst)
+            ResolveBattle();
+    }
+
+    private static bool IsBurst(float damage, BeyData target)
+    {
+        return target != null &&
+            target.Base != null &&
+            target.Base.maxRPM > 0f &&
+            damage >= target.Base.maxRPM * 0.5f;
     }
 }

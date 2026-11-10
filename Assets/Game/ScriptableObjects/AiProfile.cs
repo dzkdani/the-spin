@@ -39,6 +39,8 @@ public class AiProfile : ContentDefinition
 
     public float retreatWeight = 1.2f;
 
+    public float activeWeight = 0.9f;
+
     [Header("Thresholds")]
     public float strikeRange = 4f;
 

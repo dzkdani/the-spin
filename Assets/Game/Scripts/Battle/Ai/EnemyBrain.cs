@@ -25,6 +25,7 @@ public sealed class EnemyBrain
             new ExploitElementBehavior(),
             new BaitBehavior(),
             new StrikeBehavior(),
+            new UseActiveBehavior(),
             new RetreatBehavior()
         };
     }

@@ -129,6 +129,71 @@ public class BattleFlowTests
             ProductionReflection.Property(condition, "Reason").ToString());
     }
 
+    [Test]
+    public void PlayerBurstLoses()
+    {
+        object condition = ProductionReflection.New("BurstCondition", true);
+
+        object context = ProductionReflection.New(
+            "BattleContext",
+            100f,
+            0,
+            4,
+            Vector2.zero,
+            8f,
+            true,
+            false);
+
+        Assert.IsTrue((bool)ProductionReflection.Call(
+            condition,
+            "IsSatisfied",
+            context));
+
+        Assert.AreEqual(
+            "Lose",
+            ProductionReflection.Property(condition, "Result").ToString());
+
+        Assert.AreEqual(
+            "Burst",
+            ProductionReflection.Property(condition, "Reason").ToString());
+    }
+
+    [Test]
+    public void EnemyBurstWins()
+    {
+        object condition = ProductionReflection.New("BurstCondition", false);
+
+        object context = ProductionReflection.New(
+            "BattleContext",
+            100f,
+            0,
+            4,
+            Vector2.zero,
+            8f,
+            false,
+            true);
+
+        Assert.IsTrue((bool)ProductionReflection.Call(
+            condition,
+            "IsSatisfied",
+            context));
+
+        Assert.AreEqual(
+            "Win",
+            ProductionReflection.Property(condition, "Result").ToString());
+    }
+
+    [Test]
+    public void NoBurstDoesNotFinish()
+    {
+        object condition = ProductionReflection.New("BurstCondition", false);
+
+        Assert.IsFalse((bool)ProductionReflection.Call(
+            condition,
+            "IsSatisfied",
+            Context(100f, 0, 4)));
+    }
+
     private static object Context(
         float playerRpm,
         int enemiesDefeated,

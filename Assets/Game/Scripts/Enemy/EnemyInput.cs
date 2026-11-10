@@ -12,7 +12,9 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
     public int ConsumeAbilityRequest()
     {
-        return -1;
+        int slot = abilityRequest;
+        abilityRequest = -1;
+        return slot;
     }
 
     public bool IsWindingUp => windUpTimer > 0f;
@@ -25,6 +27,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     private EnemyBrain brain;
     private float windUpTimer;
     private float dashCooldown;
+    private float abilityCooldown;
+    private int abilityRequest = -1;
 
     private void Awake()
     {
@@ -52,6 +56,7 @@ public class EnemyInput : MonoBehaviour, IBeyInput
         if (gate != null && !gate.CanReceiveGameplayInput)
         {
             DashRequested = false;
+            abilityRequest = -1;
             return;
         }
 
@@ -66,6 +71,14 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
         MoveTarget = command.MoveTarget;
         DashRequested = false;
+
+        abilityCooldown -= Time.deltaTime;
+
+        if (command.AbilitySlot >= 0 && abilityCooldown <= 0f)
+        {
+            abilityRequest = command.AbilitySlot;
+            abilityCooldown = 1.5f;
+        }
 
         dashCooldown -= Time.deltaTime;
 

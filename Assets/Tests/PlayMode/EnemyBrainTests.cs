@@ -51,6 +51,44 @@ public class EnemyBrainTests
             (bool)ProductionReflection.Field(second, "RequestDash"));
     }
 
+    [Test]
+    public void UseActiveRequestsWhenOpponentIsLow()
+    {
+        object profile = CreateProfile(0f, 0f);
+
+        object low = Decide(profile, CreateSnapshot(0.8f, 0.2f, 2f));
+        object high = Decide(profile, CreateSnapshot(0.8f, 0.9f, 2f));
+
+        Assert.AreEqual(
+            0,
+            (int)ProductionReflection.Field(low, "AbilitySlot"));
+
+        Assert.AreEqual(
+            -1,
+            (int)ProductionReflection.Field(high, "AbilitySlot"));
+    }
+
+    [Test]
+    public void AggressiveProfileDashesMoreInSimulation()
+    {
+        object aggressive = CreateProfile(5f, 1f);
+        object passive = CreateProfile(0f, 0f);
+
+        object aggressiveRun = ProductionReflection.CallStatic(
+            "AiSimulation", "Run", aggressive, 7, 40);
+
+        object passiveRun = ProductionReflection.CallStatic(
+            "AiSimulation", "Run", passive, 7, 40);
+
+        Assert.Greater(
+            (int)ProductionReflection.Field(aggressiveRun, "Dashes"),
+            (int)ProductionReflection.Field(passiveRun, "Dashes"));
+
+        Assert.Greater(
+            (int)ProductionReflection.Field(passiveRun, "AbilityRequests"),
+            0);
+    }
+
     private static object Decide(object profile, object snapshot, int seed = 7)
     {
         object random = ProductionReflection.New("SeededRandom", seed);
@@ -74,6 +112,7 @@ public class EnemyBrainTests
         ProductionReflection.SetField(profile, "retreatWeight", 2f);
         ProductionReflection.SetField(profile, "retreatRpm", 0.25f);
         ProductionReflection.SetField(profile, "strikeRange", 4f);
+        ProductionReflection.SetField(profile, "activeWeight", 0.9f);
 
         return profile;
     }
