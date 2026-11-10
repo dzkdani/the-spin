@@ -7,7 +7,9 @@ public class BeyCombat : MonoBehaviour
 
     [SerializeField]
     int chargedHits = 0;
-    
+
+    public bool HasCharge => chargedHits > 0;
+
     private bool IsCollisionOwner(BeyController other)
     {
         return data.GetInstanceID() <
@@ -37,19 +39,10 @@ public class BeyCombat : MonoBehaviour
         chargedHits += amount;
     }
 
-    public float ConsumeChargeBonus(float hitPower)
+    public void ConsumeCharge()
     {
-        return ApplyChargeBonus(hitPower);
-    }
-
-    private float ApplyChargeBonus(float hitPower)
-    {
-        if (chargedHits <= 0)
-            return hitPower;
-
-        chargedHits--;
-
-        return hitPower * ContentRegistry.Tuning.chargeMultiplier;
+        if (chargedHits > 0)
+            chargedHits--;
     }
 
     private void ResolveImpact(BeyController other, Collision2D collision)
@@ -62,98 +55,89 @@ public class BeyCombat : MonoBehaviour
 
         CombatTuning tuning = ContentRegistry.Tuning;
 
-        float speed =
-            collision.relativeVelocity.magnitude;
-
-        float myRPM =
-            data.RPMNormalized;
-
-        float enemyRPM =
-            other.Data.RPMNormalized;
-
-        float myAttack =
-            data.Stats.Get(StatId.Attack);
-
-        float enemyAttack =
-            other.Data.Stats.Get(StatId.Attack);
-
-        float myHitPower =
-            speed *
-            myAttack *
-            Mathf.Lerp(tuning.minRpmPower, tuning.maxRpmPower, myRPM);
-
-        myHitPower =
-            ApplyChargeBonus(myHitPower);
-
-        float enemyHitPower =
-            speed *
-            enemyAttack *
-            Mathf.Lerp(tuning.minRpmPower, tuning.maxRpmPower, enemyRPM);
-
-        enemyHitPower = other.Combat != null
-            ? other.Combat.ConsumeChargeBonus(enemyHitPower)
-            : enemyHitPower;
-
-        bool oppositeSpin =
-            data.Base.spinDirection !=
-            other.Data.Base.spinDirection;
-
-        if (oppositeSpin)
+        ImpactInput input = new ImpactInput
         {
-            myHitPower *= tuning.oppositeSpinMultiplier;
-            enemyHitPower *= tuning.oppositeSpinMultiplier;
-        }
+            Speed = collision.relativeVelocity.magnitude,
+            RpmA = data.RPMNormalized,
+            RpmB = other.Data.RPMNormalized,
+            StatsA = data.Stats,
+            StatsB = other.Data.Stats,
+            ElementA = data.Elements.Current,
+            ElementB = other.Data.Elements.Current,
+            Matchups = ContentRegistry.Matchups,
+            OppositeSpin =
+                data.Base.spinDirection !=
+                other.Data.Base.spinDirection,
+            Normal = GetNormal(other, collision),
+            Now = Time.time,
+            Tuning = tuning
+        };
 
-        float myWeight =
-            GetEffectiveWeight(data, tuning);
+        if (chargedHits > 0)
+            input.PendingA.Add(CreateChargeMod(tuning));
 
-        float enemyWeight =
-            GetEffectiveWeight(other.Data, tuning);
+        if (other.Combat != null && other.Combat.HasCharge)
+            input.PendingB.Add(CreateChargeMod(tuning));
 
-        Vector2 pushDir =
-            (other.transform.position -
-            transform.position).normalized;
+        ImpactResult result = ImpactSolver.Resolve(input);
 
-        // Knockback
-
-        other.Physics.Rigidbody.AddForce(
-            pushDir *
-            (myHitPower / enemyWeight),
-            ForceMode2D.Impulse);
+        data.ReduceRPM(result.DamageToA);
+        other.Data.ReduceRPM(result.DamageToB);
 
         physics.Rigidbody.AddForce(
-            -pushDir *
-            (enemyHitPower / myWeight),
+            result.ImpulseOnA,
             ForceMode2D.Impulse);
 
-        // RPM Damage
+        other.Physics.Rigidbody.AddForce(
+            result.ImpulseOnB,
+            ForceMode2D.Impulse);
 
-        float damageToEnemy =
-            myHitPower * tuning.damageMultiplier;
+        if (result.PendingModsUsedA.Count > 0)
+            ConsumeCharge();
 
-        float damageToMe =
-            enemyHitPower * tuning.damageMultiplier;
+        if (result.PendingModsUsedB.Count > 0 &&
+            other.Combat != null)
+        {
+            other.Combat.ConsumeCharge();
+        }
 
-        other.Data.ReduceRPM(
-            damageToEnemy);
-
-        data.ReduceRPM(
-            damageToMe);
-
-        ResolveEffect(speed, collision);
+        ResolveEffect(result.Intensity, collision);
     }
 
-    private void ResolveEffect(float speed, Collision2D collision)
+    private static PendingImpactMod CreateChargeMod(CombatTuning tuning)
+    {
+        return new PendingImpactMod(
+            "charge",
+            tuning.chargeMultiplier,
+            1,
+            float.PositiveInfinity);
+    }
+
+    private Vector2 GetNormal(BeyController other, Collision2D collision)
+    {
+        if (collision.contactCount > 0)
+            return -collision.GetContact(0).normal;
+
+        Vector2 delta =
+            other.transform.position -
+            transform.position;
+
+        return delta.sqrMagnitude > 0.0001f
+            ? delta.normalized
+            : Vector2.right;
+    }
+
+    private void ResolveEffect(float intensity, Collision2D collision)
     {
         CombatTuning tuning = ContentRegistry.Tuning;
 
         ServiceLocator.Get<SFXPlayer>()?.PlayHit();
 
         ServiceLocator.Get<CameraShake>()?.Shake(
-            Mathf.Clamp(
-                speed * tuning.shakePerSpeed,
+            Mathf.Lerp(
                 tuning.shakeMin,
-                tuning.shakeMax));
+                tuning.shakeMax,
+                intensity));
 
         if (collision.contactCount == 0)
             return;
@@ -172,29 +156,20 @@ public class BeyCombat : MonoBehaviour
         if (!IsCollisionOwner(other))
             return;
 
-        float rpmDifference =
-            Mathf.Abs(
-                data.CurrentRPM -
-                other.Data.CurrentRPM);
+        CombatTuning tuning = ContentRegistry.Tuning;
 
-        float grindDamage =
-            rpmDifference *
-            ContentRegistry.Tuning.grindRate *
-            Time.fixedDeltaTime;
+        GrindSolver.Result result = GrindSolver.Resolve(
+            data.CurrentRPM,
+            other.Data.CurrentRPM,
+            data.Base.maxRPM,
+            other.Data.Base.maxRPM,
+            data.RPMNormalized,
+            other.Data.RPMNormalized,
+            tuning.grindMode,
+            tuning.grindRate,
+            Time.fixedDeltaTime);
 
-        data.ReduceRPM(
-            grindDamage);
-
-        other.Data.ReduceRPM(
-            grindDamage);
-    }
-
-    private float GetEffectiveWeight(BeyData target, CombatTuning tuning)
-    {
-        return target.Stats.Get(StatId.Weight) *
-            Mathf.Lerp(
-                tuning.minWeightFactor,
-                tuning.maxWeightFactor,
-                target.RPMNormalized);
+        data.ReduceRPM(result.DamageA);
+        other.Data.ReduceRPM(result.DamageB);
     }
 }

@@ -11,9 +11,9 @@ public class BattleGoldenTests
     // Captured from the pre-rework combat code at battle-rework-baseline.
     // Phase 1 must change only the documented entries in battle system.md §23.
     private const string Expected =
-        "equal dmgA=320.00 dmgB=320.00 velA=-21.33,0.00 velB=21.33,0.00 | " +
-        "opposite dmgA=480.00 dmgB=480.00 velA=-32.00,0.00 velB=32.00,0.00 | " +
-        "charged dmgA=560.00 dmgB=560.00 velA=-37.33,0.00 velB=37.33,0.00";
+        "equal dmgA=320.00 dmgB=320.00 velA=-12.00,0.00 velB=12.00,0.00 | " +
+        "opposite dmgA=480.00 dmgB=480.00 velA=-12.00,0.00 velB=12.00,0.00 | " +
+        "charged dmgA=560.00 dmgB=560.00 velA=-12.00,0.00 velB=12.00,0.00";
 
     [UnityTest]
     public IEnumerator ScriptedCollisionsMatchGolden()

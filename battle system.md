@@ -889,14 +889,14 @@ public struct PendingImpactMod
 - **Knockback** uses the contact normal from the contact point, with center-to-center as the fallback. It's clamped to `maxKnockback` (D3).
 - Self-costs skip the whole pipeline and call `DrainRpm` directly (§6).
 
-### 14.4 Grind (Decision Needed)
+### 14.4 Grind (Option B chosen)
 
 | Option | Behavior | Trade-off |
 |---|---|---|
-| **A. Symmetric (default)** | Both beys take damage from the normalized RPM gap. Rate in tuning. | Keeps v1 intent. Equal-RPM grinds still do nothing. |
-| **B. Damage scales with own RPM** | Each bey takes grind damage proportional to its own normalized RPM. | Faster spinners lose more while grinding. Makes spin management matter. |
+| **A. Symmetric** | Both beys take damage from the normalized RPM gap. Rate in tuning. | Keeps v1 intent. Equal-RPM grinds still do nothing. |
+| **B. Damage scales with own RPM (chosen)** | Each bey takes grind damage proportional to its own normalized RPM. | Faster spinners lose more while grinding. Makes spin management matter. |
 
-Default to A unless the design wants spin-management tension. Decision needed before Phase 4.
+**Chosen: B.** `GrindSolver` computes `normalized × maxRPM × rate × deltaTime` per bey; `CombatTuning.grindMode` selects B. Option A remains implemented for comparison.
 
 **v4 note.** Whatever the choice, the formula must use normalized RPM, not raw RPM (D7). Current code `|rpmA − rpmB| × 0.001 × fixedDeltaTime` is chassis-`maxRPM`-dependent.
 
@@ -1079,6 +1079,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Mitigation at defense 0 (no change). Knockback uses the contact normal and is clamped.
 - Apply the grind decision (§14.4), using normalized RPM (D7).
 - **Exit:** EditMode tests pass. The golden diff contains only documented changes.
+- **Status: complete.** `ImpactInput`/`ImpactResult`/`ImpactSolver` with ordered rules (`BaseHitPower` 100, `Matchup` 200, `Spin` 300, `PendingImpact` 400). Final stages add defense mitigation (`K/(K+Defense)`), contact-normal knockback clamped to `maxKnockback`, and intensity. `GrindSolver` implements Option B (own normalized RPM) with Option A retained; `CombatTuning.grindMode = 1`. Charge is expressed as a `PendingImpactMod` with source `charge`. Golden diff: knockback clamp only — damages unchanged, velocities now `±12`.
 
 **Phase 5: Events and presentation**
 - `BattleEvents` for `ImpactPending`, `ImpactResolved`, `DashStarted`, `DashEnded`, `RpmChanged`, `AbilityActivated`, `CastComplete`.
@@ -1197,7 +1198,7 @@ Defaults are in brackets. Each one should be answered before the phase that depe
 15. Aura evaluation interval. [0.1 s.] *(Phase 7)*
 16. Defense constant `K`. [40.] *(Phase 3)*
 17. Pending impact cap. [3.] *(Phase 4)*
-18. Grind: Option A or B (§14.4). *(Phase 4)*
+18. Grind: Option A or B (§14.4). **Resolved: Option B.** *(Phase 4)*
 
 **Verify in code — resolved at `63a0a0e`**
 
@@ -1246,7 +1247,7 @@ Fill in as each phase lands.
 | 2 | Neutral becomes element index 0 | §11.3 |
 | 3 | Element resolves through claims, with Neutral as the floor. Golden unchanged. | §8.5 |
 | 4 | Knockback uses the contact normal and is clamped | Fixes D3 |
-| 4 | Grind uses normalized RPM and follows §14.4 | Fixes D1, D7 |
+| 4 | Grind uses Option B (own normalized RPM) | Fixes D1, D7 |
 | 6b | Type profiles, element ring, and neutral rules take effect | §10, §11 |
 | 7 | Auras, scoped skill stats, ability sources. Charge Strike replaces charges. | §12 |
 | 8a | Parts take effect: stats and element claims | §13 |

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public sealed class StatBlock
+public sealed class StatBlock : IStatView
 {
     private readonly Dictionary<StatId, float> baseValues =
         new Dictionary<StatId, float>();

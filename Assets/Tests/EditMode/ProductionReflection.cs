@@ -58,6 +58,14 @@ public static class ProductionReflection
             .GetValue(instance);
     }
 
+    public static void SetField(object instance, string fieldName, object value)
+    {
+        instance
+            .GetType()
+            .GetField(fieldName)
+            .SetValue(instance, value);
+    }
+
     private static object Invoke(
         Type type,
         object instance,

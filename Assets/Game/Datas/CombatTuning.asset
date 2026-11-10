@@ -19,7 +19,7 @@ MonoBehaviour:
   chargeMultiplier: 1.75
   minWeightFactor: 0.5
   maxWeightFactor: 1.5
-  grindMode: 0
+  grindMode: 1
   grindRate: 0.001
   shakePerSpeed: 0.02
   shakeMin: 0.05
