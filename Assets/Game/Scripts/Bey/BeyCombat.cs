@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BeyCombat : MonoBehaviour
 {
     BeyData data;
     BeyPhysics physics;
+
+    private readonly List<PendingImpactMod> pendingMods =
+        new List<PendingImpactMod>();
 
     [SerializeField]
     int chargedHits = 0;
@@ -79,6 +83,11 @@ public class BeyCombat : MonoBehaviour
         if (other.Combat != null && other.Combat.HasCharge)
             input.PendingB.Add(CreateChargeMod(tuning));
 
+        CollectPending(input.PendingA, Time.time);
+
+        if (other.Combat != null)
+            other.Combat.CollectPending(input.PendingB, Time.time);
+
         ImpactResult result = ImpactSolver.Resolve(input);
 
         Vector2 point = GetPoint(collision);
@@ -89,7 +98,14 @@ public class BeyCombat : MonoBehaviour
             result.Intensity);
 
         BattleEvents.RaiseImpactPending(
-            new ImpactEvent(data, other.Data, result, point, shake));
+            new ImpactEvent(
+                data,
+                other.Data,
+                result,
+                point,
+                shake,
+                input.Speed,
+                input.OppositeSpin));
 
         data.ReduceRPM(result.DamageToA);
         other.Data.ReduceRPM(result.DamageToB);
@@ -102,17 +118,88 @@ public class BeyCombat : MonoBehaviour
             result.ImpulseOnB,
             ForceMode2D.Impulse);
 
-        if (result.PendingModsUsedA.Count > 0)
-            ConsumeCharge();
+        ConsumePending(result.PendingModsUsedA);
 
-        if (result.PendingModsUsedB.Count > 0 &&
-            other.Combat != null)
-        {
-            other.Combat.ConsumeCharge();
-        }
+        if (other.Combat != null)
+            other.Combat.ConsumePending(result.PendingModsUsedB);
 
         BattleEvents.RaiseImpactResolved(
-            new ImpactEvent(data, other.Data, result, point, shake));
+            new ImpactEvent(
+                data,
+                other.Data,
+                result,
+                point,
+                shake,
+                input.Speed,
+                input.OppositeSpin));
+    }
+
+    public void AddPendingImpact(PendingImpactMod mod)
+    {
+        pendingMods.Add(mod);
+    }
+
+    public void RemovePendingBySource(string sourceId)
+    {
+        pendingMods.RemoveAll(mod => mod.SourceId == sourceId);
+    }
+
+    public void TickPending(float now)
+    {
+        pendingMods.RemoveAll(mod => now >= mod.ExpiresAt);
+    }
+
+    public void CollectPending(
+        List<PendingImpactMod> target,
+        float now)
+    {
+        for (int i = 0; i < pendingMods.Count; i++)
+        {
+            PendingImpactMod mod = pendingMods[i];
+
+            if (mod.Remaining <= 0 || now >= mod.ExpiresAt)
+                continue;
+
+            target.Add(mod);
+        }
+    }
+
+    public void ConsumePending(List<string> used)
+    {
+        if (used == null)
+            return;
+
+        for (int i = 0; i < used.Count; i++)
+        {
+            string sourceId = used[i];
+
+            if (sourceId == "charge")
+            {
+                ConsumeCharge();
+                continue;
+            }
+
+            int index = pendingMods.FindIndex(
+                mod => mod.SourceId == sourceId);
+
+            if (index < 0)
+                continue;
+
+            PendingImpactMod mod = pendingMods[index];
+
+            if (mod.Remaining <= 1)
+            {
+                pendingMods.RemoveAt(index);
+            }
+            else
+            {
+                pendingMods[index] = new PendingImpactMod(
+                    mod.SourceId,
+                    mod.Multiplier,
+                    mod.Remaining - 1,
+                    mod.ExpiresAt);
+            }
+        }
     }
 
     private static PendingImpactMod CreateChargeMod(CombatTuning tuning)

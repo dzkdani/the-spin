@@ -5,6 +5,8 @@ public sealed class ElementStack
     private readonly List<ElementClaim> claims =
         new List<ElementClaim>();
 
+    private long sequence;
+
     public ElementDefinition Current
     {
         get
@@ -35,6 +37,20 @@ public sealed class ElementStack
     public void Add(ElementClaim claim)
     {
         claims.Add(claim);
+    }
+
+    public void Add(
+        ElementDefinition element,
+        int priority,
+        string sourceId,
+        float expiresAt)
+    {
+        claims.Add(new ElementClaim(
+            element,
+            priority,
+            sourceId,
+            expiresAt,
+            ++sequence));
     }
 
     public void RemoveBySource(string sourceId)

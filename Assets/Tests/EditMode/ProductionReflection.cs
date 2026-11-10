@@ -35,6 +35,17 @@ public static class ProductionReflection
         return Invoke(TypeOf(typeName), null, methodName, args);
     }
 
+    public static object CallPrivate(object instance, string methodName, params object[] args)
+    {
+        MethodInfo method = instance
+            .GetType()
+            .GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+
+        Assert.IsNotNull(method, $"{instance.GetType().Name}.{methodName} must exist.");
+
+        return method.Invoke(instance, args);
+    }
+
     public static object Property(object instance, string propertyName)
     {
         return instance
@@ -54,7 +65,7 @@ public static class ProductionReflection
     {
         return instance
             .GetType()
-            .GetField(fieldName)
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
             .GetValue(instance);
     }
 
@@ -62,7 +73,7 @@ public static class ProductionReflection
     {
         instance
             .GetType()
-            .GetField(fieldName)
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
             .SetValue(instance, value);
     }
 

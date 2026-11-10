@@ -39,6 +39,9 @@ public class BeyData : MonoBehaviour
         Stats.SetBase(StatId.RpmDecay, 1f);
         Stats.SetBase(StatId.MatchupScale, 1f);
         Stats.SetBase(StatId.TipFriction, 1f);
+        Stats.SetBase(StatId.AbilityCost, 1f);
+        Stats.SetBase(StatId.AbilityCooldown, 1f);
+        Stats.SetBase(StatId.AbilityPower, 1f);
 
         if (Base.type != null)
             Base.type.ApplyTo(Stats, 0f);

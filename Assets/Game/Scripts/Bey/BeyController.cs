@@ -11,6 +11,8 @@ public class BeyController : MonoBehaviour
     public BeyVisual Visual { get; private set; }
     public IBeyInput Input { get; private set; }
 
+    private AbilityRunner abilityRunner;
+
     private void Awake()
     {
         Data = GetComponent<BeyData>();
@@ -18,6 +20,7 @@ public class BeyController : MonoBehaviour
         Combat = GetComponent<BeyCombat>();
         Input = GetComponent<IBeyInput>();
         Visual = GetComponentInChildren<BeyVisual>();
+        abilityRunner = GetComponent<AbilityRunner>();
 
         if (Data == null || Physics == null || Combat == null || Input == null || Visual == null)
         {
@@ -39,6 +42,11 @@ public class BeyController : MonoBehaviour
         Physics.Initialize(Data, Input);
         Combat.Initialize(Data, Physics);
         Visual.Initialize(Data);
+
+        if (abilityRunner == null)
+            abilityRunner = gameObject.AddComponent<AbilityRunner>();
+
+        abilityRunner.Initialize(Data, Physics, Combat, Input);
     }
 
     private void Update()

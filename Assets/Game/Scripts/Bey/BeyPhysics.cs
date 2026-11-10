@@ -14,6 +14,8 @@ public class BeyPhysics : MonoBehaviour
 
     private float dashTimer;
 
+    public bool IsDashing => dashTimer > 0f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -89,11 +91,16 @@ public class BeyPhysics : MonoBehaviour
 
     public bool Dash(Vector2 direction)
     {
+        return Dash(direction, 1f);
+    }
+
+    public bool Dash(Vector2 direction, float power)
+    {
         if (data.CurrentRPM < data.Base.dashRPMCost)
             return false;
 
         rb.AddForce(
-            direction.normalized * data.Base.dashImpulse,
+            direction.normalized * data.Base.dashImpulse * power,
             ForceMode2D.Impulse);
 
         dashTimer = 0.2f;
