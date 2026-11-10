@@ -1091,6 +1091,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Phase 6: Types and elements**
 - **6a:** Infrastructure with neutral defaults. Empty type profiles, empty matrix. Golden unchanged.
+- **6a status: complete.** `BeyTypeDefinition.ApplyTo` installs `type:<id>` modifiers; identity `Atk`/`Def`/`Bal` assets exist (unassigned). Multiplicative baselines seeded (`RpmDecay`, `MatchupScale`, `TipFriction` = 1). Golden unchanged.
 - **6b:** Populate the type profiles (§10), innate passives, the ring (§11.2), and the matchup values. Golden changes, documented.
 - Validator rules for Neutral (§11.3) and matchup entries (§9.4).
 - **Exit (6b):** the matchup and type simulations run (§20.4). Every reference build is inside the balance band.

@@ -26,6 +26,8 @@ public class BeyStats : ScriptableObject
     public SpinDirection spinDirection = SpinDirection.Clockwise;
 
     [Header("Identity")]
+    public BeyTypeDefinition type;
+
     public ElementDefinition baseElement;
 }
 

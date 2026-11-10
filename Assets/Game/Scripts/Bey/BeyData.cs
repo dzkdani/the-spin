@@ -36,6 +36,12 @@ public class BeyData : MonoBehaviour
         Stats.SetBase(StatId.Attack, Base.attack);
         Stats.SetBase(StatId.Weight, Base.weight);
         Stats.SetBase(StatId.Defense, 0f);
+        Stats.SetBase(StatId.RpmDecay, 1f);
+        Stats.SetBase(StatId.MatchupScale, 1f);
+        Stats.SetBase(StatId.TipFriction, 1f);
+
+        if (Base.type != null)
+            Base.type.ApplyTo(Stats, 0f);
 
         if (Base.baseElement != null)
         {

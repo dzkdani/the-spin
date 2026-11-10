@@ -16,4 +16,57 @@ public class BeyTypeDefinition : ContentDefinition
 
     [Header("Innate")]
     public string innatePassiveId;
+
+    public void ApplyTo(StatBlock stats, float now)
+    {
+        string source = "type:" + id;
+
+        stats.Add(
+            new StatModifier(
+                StatId.Attack,
+                ModOp.Multiply,
+                attackMultiplier,
+                source,
+                null,
+                float.PositiveInfinity,
+                StackPolicy.Refresh,
+                1),
+            now);
+
+        stats.Add(
+            new StatModifier(
+                StatId.Defense,
+                ModOp.Add,
+                defenseFlat,
+                source,
+                null,
+                float.PositiveInfinity,
+                StackPolicy.Refresh,
+                1),
+            now);
+
+        stats.Add(
+            new StatModifier(
+                StatId.Weight,
+                ModOp.Multiply,
+                weightMultiplier,
+                source,
+                null,
+                float.PositiveInfinity,
+                StackPolicy.Refresh,
+                1),
+            now);
+
+        stats.Add(
+            new StatModifier(
+                StatId.RpmDecay,
+                ModOp.Multiply,
+                rpmDecayMultiplier,
+                source,
+                null,
+                float.PositiveInfinity,
+                StackPolicy.Refresh,
+                1),
+            now);
+    }
 }
