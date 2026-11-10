@@ -2,6 +2,11 @@ using UnityEngine;
 
 public static class BalanceSimulator
 {
+    private const float DashChance = 0.15f;
+    private const float ContactMin = 0.85f;
+    private const float ContactMax = 1.15f;
+    private const float StepSeconds = 0.25f;
+
     public readonly struct Result
     {
         public readonly int WinsA;
@@ -33,10 +38,16 @@ public static class BalanceSimulator
 
             float rpmA = a.MaxRpm;
             float rpmB = b.MaxRpm;
+            float now = 0f;
             int steps = 0;
+
+            bool oppositeSpin = random.Value() < 0.5f;
 
             while (rpmA > 0f && rpmB > 0f && steps < 200)
             {
+                bool dashingA = random.Value() < DashChance;
+                bool dashingB = random.Value() < DashChance;
+
                 ImpactInput input = new ImpactInput
                 {
                     Speed = random.Range(8f, 16f),
@@ -47,16 +58,57 @@ public static class BalanceSimulator
                     ElementA = a.Element,
                     ElementB = b.Element,
                     Matchups = matchups,
-                    OppositeSpin = random.Value() < 0.5f,
+                    OppositeSpin = oppositeSpin,
+                    DashingA = dashingA,
+                    DashingB = dashingB,
                     Normal = Vector2.right,
-                    Now = 0f,
+                    Now = now,
                     Tuning = tuning
                 };
 
+                input.PendingA.Add(new PendingImpactMod(
+                    "contact",
+                    random.Range(ContactMin, ContactMax),
+                    1,
+                    now + StepSeconds));
+
+                input.PendingB.Add(new PendingImpactMod(
+                    "contact",
+                    random.Range(ContactMin, ContactMax),
+                    1,
+                    now + StepSeconds));
+
+                if (dashingA)
+                {
+                    BalanceInnates.AddDashPending(
+                        a,
+                        input.PendingA,
+                        a.Stats.Get(StatId.AbilityPower),
+                        now);
+                }
+
+                if (dashingB)
+                {
+                    BalanceInnates.AddDashPending(
+                        b,
+                        input.PendingB,
+                        b.Stats.Get(StatId.AbilityPower),
+                        now);
+                }
+
                 ImpactResult result = ImpactSolver.Resolve(input);
 
-                rpmA -= result.DamageToA;
-                rpmB -= result.DamageToB;
+                rpmA = Mathf.Clamp(
+                    rpmA - result.DamageToA + result.RpmGainA,
+                    0f,
+                    a.MaxRpm);
+
+                rpmB = Mathf.Clamp(
+                    rpmB - result.DamageToB + result.RpmGainB,
+                    0f,
+                    b.MaxRpm);
+
+                now += StepSeconds;
                 steps++;
             }
 

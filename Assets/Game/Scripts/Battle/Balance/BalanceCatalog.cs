@@ -27,14 +27,24 @@ public static class BalanceCatalog
                 stats.SetBase(StatId.RpmDecay, 1f);
                 stats.SetBase(StatId.MatchupScale, 1f);
                 stats.SetBase(StatId.TipFriction, 1f);
+                stats.SetBase(StatId.AbilityPower, 1f);
 
                 types[t].ApplyTo(stats, 0f);
 
-                builds.Add(new BalanceBuild(
+                AbilityDefinition innate =
+                    ContentRegistry.Get<AbilityDefinition>(
+                        types[t].innatePassiveId);
+
+                BalanceBuild build = new BalanceBuild(
                     types[t].id + "_" + elements[e].id,
                     stats,
                     3000f,
-                    elements[e]));
+                    elements[e],
+                    innate);
+
+                BalanceInnates.Apply(build, 0f);
+
+                builds.Add(build);
             }
         }
 

@@ -65,6 +65,26 @@ public class StatBlockTests
     }
 
     [Test]
+    public void EmptyScopeOnNonScopedStatIsTreatedAsNull()
+    {
+        object stats = ProductionReflection.New("StatBlock");
+        SetBase(stats, "Defense", 20f);
+
+        AddModifier(
+            stats,
+            "Defense",
+            "PercentAdd",
+            0.1f,
+            "innate:hard_shell",
+            string.Empty,
+            float.PositiveInfinity,
+            "Refresh",
+            1);
+
+        Assert.AreEqual(22f, Get(stats, "Defense"), 0.0001f);
+    }
+
+    [Test]
     public void RefreshStackingResetsTimerWithoutStacking()
     {
         object stats = ProductionReflection.New("StatBlock");

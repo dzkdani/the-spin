@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 
 public class ImpactRuleTests
@@ -14,6 +15,30 @@ public class ImpactRuleTests
 
         Assert.AreEqual(10f, (float)ProductionReflection.Field(state, "StealToA"), 0.0001f);
         Assert.AreEqual(10f, (float)ProductionReflection.Field(state, "StealToB"), 0.0001f);
+    }
+
+    [Test]
+    public void MatchupScaleSoftensAdvantageAndDisadvantage()
+    {
+        object pyre = Load("Assets/Game/Datas/Pyre.asset");
+        object crye = Load("Assets/Game/Datas/Crye.asset");
+        object table = Load("Assets/Game/Datas/MatchupTable.asset");
+
+        object input = ProductionReflection.New("ImpactInput");
+
+        ProductionReflection.SetField(input, "ElementA", pyre);
+        ProductionReflection.SetField(input, "ElementB", crye);
+        ProductionReflection.SetField(input, "Matchups", table);
+        ProductionReflection.SetField(input, "StatsA", Stats(0.6f));
+        ProductionReflection.SetField(input, "StatsB", Stats(1f));
+
+        object state = State();
+        object rule = ProductionReflection.New("MatchupRule");
+
+        ProductionReflection.Call(rule, "Apply", state, input);
+
+        Assert.AreEqual(115f, Read(state, "PowerA"), 0.0001f);
+        Assert.AreEqual(80f, Read(state, "PowerB"), 0.0001f);
     }
 
     [Test]
@@ -53,6 +78,30 @@ public class ImpactRuleTests
 
         Assert.AreEqual(150f, Read(state, "PowerA"), 0.0001f);
         Assert.AreEqual(150f, Read(state, "PowerB"), 0.0001f);
+    }
+
+    private static object Stats(float matchupScale)
+    {
+        object stats = ProductionReflection.New("StatBlock");
+
+        ProductionReflection.Call(
+            stats,
+            "SetBase",
+            ProductionReflection.EnumValue("StatId", "MatchupScale"),
+            matchupScale);
+
+        return stats;
+    }
+
+    private static object Load(string path)
+    {
+        object asset = AssetDatabase.LoadAssetAtPath(
+            path,
+            typeof(ScriptableObject));
+
+        Assert.IsNotNull(asset, $"Missing asset: {path}");
+
+        return asset;
     }
 
     private static object State()

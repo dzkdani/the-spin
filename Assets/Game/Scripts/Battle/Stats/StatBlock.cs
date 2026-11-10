@@ -30,12 +30,24 @@ public sealed class StatBlock : IStatView
 
     public void Add(StatModifier modifier, float now)
     {
-        if (!string.IsNullOrEmpty(modifier.Scope) &&
-            !IsScopedStat(modifier.Stat))
+        if (!IsScopedStat(modifier.Stat))
         {
-            throw new ArgumentException(
-                $"{modifier.Stat} does not accept a scope.",
-                nameof(modifier));
+            if (!string.IsNullOrEmpty(modifier.Scope))
+            {
+                throw new ArgumentException(
+                    $"{modifier.Stat} does not accept a scope.",
+                    nameof(modifier));
+            }
+
+            modifier = new StatModifier(
+                modifier.Stat,
+                modifier.Op,
+                modifier.Value,
+                modifier.SourceId,
+                null,
+                modifier.ExpiresAt,
+                modifier.Stacking,
+                modifier.MaxStacks);
         }
 
         switch (modifier.Stacking)

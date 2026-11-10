@@ -35,21 +35,29 @@ public sealed class BalanceMatrix
 
         for (int a = 0; a < count; a++)
         {
-            for (int b = 0; b < count; b++)
+            for (int b = a + 1; b < count; b++)
             {
-                if (a == b)
-                    continue;
-
-                BalanceSimulator.Result result = BalanceSimulator.Run(
+                BalanceSimulator.Result forward = BalanceSimulator.Run(
                     builds[a],
                     builds[b],
                     seeds,
                     matchups,
                     tuning);
 
-                wins[a, b] = result.WinsA;
-                losses[a, b] = result.WinsB;
-                draws[a, b] = result.Draws;
+                BalanceSimulator.Result reverse = BalanceSimulator.Run(
+                    builds[b],
+                    builds[a],
+                    seeds,
+                    matchups,
+                    tuning);
+
+                wins[a, b] = forward.WinsA + reverse.WinsB;
+                losses[a, b] = forward.WinsB + reverse.WinsA;
+                draws[a, b] = forward.Draws + reverse.Draws;
+
+                wins[b, a] = losses[a, b];
+                losses[b, a] = wins[a, b];
+                draws[b, a] = draws[a, b];
             }
         }
 

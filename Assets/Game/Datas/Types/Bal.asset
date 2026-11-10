@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BeyTypeDefinition
   id: bal
   displayName: BAL
-  attackMultiplier: 1
+  attackMultiplier: 1.065
   defenseFlat: 8
   weightMultiplier: 1
   rpmDecayMultiplier: 1

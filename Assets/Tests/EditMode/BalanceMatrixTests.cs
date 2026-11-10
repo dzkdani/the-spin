@@ -17,20 +17,7 @@ public class BalanceMatrixTests
     [Test]
     public void ReferenceCatalogHasEighteenBuilds()
     {
-        object manifest = AssetDatabase.LoadAssetAtPath(
-            "Assets/Game/Datas/ContentManifest.asset",
-            typeof(ScriptableObject));
-
-        Assert.IsNotNull(manifest);
-
-        ProductionReflection.CallStatic(
-            "ContentRegistry",
-            "Initialize",
-            manifest);
-
-        IEnumerable builds = (IEnumerable)ProductionReflection.CallStatic(
-            "BalanceCatalog",
-            "CreateReferenceBuilds");
+        IEnumerable builds = LoadCatalog();
 
         List<string> ids = new List<string>();
 
@@ -42,6 +29,32 @@ public class BalanceMatrixTests
         CollectionAssert.Contains(ids, "bal_pyre");
         CollectionAssert.Contains(ids, "def_sparke");
         Assert.AreEqual(ids.Count, ids.Distinct().Count());
+    }
+
+    [Test]
+    public void ReferenceBuildsInstallInnatePassives()
+    {
+        List<object> builds = LoadCatalog().Cast<object>().ToList();
+
+        object atk = Find(builds, "atk_pyre");
+        object bal = Find(builds, "bal_pyre");
+        object def = Find(builds, "def_pyre");
+
+        Assert.AreEqual(
+            "surge_strike",
+            (string)ProductionReflection.Field(
+                ProductionReflection.Field(atk, "Innate"),
+                "id"));
+
+        Assert.AreEqual(
+            0.6f,
+            GetStat(bal, "MatchupScale"),
+            0.0001f);
+
+        Assert.AreEqual(
+            22f,
+            GetStat(def, "Defense"),
+            0.0001f);
     }
 
     [Test]
@@ -77,6 +90,48 @@ public class BalanceMatrixTests
 
         Assert.IsTrue(flagged.Any(entry => entry.StartsWith("strong")));
         Assert.IsTrue(flagged.Any(entry => entry.StartsWith("weak")));
+    }
+
+    private static IEnumerable LoadCatalog()
+    {
+        object manifest = AssetDatabase.LoadAssetAtPath(
+            "Assets/Game/Datas/ContentManifest.asset",
+            typeof(ScriptableObject));
+
+        Assert.IsNotNull(manifest);
+
+        ProductionReflection.CallStatic(
+            "ContentRegistry",
+            "Initialize",
+            manifest);
+
+        return (IEnumerable)ProductionReflection.CallStatic(
+            "BalanceCatalog",
+            "CreateReferenceBuilds");
+    }
+
+    private static object Find(List<object> builds, string id)
+    {
+        for (int i = 0; i < builds.Count; i++)
+        {
+            if ((string)ProductionReflection.Field(builds[i], "Id") == id)
+                return builds[i];
+        }
+
+        Assert.Fail($"Missing reference build: {id}");
+
+        return null;
+    }
+
+    private static float GetStat(object build, string stat)
+    {
+        object stats = ProductionReflection.Field(build, "Stats");
+
+        return (float)ProductionReflection.Call(
+            stats,
+            "Get",
+            ProductionReflection.EnumValue("StatId", stat),
+            null);
     }
 
     private static object RunMatrix()

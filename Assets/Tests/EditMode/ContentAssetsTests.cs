@@ -29,9 +29,11 @@ public class ContentAssetsTests
 
         Assert.AreEqual(20f, (float)ProductionReflection.Field(def, "defenseFlat"), 0.0001f);
         Assert.AreEqual(1.2f, (float)ProductionReflection.Field(def, "weightMultiplier"), 0.0001f);
+        Assert.AreEqual(0.81f, (float)ProductionReflection.Field(def, "attackMultiplier"), 0.0001f);
         Assert.AreEqual("hard_shell", (string)ProductionReflection.Field(def, "innatePassiveId"));
 
         Assert.AreEqual(8f, (float)ProductionReflection.Field(bal, "defenseFlat"), 0.0001f);
+        Assert.AreEqual(1.065f, (float)ProductionReflection.Field(bal, "attackMultiplier"), 0.0001f);
         Assert.AreEqual("steady_core", (string)ProductionReflection.Field(bal, "innatePassiveId"));
     }
 

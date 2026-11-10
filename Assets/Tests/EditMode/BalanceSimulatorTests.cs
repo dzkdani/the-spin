@@ -28,6 +28,29 @@ public class BalanceSimulatorTests
     }
 
     [Test]
+    public void SmallEdgeDoesNotAlwaysDecide()
+    {
+        object strong = Build("strong", 10.2f);
+        object weak = Build("weak", 10f);
+        object tuning = CreateTuning();
+
+        object result = ProductionReflection.CallStatic(
+            "BalanceSimulator",
+            "Run",
+            strong,
+            weak,
+            100,
+            null,
+            tuning);
+
+        int winsStrong = Read(result, "WinsA");
+        int winsWeak = Read(result, "WinsB");
+
+        Assert.Greater(winsStrong, winsWeak);
+        Assert.Greater(winsWeak, 0);
+    }
+
+    [Test]
     public void SimulationIsDeterministic()
     {
         object a = Build("a", 15f);
