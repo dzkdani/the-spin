@@ -46,6 +46,59 @@ public class PartSimulationTests
     }
 
     [Test]
+    public void BurstBitGrantsActive()
+    {
+        object control = Control();
+        object part = Load("Assets/Game/Datas/Parts/BurstBit.asset");
+
+        object build = ProductionReflection.CallStatic(
+            "PartSimulation",
+            "CreateBuild",
+            control,
+            part);
+
+        IList actives = (IList)ProductionReflection.Field(build, "Actives");
+
+        Assert.AreEqual(1, actives.Count);
+        Assert.AreEqual("burst_dash", Id(actives[0]));
+    }
+
+    [Test]
+    public void ActiveUseSpendsRpmAndStartsADash()
+    {
+        object control = Control();
+        object part = Load("Assets/Game/Datas/Parts/BurstBit.asset");
+
+        object build = ProductionReflection.CallStatic(
+            "PartSimulation",
+            "CreateBuild",
+            control,
+            part);
+
+        float maxRpm = (float)ProductionReflection.Field(build, "MaxRpm");
+
+        object use = ProductionReflection.CallStatic(
+            "BalanceActives",
+            "TryUse",
+            build,
+            0,
+            maxRpm,
+            0f,
+            0f);
+
+        Assert.IsTrue((bool)ProductionReflection.Field(use, "Used"));
+        Assert.IsTrue((bool)ProductionReflection.Field(use, "Dashing"));
+        Assert.AreEqual(
+            maxRpm * 0.75f,
+            (float)ProductionReflection.Field(use, "RpmAfter"),
+            0.1f);
+
+        IList pending = (IList)ProductionReflection.Field(use, "Pending");
+
+        Assert.AreEqual(2, pending.Count);
+    }
+
+    [Test]
     public void PartSimulationIsDeterministicAndCoversEveryPart()
     {
         object control = Control();

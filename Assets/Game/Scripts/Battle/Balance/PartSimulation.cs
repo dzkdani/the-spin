@@ -122,6 +122,12 @@ public sealed class PartSimulation
             if (ability == null)
                 continue;
 
+            if (ability.kind == AbilityKind.Active &&
+                !build.Actives.Exists(active => active.id == ability.id))
+            {
+                build.Actives.Add(ability);
+            }
+
             string grantSource = $"grant:{part.id}/{ability.id}";
 
             for (int e = 0; e < ability.effects.Count; e++)

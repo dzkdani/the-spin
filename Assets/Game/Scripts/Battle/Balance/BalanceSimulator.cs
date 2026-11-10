@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class BalanceSimulator
@@ -56,6 +57,9 @@ public static class BalanceSimulator
                 rpmB *= random.Range(1f - startVariance, 1f);
             }
 
+            float[] cooldownsA = new float[a.Actives.Count];
+            float[] cooldownsB = new float[b.Actives.Count];
+
             float now = 0f;
             int steps = 0;
 
@@ -63,8 +67,22 @@ public static class BalanceSimulator
 
             while (rpmA > 0f && rpmB > 0f && steps < 200)
             {
-                bool dashingA = random.Value() < DashChance;
-                bool dashingB = random.Value() < DashChance;
+                bool rolledA = random.Value() < DashChance;
+                bool rolledB = random.Value() < DashChance;
+
+                List<PendingImpactMod> activePendingA =
+                    new List<PendingImpactMod>();
+                List<PendingImpactMod> activePendingB =
+                    new List<PendingImpactMod>();
+
+                bool activeDashA = UseActives(
+                    a, cooldownsA, ref rpmA, now, activePendingA);
+
+                bool activeDashB = UseActives(
+                    b, cooldownsB, ref rpmB, now, activePendingB);
+
+                bool dashingA = activeDashA || rolledA;
+                bool dashingB = activeDashB || rolledB;
 
                 ImpactInput input = new ImpactInput
                 {
@@ -83,6 +101,9 @@ public static class BalanceSimulator
                     Now = now,
                     Tuning = tuning
                 };
+
+                input.PendingA.AddRange(activePendingA);
+                input.PendingB.AddRange(activePendingB);
 
                 input.PendingA.Add(new PendingImpactMod(
                     "contact",
@@ -141,5 +162,37 @@ public static class BalanceSimulator
         }
 
         return new Result(winsA, winsB, draws);
+    }
+
+    private static bool UseActives(
+        BalanceBuild build,
+        float[] cooldowns,
+        ref float rpm,
+        float now,
+        List<PendingImpactMod> pending)
+    {
+        bool dashing = false;
+
+        for (int i = 0; i < build.Actives.Count; i++)
+        {
+            BalanceActives.UseResult use = BalanceActives.TryUse(
+                build,
+                i,
+                rpm,
+                cooldowns[i],
+                now);
+
+            if (!use.Used)
+                continue;
+
+            rpm = use.RpmAfter;
+            cooldowns[i] = use.CooldownUntil;
+            dashing |= use.Dashing;
+
+            if (use.Pending != null)
+                pending.AddRange(use.Pending);
+        }
+
+        return dashing;
     }
 }

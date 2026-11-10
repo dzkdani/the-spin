@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class BalanceBuild
@@ -7,6 +8,7 @@ public sealed class BalanceBuild
     public float MaxRpm;
     public ElementDefinition Element;
     public AbilityDefinition Innate;
+    public List<AbilityDefinition> Actives = new List<AbilityDefinition>();
 
     public BalanceBuild(
         string id,
