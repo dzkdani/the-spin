@@ -4,6 +4,7 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 {
     [SerializeField] private Transform target;
     [SerializeField] float wanderRadius = 1.2f;
+    [SerializeField] private int seed = 0;
 
     public Vector2 MoveTarget { get; private set; }
     public bool DashRequested => shouldDash;
@@ -13,6 +14,14 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     Vector2 offset;
     float offsetTimer;
     float dashChance = 0.3f;
+    private IRandom random;
+
+    private void Awake()
+    {
+        random = seed == 0
+            ? (IRandom)new UnityRandom()
+            : new SeededRandom(seed);
+    }
 
     private void Start()
     {
@@ -48,7 +57,7 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
         if (offsetTimer <= 0f)
         {
-            offset = Random.insideUnitCircle * wanderRadius;
+            offset = random.InsideUnitCircle() * wanderRadius;
             offsetTimer = 1f;
         }
 
@@ -66,8 +75,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
         if (dashTimer <= 0f)
         {
-            shouldDash = Random.value < dashChance;
-            dashTimer = Random.Range(1.5f, 3f);
+            shouldDash = random.Value() < dashChance;
+            dashTimer = random.Range(1.5f, 3f);
         }
     }
 }

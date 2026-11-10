@@ -1052,6 +1052,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Reuse the existing `Assets/Tests` EditMode/PlayMode asmdefs.
 - Capture golden output from a sandbox scene with scripted two-bey collisions at fixed speeds and RPMs. Log power, damage, knockback, and RPM after each impact.
 - **Exit:** the golden file reproduces byte for byte across two runs.
+- **Status: complete.** Tag `battle-rework-baseline`; `IRandom`/`SeededRandom`/`UnityRandom` in `Core/`; `EnemyInput` takes an optional seed (0 = unchanged `UnityRandom`). Golden: `Assets/Tests/PlayMode/BattleGoldenTests.cs` (equal, opposite-spin, charged-both scenarios), identical across two runs. EditMode 8/8, PlayMode 3/3.
 
 **Phase 1: Bug fixes in place**
 - B1: pair dedupe (§14.5). B2: each side spends its own pending modifiers. B4: guard `GetContact`. B5: delete the dead `GameManager.Update`. M3: input gating through `IBattleStateGate`. M5: remove `opposite`, unused `using`, dead initializer. M6: remove the `_currentRPM` mirror. M8: `BeyVisual` reads `BeyData.Base.maxRPM`.
