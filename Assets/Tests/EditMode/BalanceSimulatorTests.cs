@@ -28,6 +28,28 @@ public class BalanceSimulatorTests
     }
 
     [Test]
+    public void StartVarianceCanBreakAMirror()
+    {
+        object a = Build("a", 10f);
+        object b = Build("b", 10f);
+        object tuning = CreateTuning();
+
+        object varied = ProductionReflection.CallStatic(
+            "BalanceSimulator",
+            "Run",
+            a,
+            b,
+            25,
+            null,
+            tuning,
+            0.2f);
+
+        Assert.Greater(
+            Read(varied, "WinsA") + Read(varied, "WinsB"),
+            0);
+    }
+
+    [Test]
     public void SmallEdgeDoesNotAlwaysDecide()
     {
         object strong = Build("strong", 10.2f);

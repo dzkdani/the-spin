@@ -1112,7 +1112,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
   - **Exit:** a part changes stats and the element. Removing it restores the exact previous values, with no residue.
 - **8b: Granted skills, budget, assembly.** Granted abilities with their limits. The budget validator. `BeyBlueprint` and `BeyBuilder`, with full loadout validation across all three sources.
   - **Exit:** any bey can be assembled from assets. Invalid builds are rejected with clear messages. The reference parts (§13.5) work in the sandbox.
-- **Status: core complete (partial).** Added `PartSlotDefinition`, `PartDefinition`, `StatModifierSpec`, `BeyBlueprint`, `BeyBuilder`, and `BeyBlueprintValidator`. Parts install stat/element contributions with `part:<id>` sources; granted abilities install with `grant:<part>/<ability>` and are removed with the part. Validation covers duplicate slots, budget, granted/equipped limits, duplicate ability ids, and active cost. Reference content added: 3 slots, 7 parts, and Frost Guard / Ember Aura / Burst Dash. 3 PlayMode part tests. A deterministic `BalanceSimulator` (seeded impact exchanges) and 2 tests are in. `BalanceCatalog` generates the 18 type × element reference builds and installs innate passives; `BalanceMatrix` runs the symmetrized round-robin and emits CSV; `Bey/Run Balance Matrix` writes `Logs/BalanceMatrix.csv` with the 40–60% band report. All 18 builds pass. Golden unchanged.
+- **Status: core complete (partial).** Added `PartSlotDefinition`, `PartDefinition`, `StatModifierSpec`, `BeyBlueprint`, `BeyBuilder`, and `BeyBlueprintValidator`. Parts install stat/element contributions with `part:<id>` sources; granted abilities install with `grant:<part>/<ability>` and are removed with the part. Validation covers duplicate slots, budget, granted/equipped limits, duplicate ability ids, and active cost. Reference content added: 3 slots, 7 parts, and Frost Guard / Ember Aura / Burst Dash. 3 PlayMode part tests. A deterministic `BalanceSimulator` (seeded impact exchanges) and 2 tests are in. `BalanceCatalog` generates the 18 type × element reference builds and installs innate passives; `BalanceMatrix` runs the symmetrized round-robin and emits CSV; `PartSimulation` swaps each reference part into a control build and reports win-rate deltas. `Bey/Run Balance Matrix` and `Bey/Run Part Simulation` write `Logs/BalanceMatrix.csv` and `Logs/PartSimulation.csv`. All 18 builds pass the band. Golden unchanged.
 
 ### Track C: Intelligence and Flow
 
@@ -1183,7 +1183,11 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Reference run (25 seeds per direction, no parts).** All 18 builds pass the band: ATK 51.9–52.8%, BAL 49.0–49.4%, DEF 48.2–48.8%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. Element variants sit within ±1 point of their type's neutral build; the matrix is exactly antisymmetric.
 
-**Part simulation.** For each part, swap it into a control build and measure the win-rate change across the reference matchups. Placeholder target: each part's change within ±5 points of its slot average. Adjust `budgetCost` to match.
+**Part simulation.** `PartSimulation.Run(...)` swaps each part into the `bal_neutral` control, applies its stat modifiers, element claim, and granted `AddModifierEffect`/`ClaimElementEffect` values, then measures the win-rate change across the reference builds with 20% starting-RPM variance. `Bey/Run Part Simulation` writes `Logs/PartSimulation.csv`. Slot-band check: every part's delta within ±5 points of its slot average.
+
+**First part run (25 seeds, start variance 0.2).** Control 51.3%. Heavy Ratchet +48.7, Crye Ratchet +41.6, Neutral Blade +28.2, Pyre Blade +27.2, Ember Bit −0.5, Grip Bit 0.0, Burst Bit 0.0. All seven pass the slot-band check, but the absolute spread exposes two model gaps: defense parts saturate because the head-on race has no ring-outs or repositioning, and dash/active/decay effects are not installed (Grip Bit, Burst Bit, and Ember Bit underread). `budgetCost` was left unchanged until those gaps are modeled.
+
+**Adjusted from playtest.** Enemy `maxRPM` 800 → 600 to shorten wave clears.
 
 Simulation drives numbers. Playtests decide whether fights feel readable. Both are needed.
 
@@ -1268,7 +1272,9 @@ Fill in as each phase lands.
 | 8b | Granted skills take effect. Budget cap enforced. | §12.7, §13.6 |
 | 8b | 18×18 balance matrix tooling: catalog, matrix, CSV, band report | §20.4 |
 | 8b | Simulator installs innates, models dashes/contact variance, symmetrizes pairings; all 18 builds inside 40–60% | §20.4 |
+| 8b | Part simulation: per-part swap, slot-band report, CSV | §20.4 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
+| 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
 | 11 | Each feature recorded as it lands | Phase 11 |
 | 11 | Same-spin, clash, and dash-hit multipliers added (same-spin neutral by default) | §14.1, §15 |

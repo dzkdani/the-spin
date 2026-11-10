@@ -21,6 +21,18 @@ public sealed class StatBlock : IStatView
         baseValues[stat] = value;
     }
 
+    public StatBlock Clone()
+    {
+        StatBlock clone = new StatBlock();
+
+        foreach (KeyValuePair<StatId, float> pair in baseValues)
+            clone.baseValues[pair.Key] = pair.Value;
+
+        clone.modifiers.AddRange(modifiers);
+
+        return clone;
+    }
+
     public float GetBase(StatId stat)
     {
         return baseValues.TryGetValue(stat, out float value)

@@ -28,6 +28,17 @@ public static class BalanceSimulator
         MatchupTable matchups,
         CombatTuning tuning)
     {
+        return Run(a, b, seeds, matchups, tuning, 0f);
+    }
+
+    public static Result Run(
+        BalanceBuild a,
+        BalanceBuild b,
+        int seeds,
+        MatchupTable matchups,
+        CombatTuning tuning,
+        float startVariance)
+    {
         int winsA = 0;
         int winsB = 0;
         int draws = 0;
@@ -38,6 +49,13 @@ public static class BalanceSimulator
 
             float rpmA = a.MaxRpm;
             float rpmB = b.MaxRpm;
+
+            if (startVariance > 0f)
+            {
+                rpmA *= random.Range(1f - startVariance, 1f);
+                rpmB *= random.Range(1f - startVariance, 1f);
+            }
+
             float now = 0f;
             int steps = 0;
 
