@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d4f6a8c1e35b7d9f0a2c4e6b8d1f3a, type: 3}
+  m_Name: ContentManifest
+  m_EditorClassIdentifier: Assembly-CSharp::ContentManifest
+  assets:
+  - {fileID: 11400000, guid: 5625aa388c3491f4ea0721d39a97120c, type: 2}
+  - {fileID: 11400000, guid: 54de1d331e23bd044b4cb2f8aa721a78, type: 2}
+  - {fileID: 11400000, guid: 3c4d5e6f7a8b49c0d1e2f3a4b5c6d7e8, type: 2}
+  - {fileID: 11400000, guid: 2b3c4d5e6f7a48b9c0d1e2f3a4b5c6d7, type: 2}
+  combatTuning: {fileID: 11400000, guid: 1a2b3c4d5e6f47a8b9c0d1e2f3a4b5c6, type: 2}
+  matchupTable: {fileID: 11400000, guid: 4d5e6f7a8b9c40d1e2f3a4b5c6d7e8f9, type: 2}

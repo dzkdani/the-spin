@@ -62,7 +62,7 @@ public class GameplaySafetyTests
             Type controllerType = GetProductionType("BeyController");
             beyObject.AddComponent(controllerType);
 
-            LogAssert.Expect(LogType.Error, "BeyData requires a BeyBaseSO reference.");
+            LogAssert.Expect(LogType.Error, "BeyData requires a BeyStats reference.");
             LogAssert.Expect(
                 LogType.Error,
                 "BeyController requires BeyData, BeyPhysics, BeyCombat, an IBeyInput, and a child BeyVisual.");

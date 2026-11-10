@@ -1064,6 +1064,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Create `ContentDefinition`, `ContentRegistry`, `ContentManifest`, `BeyStats` (including `movement`), `BeyTypeDefinition` (empty profile), `ElementDefinition` with Neutral flagged as index 0, an empty `MatchupTable`, `CombatTuning`, and `AiProfile`.
 - Move every literal from §9.5 into these assets. Include the granted and equipped limits, the part budget cap, the aura tick interval, and the pending mod cap. Delete `dashStrength` and `minDashMultiplier`.
 - **Exit:** no tuning literals in combat or AI code. Golden unchanged.
+- **Status: complete.** Added `ContentDefinition`, `ContentManifest`, `ContentRegistry`, `CombatTuning`, `AiProfile`, `ElementDefinition`, `MatchupTable`, `BeyTypeDefinition`. Renamed `BeyBaseSO` → `BeyStats` (file + meta GUID preserved) and deleted `dashStrength`/`minDashMultiplier`. `BeyCombat` and `EnemyInput` read tuning from assets; tests use identical lazy defaults. Assets wired through `ContentManifest` (BattleScene) and `AiProfile` (Enemy prefab). Golden unchanged.
 
 **Phase 3: Modifier core (no gameplay change)**
 - `StatId`, `StatBlock` with scopes, stacking policies, `Tick`, `RemoveBySource`, and `Explain`.

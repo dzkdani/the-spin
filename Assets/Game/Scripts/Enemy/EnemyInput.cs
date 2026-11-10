@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyInput : MonoBehaviour, IBeyInput
 {
     [SerializeField] private Transform target;
-    [SerializeField] float wanderRadius = 1.2f;
+    [SerializeField] private AiProfile profile;
     [SerializeField] private int seed = 0;
 
     public Vector2 MoveTarget { get; private set; }
@@ -21,6 +21,9 @@ public class EnemyInput : MonoBehaviour, IBeyInput
         random = seed == 0
             ? (IRandom)new UnityRandom()
             : new SeededRandom(seed);
+
+        if (profile == null)
+            profile = ScriptableObject.CreateInstance<AiProfile>();
     }
 
     private void Start()
@@ -57,8 +60,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
         if (offsetTimer <= 0f)
         {
-            offset = random.InsideUnitCircle() * wanderRadius;
-            offsetTimer = 1f;
+            offset = random.InsideUnitCircle() * profile.jitterRadius;
+            offsetTimer = profile.jitterInterval;
         }
 
         MoveTarget = (Vector2)target.position + offset;
@@ -66,7 +69,9 @@ public class EnemyInput : MonoBehaviour, IBeyInput
         // Increase dash chance when far away
         float distance = Vector2.Distance(transform.position, target.position);
 
-        dashChance = distance > 4f ? 0.7f : 0.2f;
+        dashChance = distance > profile.farDistance
+            ? profile.dashChanceFar
+            : profile.dashChanceNear;
 
         // Dash timer
         dashTimer -= Time.deltaTime;
@@ -76,7 +81,9 @@ public class EnemyInput : MonoBehaviour, IBeyInput
         if (dashTimer <= 0f)
         {
             shouldDash = random.Value() < dashChance;
-            dashTimer = random.Range(1.5f, 3f);
+            dashTimer = random.Range(
+                profile.dashIntervalMin,
+                profile.dashIntervalMax);
         }
     }
 }

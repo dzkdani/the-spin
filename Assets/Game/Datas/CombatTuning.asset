@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e5a7b9d1f2468a0c2e4b6d8f1a3c5e, type: 3}
+  m_Name: CombatTuning
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTuning
+  minRpmPower: 0.5
+  maxRpmPower: 1
+  damageMultiplier: 2
+  oppositeSpinMultiplier: 1.5
+  chargeMultiplier: 1.75
+  minWeightFactor: 0.5
+  maxWeightFactor: 1.5
+  grindMode: 0
+  grindRate: 0.001
+  shakePerSpeed: 0.02
+  shakeMin: 0.05
+  shakeMax: 0.35
+  defenseConstant: 40
+  maxEquippedPassives: 2
+  maxEquippedActives: 1
+  maxGrantedPassives: 2
+  maxGrantedActives: 1
+  partBudgetCap: 10
+  maxPendingImpactMods: 3
+  auraTickInterval: 0.1
+  maxKnockback: 12

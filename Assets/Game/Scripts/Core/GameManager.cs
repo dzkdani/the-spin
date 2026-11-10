@@ -9,6 +9,9 @@ public enum GameResult
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Content")]
+    [SerializeField] private ContentManifest contentManifest;
+
     [Header("Player")]
     [SerializeField] private BeyController player;
 
@@ -30,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        ContentRegistry.Initialize(contentManifest);
+
         if (player == null || player.Data == null || spawner == null ||
             playerUI == null || enemyUI == null || totalEnemies <= 0)
         {

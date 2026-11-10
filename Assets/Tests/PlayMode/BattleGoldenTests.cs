@@ -150,13 +150,12 @@ public class BattleGoldenTests
 
     private static ScriptableObject CreateTuning(int spinDirection)
     {
-        Type tuningType = ProductionType("BeyBaseSO");
+        Type tuningType = ProductionType("BeyStats");
 
         ScriptableObject tuning =
             ScriptableObject.CreateInstance(tuningType);
 
         SetField(tuning, "maxVelocity", 15f);
-        SetField(tuning, "dashStrength", 50f);
         SetField(tuning, "maxRPM", 3000f);
         SetField(tuning, "acceleration", 25f);
         SetField(tuning, "dashRPMCost", 50f);
@@ -164,7 +163,6 @@ public class BattleGoldenTests
         SetField(tuning, "attack", 10f);
         SetField(tuning, "weight", 5f);
         SetField(tuning, "minMoveAccelerationMultiplier", 0.6f);
-        SetField(tuning, "minDashMultiplier", 0.3f);
 
         FieldInfo spin = tuningType.GetField("spinDirection");
         spin.SetValue(tuning, Enum.ToObject(spin.FieldType, spinDirection));

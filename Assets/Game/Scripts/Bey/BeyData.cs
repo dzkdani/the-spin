@@ -4,7 +4,7 @@ using System;
 public class BeyData : MonoBehaviour
 {
     [field: SerializeField]
-    public BeyBaseSO Base { get; private set; }
+    public BeyStats Base { get; private set; }
     public event Action<float> OnRPMChanged;
     public event Action OnRPMDepleted;
 
@@ -17,13 +17,13 @@ public class BeyData : MonoBehaviour
     {
         if (Base == null)
         {
-            Debug.LogError("BeyData requires a BeyBaseSO reference.", this);
+            Debug.LogError("BeyData requires a BeyStats reference.", this);
             return;
         }
 
         if (Base.maxRPM <= 0f)
         {
-            Debug.LogError("BeyData requires BeyBaseSO.maxRPM to be greater than zero.", this);
+            Debug.LogError("BeyData requires BeyStats.maxRPM to be greater than zero.", this);
             return;
         }
 

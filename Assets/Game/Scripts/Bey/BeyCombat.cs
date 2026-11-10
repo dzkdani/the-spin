@@ -49,7 +49,7 @@ public class BeyCombat : MonoBehaviour
 
         chargedHits--;
 
-        return hitPower * 1.75f;
+        return hitPower * ContentRegistry.Tuning.chargeMultiplier;
     }
 
     private void ResolveImpact(BeyController other, Collision2D collision)
@@ -59,6 +59,8 @@ public class BeyCombat : MonoBehaviour
 
         if (!IsCollisionOwner(other))
             return;
+
+        CombatTuning tuning = ContentRegistry.Tuning;
 
         float speed =
             collision.relativeVelocity.magnitude;
@@ -78,7 +80,7 @@ public class BeyCombat : MonoBehaviour
         float myHitPower =
             speed *
             myAttack *
-            Mathf.Lerp(0.5f, 1f, myRPM);
+            Mathf.Lerp(tuning.minRpmPower, tuning.maxRpmPower, myRPM);
 
         myHitPower =
             ApplyChargeBonus(myHitPower);
@@ -86,7 +88,7 @@ public class BeyCombat : MonoBehaviour
         float enemyHitPower =
             speed *
             enemyAttack *
-            Mathf.Lerp(0.5f, 1f, enemyRPM);
+            Mathf.Lerp(tuning.minRpmPower, tuning.maxRpmPower, enemyRPM);
 
         enemyHitPower = other.Combat != null
             ? other.Combat.ConsumeChargeBonus(enemyHitPower)
@@ -98,15 +100,15 @@ public class BeyCombat : MonoBehaviour
 
         if (oppositeSpin)
         {
-            myHitPower *= 1.5f;
-            enemyHitPower *= 1.5f;
+            myHitPower *= tuning.oppositeSpinMultiplier;
+            enemyHitPower *= tuning.oppositeSpinMultiplier;
         }
 
         float myWeight =
-            GetEffectiveWeight(data);
+            GetEffectiveWeight(data, tuning);
 
         float enemyWeight =
-            GetEffectiveWeight(other.Data);
+            GetEffectiveWeight(other.Data, tuning);
 
         Vector2 pushDir =
             (other.transform.position -
@@ -127,10 +129,10 @@ public class BeyCombat : MonoBehaviour
         // RPM Damage
 
         float damageToEnemy =
-            myHitPower * 2f;
+            myHitPower * tuning.damageMultiplier;
 
         float damageToMe =
-            enemyHitPower * 2f;
+            enemyHitPower * tuning.damageMultiplier;
 
         other.Data.ReduceRPM(
             damageToEnemy);
@@ -143,10 +145,15 @@ public class BeyCombat : MonoBehaviour
 
     private void ResolveEffect(float speed, Collision2D collision)
     {
+        CombatTuning tuning = ContentRegistry.Tuning;
+
         ServiceLocator.Get<SFXPlayer>()?.PlayHit();
 
         ServiceLocator.Get<CameraShake>()?.Shake(
-            Mathf.Clamp(speed * 0.02f, 0.05f, 0.35f));
+            Mathf.Clamp(
+                speed * tuning.shakePerSpeed,
+                tuning.shakeMin,
+                tuning.shakeMax));
 
         if (collision.contactCount == 0)
             return;
@@ -172,7 +179,7 @@ public class BeyCombat : MonoBehaviour
 
         float grindDamage =
             rpmDifference *
-            0.001f *
+            ContentRegistry.Tuning.grindRate *
             Time.fixedDeltaTime;
 
         data.ReduceRPM(
@@ -182,12 +189,12 @@ public class BeyCombat : MonoBehaviour
             grindDamage);
     }
 
-    private float GetEffectiveWeight(BeyData target)
+    private float GetEffectiveWeight(BeyData target, CombatTuning tuning)
     {
         return target.Base.weight *
             Mathf.Lerp(
-                0.5f,
-                1.5f,
+                tuning.minWeightFactor,
+                tuning.maxWeightFactor,
                 target.RPMNormalized);
     }
 }
