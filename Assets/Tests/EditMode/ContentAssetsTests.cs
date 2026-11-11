@@ -77,6 +77,30 @@ public class ContentAssetsTests
     }
 
     [Test]
+    public void RingElementsHaveOnHitStatuses()
+    {
+        object pyre = Load("Assets/Game/Datas/Pyre.asset");
+        object sparke = Load("Assets/Game/Datas/Sparke.asset");
+
+        IList pyreMods = (IList)ProductionReflection.Field(
+            pyre,
+            "onHitModifiers");
+
+        Assert.AreEqual(1, pyreMods.Count);
+        Assert.AreEqual(
+            "RpmDecay",
+            ProductionReflection.Field(pyreMods[0], "stat").ToString());
+        Assert.AreEqual(
+            1.5f,
+            (float)ProductionReflection.Field(pyreMods[0], "value"),
+            0.0001f);
+
+        Assert.IsTrue((bool)ProductionReflection.Field(
+            sparke,
+            "onHitAffectsSelf"));
+    }
+
+    [Test]
     public void ManifestValidatesCleanly()
     {
         object manifest = Load("Assets/Game/Datas/ContentManifest.asset");

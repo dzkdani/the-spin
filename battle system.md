@@ -523,9 +523,24 @@ What follows from this table:
 
 ### 11.6 Elements, Abilities, and AI
 
-- Abilities can read the element through conditions. They can't change damage in v4.
+- Abilities can read the element through conditions. Element on-hit statuses can change stats.
 - The `element` tag on an ability is for conditions and visuals only.
 - The AI reads the current element each tick. If an aura flips an opponent's element mid-fight, the AI sees it on the next tick.
+
+### 11.7 On-Hit Statuses
+
+Every non-neutral element carries a short stat status, applied when it lands an impact and refreshed on each hit. `ElementStatusResolver` applies `ElementDefinition.onHitModifiers` for `onHitDuration` seconds (default 2). `onHitAffectsSelf` chooses the attacker or defender.
+
+| Element | Status | Effect |
+|---|---|---|
+| Pyre | Burn | Target `RpmDecay ×1.5` |
+| Crye | Chill | Target `Attack ×0.9` |
+| Gyre | Gust | Target `Weight ×0.9` |
+| Hydre | Siphon | Self `RpmDecay ×0.8` |
+| Sparke | Surge | Self `Attack ×1.1` |
+| Neutral | None | — |
+
+The balance simulation does not apply these statuses yet; it remains the matchup-only reference matrix.
 
 ---
 
@@ -835,6 +850,12 @@ What these show:
 - In v4, parts are fixed at build time. `BeyBuilder` installs everything at battle start.
 - Claims and granted skills run during the battle, so auras and temporary effects still change over the fight.
 - If mid-battle swapping is added later, the cleanup is `RemoveBySource("part:<id>")` plus removing the granted abilities. The source model already supports it.
+
+### 13.8 Synergies
+
+Two parts with the same non-neutral element unlock a set bonus at assembly: `Attack +5%` and `Defense +5%`, source `synergy:<element>`. Static claims and permanent granted claims count; Ember Aura's Pyre claim therefore pairs with Pyre Blade.
+
+`PartSynergyResolver` applies and removes the source. `BeyBuilder.RemovePart` clears all `synergy:` sources; removing one part of a pair breaks the bonus.
 
 ---
 
@@ -1290,6 +1311,8 @@ Fill in as each phase lands.
 | 20 | Battle Debug window, impact trace, overlay | §20.3 |
 | 6b | Live RPM decay (`BeyStats.rpmDecayRate`) and Tip Friction knockback resistance | §10 |
 | 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
+| 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
+| 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |

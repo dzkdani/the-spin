@@ -16,3 +16,10 @@ MonoBehaviour:
   displayName: Neutral
   isNeutral: 1
   color: {r: 0.85, g: 0.85, b: 0.85, a: 1}
+  onHitModifiers:
+  - stat: -1
+    op: 2
+    value: 0
+    scope: 
+  onHitAffectsSelf: 0
+  onHitDuration: 2

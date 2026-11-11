@@ -23,6 +23,11 @@ public static class BeyBuilder
         for (int i = 0; i < blueprint.parts.Count; i++)
             ApplyPart(blueprint.parts[i], data, runner);
 
+        PartSynergyResolver.Apply(
+            blueprint.parts,
+            data.Stats,
+            Time.time);
+
         for (int i = 0; i < blueprint.equippedPassives.Count; i++)
         {
             AbilityDefinition ability = blueprint.equippedPassives[i];
@@ -50,6 +55,7 @@ public static class BeyBuilder
 
         data.Stats.RemoveBySource(sourceId);
         data.Elements.RemoveBySource(sourceId);
+        PartSynergyResolver.Remove(data.Stats);
 
         for (int i = 0; i < part.grantedAbilities.Count; i++)
         {

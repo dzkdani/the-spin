@@ -16,3 +16,10 @@ MonoBehaviour:
   displayName: Gyre
   isNeutral: 0
   color: {r: 0.3, g: 0.8, b: 0.55, a: 1}
+  onHitModifiers:
+  - stat: 2
+    op: 2
+    value: 0.9
+    scope: 
+  onHitAffectsSelf: 0
+  onHitDuration: 2

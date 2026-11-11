@@ -16,3 +16,10 @@ MonoBehaviour:
   displayName: Crye
   isNeutral: 0
   color: {r: 0.35, g: 0.72, b: 0.95, a: 1}
+  onHitModifiers:
+  - stat: 0
+    op: 2
+    value: 0.9
+    scope: 
+  onHitAffectsSelf: 0
+  onHitDuration: 2

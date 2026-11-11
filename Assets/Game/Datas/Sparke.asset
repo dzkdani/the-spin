@@ -16,3 +16,10 @@ MonoBehaviour:
   displayName: Sparke
   isNeutral: 0
   color: {r: 0.95, g: 0.82, b: 0.25, a: 1}
+  onHitModifiers:
+  - stat: 0
+    op: 2
+    value: 1.1
+    scope: 
+  onHitAffectsSelf: 1
+  onHitDuration: 2

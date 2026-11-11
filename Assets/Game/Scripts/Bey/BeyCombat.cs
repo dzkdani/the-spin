@@ -117,6 +117,18 @@ public class BeyCombat : MonoBehaviour
         data.AddRPM(result.RpmGainA);
         other.Data.AddRPM(result.RpmGainB);
 
+        ElementStatusResolver.Apply(
+            data.Elements.Current,
+            data.Stats,
+            other.Data.Stats,
+            Time.time);
+
+        ElementStatusResolver.Apply(
+            other.Data.Elements.Current,
+            other.Data.Stats,
+            data.Stats,
+            Time.time);
+
         physics.Rigidbody.AddForce(
             result.ImpulseOnA,
             ForceMode2D.Impulse);

@@ -16,3 +16,10 @@ MonoBehaviour:
   displayName: Pyre
   isNeutral: 0
   color: {r: 0.92, g: 0.32, b: 0.18, a: 1}
+  onHitModifiers:
+  - stat: 3
+    op: 2
+    value: 1.5
+    scope: 
+  onHitAffectsSelf: 0
+  onHitDuration: 2

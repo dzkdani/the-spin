@@ -100,6 +100,17 @@ public sealed class StatBlock : IStatView
         modifiers.RemoveAll(modifier => modifier.SourceId == sourceId);
     }
 
+    public void RemoveBySourcePrefix(string prefix)
+    {
+        if (string.IsNullOrEmpty(prefix))
+            return;
+
+        modifiers.RemoveAll(
+            modifier =>
+                modifier.SourceId != null &&
+                modifier.SourceId.StartsWith(prefix));
+    }
+
     public float Get(StatId stat, string scope = null)
     {
         if (scope != null && !IsScopedStat(stat))
