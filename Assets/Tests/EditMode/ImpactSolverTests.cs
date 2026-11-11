@@ -48,6 +48,20 @@ public class ImpactSolverTests
     }
 
     [Test]
+    public void TipFrictionReducesKnockback()
+    {
+        object lowFriction = Resolve(
+            4f, 0f, weightB: 20f, tipFrictionB: 1f);
+
+        object highFriction = Resolve(
+            4f, 0f, weightB: 20f, tipFrictionB: 1.25f);
+
+        Assert.Greater(
+            ReadVector(lowFriction, "ImpulseOnB").magnitude,
+            ReadVector(highFriction, "ImpulseOnB").magnitude);
+    }
+
+    [Test]
     public void OppositeSpinScalesBothSides()
     {
         object same = Resolve(16f, 0f, oppositeSpin: false);
@@ -91,9 +105,15 @@ public class ImpactSolverTests
         float speed,
         float defenseA,
         float weightB = 5f,
-        bool oppositeSpin = false)
+        bool oppositeSpin = false,
+        float tipFrictionB = 1f)
     {
-        object input = CreateInput(speed, defenseA, weightB, oppositeSpin);
+        object input = CreateInput(
+            speed,
+            defenseA,
+            weightB,
+            oppositeSpin,
+            tipFrictionB);
 
         return ProductionReflection.CallStatic(
             "ImpactSolver",
@@ -105,7 +125,8 @@ public class ImpactSolverTests
         float speed,
         float defenseA,
         float weightB = 5f,
-        bool oppositeSpin = false)
+        bool oppositeSpin = false,
+        float tipFrictionB = 1f)
     {
         object input = ProductionReflection.New("ImpactInput");
 
@@ -117,12 +138,18 @@ public class ImpactSolverTests
         ProductionReflection.SetField(input, "Now", 0f);
         ProductionReflection.SetField(input, "Tuning", CreateTuning());
         ProductionReflection.SetField(input, "StatsA", CreateStats(defenseA, 5f));
-        ProductionReflection.SetField(input, "StatsB", CreateStats(0f, weightB));
+        ProductionReflection.SetField(
+            input,
+            "StatsB",
+            CreateStats(0f, weightB, tipFrictionB));
 
         return input;
     }
 
-    private static object CreateStats(float defense, float weight)
+    private static object CreateStats(
+        float defense,
+        float weight,
+        float tipFriction = 1f)
     {
         object stats = ProductionReflection.New("StatBlock");
 
@@ -143,6 +170,12 @@ public class ImpactSolverTests
             "SetBase",
             ProductionReflection.EnumValue("StatId", "Weight"),
             weight);
+
+        ProductionReflection.Call(
+            stats,
+            "SetBase",
+            ProductionReflection.EnumValue("StatId", "TipFriction"),
+            tipFriction);
 
         return stats;
     }

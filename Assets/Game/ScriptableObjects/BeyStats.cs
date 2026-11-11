@@ -23,6 +23,8 @@ public class BeyStats : ContentDefinition
 
     public float weight = 5f;
 
+    public float rpmDecayRate;
+
     public SpinDirection spinDirection = SpinDirection.Clockwise;
 
     [Header("Identity")]

@@ -442,6 +442,8 @@ A type is a stat profile plus one innate passive. It's data (`BeyTypeDefinition.
 
 *All numbers are placeholders for balancing in Phase 6b. Tuned values come from the 25-seed matrix (§20.4).*
 
+**Live decay and friction.** `BeyStats.rpmDecayRate` (BasePlayer/BaseEnemy `0.0015`) drives passive decay: `maxRPM × rate × RpmDecay` per second. `RpmDecay` type multipliers and Last Spin now affect real RPM loss. `TipFriction` multiplies effective weight in `ImpactSolver`, so Grip Bit reduces knockback. `BeyUI` only pulses for losses larger than 1 RPM, so passive decay does not flash the bar.
+
 **Innate passives** are normal abilities with source `innate:`. They don't count against any loadout limit.
 
 - **Surge Strike (ATK):** the first impact after a dash is 15% stronger.
@@ -811,7 +813,7 @@ Abilities referenced here are defined in §12.8.
 | Neutral Blade | Blade | Attack ×1.05 | Neutral | none | none | 2 |
 | Heavy Ratchet | Ratchet | Weight ×1.2, Defense +10 | none | none | `AbilityCooldown ×0.9` (all abilities) | 3 |
 | Crye Ratchet | Ratchet | Defense +15 | Crye | Frost Guard | none | 3 |
-| Grip Bit | Bit | Tip friction ×1.25 | none | none | `AbilityPower ×1.1` (scope `dash`) | 3 |
+| Grip Bit | Bit | Tip friction ×1.05 | none | none | `AbilityPower ×1.1` (scope `dash`) | 3 |
 | Ember Bit | Bit | RPM decay ×0.95 | none | Ember Aura | none | 3 |
 | Burst Bit | Bit | none | none | Burst Dash | `AbilityCost ×0.9` (scope `dash`) | 4 |
 
@@ -1187,7 +1189,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Part simulation.** `PartSimulation.Run(...)` swaps each part into the `bal_neutral` control, applies its stat modifiers, element claim, granted `AddModifierEffect`/`ClaimElementEffect` values, and grants any active abilities. `BalanceActives` now simulates those actives: RPM cost, cooldown, `ForceDash`, `ScaleNextImpact`, and `DrainRpm`, with `AbilityCost`, `AbilityCooldown`, and scoped `AbilityPower` from the build's stats. `Bey/Run Part Simulation` writes `Logs/PartSimulation.csv`. Slot-band check: every part's delta within ±5 points of its slot average.
 
-**Part run with actives and ring-out (25 seeds, start variance 0.2, arena radius 8).** Control 51.9%. Heavy Ratchet +48.1, Crye Ratchet +43.7, Pyre Blade +24.8, Neutral Blade +21.1, Grip Bit 0.0, Ember Bit −0.2, Burst Bit −1.1. All seven pass the ±5 slot band. Burst Dash was retuned to cost 0.10 and scale the next impact 1.1×; Grip Bit reads 0 in isolation because it only tunes dash-tagged actives.
+**Part run with actives and ring-out (25 seeds, start variance 0.2, arena radius 8).** Control 51.9%. Heavy Ratchet +48.1, Crye Ratchet +43.7, Pyre Blade +24.8, Neutral Blade +21.1, Grip Bit +5.0, Ember Bit −0.2, Burst Bit −1.1. All seven pass the ±5 slot band.
 
 **Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
 
@@ -1286,6 +1288,8 @@ Fill in as each phase lands.
 | 7 | Counter Spin, Ember Core, Last Spin, Ignition authored | §12.8 |
 | 9 | AI Use Active behavior and headless profile simulation | §16 |
 | 20 | Battle Debug window, impact trace, overlay | §20.3 |
+| 6b | Live RPM decay (`BeyStats.rpmDecayRate`) and Tip Friction knockback resistance | §10 |
+| 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |

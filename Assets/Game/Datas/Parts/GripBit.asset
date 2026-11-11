@@ -18,7 +18,7 @@ MonoBehaviour:
   statModifiers:
   - stat: 4
     op: 2
-    value: 1.25
+    value: 1.05
     scope: 
   - stat: 9
     op: 2

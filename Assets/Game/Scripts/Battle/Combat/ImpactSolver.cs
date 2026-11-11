@@ -86,8 +86,14 @@ public static class ImpactSolver
         float rpmNormalized,
         CombatTuning tuning)
     {
+        float tipFriction = stats.Get(StatId.TipFriction);
+
+        if (tipFriction <= 0f)
+            tipFriction = 1f;
+
         float weight =
             stats.Get(StatId.Weight) *
+            tipFriction *
             Mathf.Lerp(
                 tuning.minWeightFactor,
                 tuning.maxWeightFactor,

@@ -70,7 +70,7 @@ public class BeyUI : MonoBehaviour
         rpmBar.fillAmount = rpm / data.Base.maxRPM;
         rpmText.text = Mathf.RoundToInt(rpm).ToString();
 
-        if (rpm < previousRPM)
+        if (rpm < previousRPM - 1f)
         {
             rpmBar.transform.localScale = originalScale * 1.15f;
             rpmText.color = Color.red;

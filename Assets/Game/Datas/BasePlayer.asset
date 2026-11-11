@@ -21,6 +21,7 @@ MonoBehaviour:
   dashImpulse: 10
   attack: 10
   weight: 5
+  rpmDecayRate: 0.0015
   minMoveAccelerationMultiplier: 0.6
   spinDirection: 0
   type: {fileID: 11400000, guid: 8b9c0d1e2f3a44b5c6d7e8f9a0b1c2d3, type: 2}

@@ -59,6 +59,30 @@ public class BeyData : MonoBehaviour
         OnRPMChanged?.Invoke(CurrentRPM);
     }
 
+    private void Update()
+    {
+        ApplyDecay(Time.deltaTime);
+    }
+
+    public void ApplyDecay(float deltaTime)
+    {
+        if (Base == null ||
+            Base.maxRPM <= 0f ||
+            Base.rpmDecayRate <= 0f ||
+            CurrentRPM <= 0f)
+        {
+            return;
+        }
+
+        float amount = Base.maxRPM *
+            Base.rpmDecayRate *
+            Stats.Get(StatId.RpmDecay) *
+            deltaTime;
+
+        if (amount > 0f)
+            ReduceRPM(amount);
+    }
+
     public void ReduceRPM(float amount)
     {
         SetRPM(CurrentRPM - amount);
