@@ -3,6 +3,26 @@ using UnityEngine;
 
 public static class BeyBuilder
 {
+    public static void Build(BeyData data, AbilityRunner runner)
+    {
+        if (data == null || runner == null)
+            return;
+
+        if (data.Blueprint != null &&
+            Assemble(data.Blueprint, data, runner))
+        {
+            return;
+        }
+
+        runner.InstallInnate(
+            data.Base != null ? data.Base.type : null);
+
+        runner.InstallEquipped(
+            data.Base != null
+                ? data.Base.equippedAbilities
+                : null);
+    }
+
     public static bool Assemble(
         BeyBlueprint blueprint,
         BeyData data,

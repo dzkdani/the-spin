@@ -54,24 +54,7 @@ public class BeyController : MonoBehaviour
         if (Data == null || abilityRunner == null)
             return;
 
-        bool assembled = false;
-
-        if (Data.Blueprint != null)
-            assembled = BeyBuilder.Assemble(
-                Data.Blueprint,
-                Data,
-                abilityRunner);
-
-        if (!assembled)
-        {
-            abilityRunner.InstallInnate(
-                Data.Base != null ? Data.Base.type : null);
-
-            abilityRunner.InstallEquipped(
-                Data.Base != null
-                    ? Data.Base.equippedAbilities
-                    : null);
-        }
+        BeyBuilder.Build(Data, abilityRunner);
 
         IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
 

@@ -108,6 +108,8 @@ public sealed class PartSimulation
             control.Element,
             control.Innate);
 
+        build.RpmDecayRate = control.RpmDecayRate;
+
         int elementPriority = 0;
 
         if (part.elementClaim != null && part.slot != null)

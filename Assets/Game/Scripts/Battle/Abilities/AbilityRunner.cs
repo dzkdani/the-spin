@@ -75,17 +75,6 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
         Subscribe();
     }
 
-    private void InstallEquipped()
-    {
-        if (data == null || data.Base == null ||
-            data.Base.equippedAbilities == null)
-        {
-            return;
-        }
-
-        InstallEquipped(data.Base.equippedAbilities);
-    }
-
     public void InstallEquipped(
         IReadOnlyList<AbilityDefinition> abilities)
     {
@@ -274,14 +263,6 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
         }
 
         return true;
-    }
-
-    private void InstallInnate()
-    {
-        if (data == null || data.Base == null || data.Base.type == null)
-            return;
-
-        InstallInnate(data.Base.type);
     }
 
     private bool HasAbility(string id)

@@ -6,6 +6,7 @@ public sealed class BalanceBuild
     public string Id;
     public StatBlock Stats;
     public float MaxRpm;
+    public float RpmDecayRate = 0.0015f;
     public ElementDefinition Element;
     public AbilityDefinition Innate;
     public List<AbilityDefinition> Actives = new List<AbilityDefinition>();

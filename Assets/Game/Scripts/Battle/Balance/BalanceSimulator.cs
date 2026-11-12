@@ -7,7 +7,6 @@ public static class BalanceSimulator
     private const float ContactMin = 0.85f;
     private const float ContactMax = 1.15f;
     private const float StepSeconds = 0.25f;
-    private const float RpmDecayRate = 0.0015f;
 
     public readonly struct Result
     {
@@ -92,12 +91,12 @@ public static class BalanceSimulator
             {
                 rpmA = Mathf.Max(
                     0f,
-                    rpmA - a.MaxRpm * RpmDecayRate *
+                    rpmA - a.MaxRpm * a.RpmDecayRate *
                     statsA.Get(StatId.RpmDecay) * StepSeconds);
 
                 rpmB = Mathf.Max(
                     0f,
-                    rpmB - b.MaxRpm * RpmDecayRate *
+                    rpmB - b.MaxRpm * b.RpmDecayRate *
                     statsB.Get(StatId.RpmDecay) * StepSeconds);
 
                 if (rpmA <= 0f || rpmB <= 0f)
