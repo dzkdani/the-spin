@@ -12,6 +12,8 @@ public readonly struct BattleSnapshot
     public readonly bool OpponentDashing;
     public readonly float Matchup;
     public readonly float Now;
+    public readonly bool[] ActiveReady;
+    public readonly float[] ActiveCooldowns;
 
     public BattleSnapshot(
         float selfRpm,
@@ -24,6 +26,35 @@ public readonly struct BattleSnapshot
         bool opponentDashing,
         float matchup,
         float now)
+        : this(
+            selfRpm,
+            opponentRpm,
+            selfPosition,
+            opponentPosition,
+            distance,
+            selfElement,
+            opponentElement,
+            opponentDashing,
+            matchup,
+            now,
+            System.Array.Empty<bool>(),
+            System.Array.Empty<float>())
+    {
+    }
+
+    public BattleSnapshot(
+        float selfRpm,
+        float opponentRpm,
+        Vector2 selfPosition,
+        Vector2 opponentPosition,
+        float distance,
+        ElementDefinition selfElement,
+        ElementDefinition opponentElement,
+        bool opponentDashing,
+        float matchup,
+        float now,
+        bool[] activeReady,
+        float[] activeCooldowns)
     {
         SelfRpm = selfRpm;
         OpponentRpm = opponentRpm;
@@ -35,5 +66,7 @@ public readonly struct BattleSnapshot
         OpponentDashing = opponentDashing;
         Matchup = matchup;
         Now = now;
+        ActiveReady = activeReady;
+        ActiveCooldowns = activeCooldowns;
     }
 }

@@ -49,6 +49,36 @@ public class BeyController : MonoBehaviour
         abilityRunner.Initialize(Data, Physics, Combat, Input);
     }
 
+    private void Start()
+    {
+        if (Data == null || abilityRunner == null)
+            return;
+
+        bool assembled = false;
+
+        if (Data.Blueprint != null)
+            assembled = BeyBuilder.Assemble(
+                Data.Blueprint,
+                Data,
+                abilityRunner);
+
+        if (!assembled)
+        {
+            abilityRunner.InstallInnate(
+                Data.Base != null ? Data.Base.type : null);
+
+            abilityRunner.InstallEquipped(
+                Data.Base != null
+                    ? Data.Base.equippedAbilities
+                    : null);
+        }
+
+        IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
+
+        if (Input is IBattleStateGateConsumer consumer)
+            consumer.SetGate(gate);
+    }
+
     private void Update()
     {
         IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();

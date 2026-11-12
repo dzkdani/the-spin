@@ -28,17 +28,9 @@ public static class BeyBuilder
             data.Stats,
             Time.time);
 
-        for (int i = 0; i < blueprint.equippedPassives.Count; i++)
-        {
-            AbilityDefinition ability = blueprint.equippedPassives[i];
-            runner.Install(ability, "equipped:" + ability.id);
-        }
-
-        for (int i = 0; i < blueprint.equippedActives.Count; i++)
-        {
-            AbilityDefinition ability = blueprint.equippedActives[i];
-            runner.Install(ability, "equipped:" + ability.id);
-        }
+        runner.InstallInnate(blueprint.type);
+        runner.InstallEquipped(blueprint.equippedPassives);
+        runner.InstallEquipped(blueprint.equippedActives);
 
         return true;
     }

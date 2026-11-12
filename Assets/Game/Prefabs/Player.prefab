@@ -549,6 +549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BeyData
   _currentRPM: 0
   <Base>k__BackingField: {fileID: 11400000, guid: 5625aa388c3491f4ea0721d39a97120c, type: 2}
+  blueprint: {fileID: 11400000, guid: a8b9c0d1e2f3a4b5c6d7e8f901234567, type: 2}
 --- !u!114 &6111620060060163710
 MonoBehaviour:
   m_ObjectHideFlags: 0

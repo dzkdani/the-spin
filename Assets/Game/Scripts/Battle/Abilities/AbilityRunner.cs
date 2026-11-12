@@ -75,12 +75,6 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
         Subscribe();
     }
 
-    private void Start()
-    {
-        InstallInnate();
-        InstallEquipped();
-    }
-
     private void InstallEquipped()
     {
         if (data == null || data.Base == null ||
@@ -89,15 +83,43 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
             return;
         }
 
-        for (int i = 0; i < data.Base.equippedAbilities.Count; i++)
+        InstallEquipped(data.Base.equippedAbilities);
+    }
+
+    public void InstallEquipped(
+        IReadOnlyList<AbilityDefinition> abilities)
+    {
+        if (abilities == null)
+            return;
+
+        for (int i = 0; i < abilities.Count; i++)
         {
-            AbilityDefinition ability = data.Base.equippedAbilities[i];
+            AbilityDefinition ability = abilities[i];
 
             if (ability == null)
                 continue;
 
             Install(ability, "equipped:" + ability.id);
         }
+    }
+
+    public void InstallInnate(BeyTypeDefinition type)
+    {
+        if (type == null || string.IsNullOrEmpty(type.innatePassiveId))
+            return;
+
+        AbilityDefinition definition =
+            ContentRegistry.Get<AbilityDefinition>(type.innatePassiveId);
+
+        if (definition == null)
+        {
+            Debug.LogError(
+                $"Innate ability '{type.innatePassiveId}' was not found in content.",
+                this);
+            return;
+        }
+
+        Install(definition, "innate:" + definition.id);
     }
 
     public void SetOpponent(IBeyView view)
@@ -144,6 +166,59 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
             return false;
 
         return TryActivate(actives[slot]);
+    }
+
+    public int ActiveCount
+    {
+        get
+        {
+            int count = 0;
+
+            for (int i = 0; i < abilities.Count; i++)
+            {
+                if (abilities[i].Definition.kind == AbilityKind.Active)
+                    count++;
+            }
+
+            return count;
+        }
+    }
+
+    public bool IsActiveReady(int slot)
+    {
+        Runtime runtime = GetActive(slot);
+
+        return runtime != null && runtime.State == ActiveState.Ready;
+    }
+
+    public float GetActiveCooldown(int slot)
+    {
+        Runtime runtime = GetActive(slot);
+
+        return runtime != null
+            ? Mathf.Max(0f, runtime.CooldownUntil - now)
+            : 0f;
+    }
+
+    private Runtime GetActive(int slot)
+    {
+        if (slot < 0)
+            return null;
+
+        int index = 0;
+
+        for (int i = 0; i < abilities.Count; i++)
+        {
+            if (abilities[i].Definition.kind != AbilityKind.Active)
+                continue;
+
+            if (index == slot)
+                return abilities[i];
+
+            index++;
+        }
+
+        return null;
     }
 
     public List<string> DescribeAbilities()
@@ -206,21 +281,7 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
         if (data == null || data.Base == null || data.Base.type == null)
             return;
 
-        string abilityId = data.Base.type.innatePassiveId;
-
-        if (string.IsNullOrEmpty(abilityId))
-            return;
-
-        AbilityDefinition definition =
-            ContentRegistry.Get<AbilityDefinition>(abilityId);
-
-        if (definition == null)
-        {
-            Debug.LogError($"Innate ability '{abilityId}' was not found in content.", this);
-            return;
-        }
-
-        Install(definition, "innate:" + definition.id);
+        InstallInnate(data.Base.type);
     }
 
     private bool HasAbility(string id)

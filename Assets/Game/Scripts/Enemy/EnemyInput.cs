@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyInput : MonoBehaviour, IBeyInput
+public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
 {
     [SerializeField] private BeyController target;
     [SerializeField] private AiProfile profile;
@@ -9,6 +9,11 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     public Vector2 MoveTarget { get; private set; }
 
     public bool DashRequested { get; private set; }
+
+    public void SetGate(IBattleStateGate newGate)
+    {
+        gate = newGate;
+    }
 
     public int ConsumeAbilityRequest()
     {
@@ -25,6 +30,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     private BeyData data;
     private IRandom random;
     private EnemyBrain brain;
+    private AbilityRunner runner;
+    private IBattleStateGate gate;
     private float windUpTimer;
     private float dashCooldown;
     private float abilityCooldown;
@@ -33,6 +40,7 @@ public class EnemyInput : MonoBehaviour, IBeyInput
     private void Awake()
     {
         data = GetComponent<BeyData>();
+        runner = GetComponent<AbilityRunner>();
 
         random = seed == 0
             ? (IRandom)new UnityRandom()
@@ -51,8 +59,6 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
     private void Update()
     {
-        IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
-
         if (gate != null && !gate.CanReceiveGameplayInput)
         {
             DashRequested = false;
@@ -107,8 +113,21 @@ public class EnemyInput : MonoBehaviour, IBeyInput
 
     private BattleSnapshot BuildSnapshot()
     {
+        if (runner == null)
+            runner = GetComponent<AbilityRunner>();
+
         Vector2 selfPosition = transform.position;
         Vector2 opponentPosition = target.transform.position;
+
+        int activeCount = runner != null ? runner.ActiveCount : 0;
+        bool[] activeReady = new bool[activeCount];
+        float[] activeCooldowns = new float[activeCount];
+
+        for (int i = 0; i < activeCount; i++)
+        {
+            activeReady[i] = runner.IsActiveReady(i);
+            activeCooldowns[i] = runner.GetActiveCooldown(i);
+        }
 
         return new BattleSnapshot(
             data.RPMNormalized,
@@ -123,6 +142,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput
                 ContentRegistry.Matchups,
                 data.Elements.Current,
                 target.Data.Elements.Current),
-            Time.time);
+            Time.time,
+            activeReady,
+            activeCooldowns);
     }
 }

@@ -7,6 +7,7 @@ public static class BalanceSimulator
     private const float ContactMin = 0.85f;
     private const float ContactMax = 1.15f;
     private const float StepSeconds = 0.25f;
+    private const float RpmDecayRate = 0.0015f;
 
     public readonly struct Result
     {
@@ -76,6 +77,9 @@ public static class BalanceSimulator
             Vector2 posB = new Vector2(radius * 0.25f, 0f);
             bool ringOut = false;
 
+            StatBlock statsA = a.Stats.Clone();
+            StatBlock statsB = b.Stats.Clone();
+
             float[] cooldownsA = new float[a.Actives.Count];
             float[] cooldownsB = new float[b.Actives.Count];
 
@@ -86,6 +90,22 @@ public static class BalanceSimulator
 
             while (rpmA > 0f && rpmB > 0f && steps < 200)
             {
+                rpmA = Mathf.Max(
+                    0f,
+                    rpmA - a.MaxRpm * RpmDecayRate *
+                    statsA.Get(StatId.RpmDecay) * StepSeconds);
+
+                rpmB = Mathf.Max(
+                    0f,
+                    rpmB - b.MaxRpm * RpmDecayRate *
+                    statsB.Get(StatId.RpmDecay) * StepSeconds);
+
+                if (rpmA <= 0f || rpmB <= 0f)
+                    break;
+
+                statsA.Tick(now);
+                statsB.Tick(now);
+
                 bool rolledA = random.Value() < DashChance;
                 bool rolledB = random.Value() < DashChance;
 
@@ -123,8 +143,8 @@ public static class BalanceSimulator
                     Speed = random.Range(8f, 16f),
                     RpmA = rpmA / a.MaxRpm,
                     RpmB = rpmB / b.MaxRpm,
-                    StatsA = a.Stats,
-                    StatsB = b.Stats,
+                    StatsA = statsA,
+                    StatsB = statsB,
                     ElementA = a.Element,
                     ElementB = b.Element,
                     Matchups = matchups,
@@ -180,6 +200,18 @@ public static class BalanceSimulator
                     rpmB - result.DamageToB + result.RpmGainB,
                     0f,
                     b.MaxRpm);
+
+                ElementStatusResolver.Apply(
+                    a.Element,
+                    statsA,
+                    statsB,
+                    now);
+
+                ElementStatusResolver.Apply(
+                    b.Element,
+                    statsB,
+                    statsA,
+                    now);
 
                 if (radius > 0f)
                 {

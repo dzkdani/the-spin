@@ -91,7 +91,7 @@ public class ContentAssetsTests
             "RpmDecay",
             ProductionReflection.Field(pyreMods[0], "stat").ToString());
         Assert.AreEqual(
-            1.5f,
+            1.8f,
             (float)ProductionReflection.Field(pyreMods[0], "value"),
             0.0001f);
 

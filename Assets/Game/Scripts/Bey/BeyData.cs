@@ -6,6 +6,10 @@ public class BeyData : MonoBehaviour
     [field: SerializeField]
     public BeyStats Base { get; private set; }
 
+    [SerializeField] private BeyBlueprint blueprint;
+
+    public BeyBlueprint Blueprint => blueprint;
+
     public StatBlock Stats { get; } = new StatBlock();
 
     public ElementStack Elements { get; } = new ElementStack();
@@ -19,18 +23,23 @@ public class BeyData : MonoBehaviour
 
     private void Awake()
     {
-        if (Base == null)
+        BeyStats resolved = blueprint != null && blueprint.chassis != null
+            ? blueprint.chassis
+            : Base;
+
+        if (resolved == null)
         {
             Debug.LogError("BeyData requires a BeyStats reference.", this);
             return;
         }
 
-        if (Base.maxRPM <= 0f)
+        if (resolved.maxRPM <= 0f)
         {
             Debug.LogError("BeyData requires BeyStats.maxRPM to be greater than zero.", this);
             return;
         }
 
+        Base = resolved;
         CurrentRPM = Base.maxRPM;
 
         Stats.SetBase(StatId.Attack, Base.attack);
@@ -43,13 +52,21 @@ public class BeyData : MonoBehaviour
         Stats.SetBase(StatId.AbilityCooldown, 1f);
         Stats.SetBase(StatId.AbilityPower, 1f);
 
-        if (Base.type != null)
-            Base.type.ApplyTo(Stats, 0f);
+        BeyTypeDefinition type = blueprint != null && blueprint.type != null
+            ? blueprint.type
+            : Base.type;
 
-        if (Base.baseElement != null)
+        ElementDefinition element = blueprint != null && blueprint.baseElement != null
+            ? blueprint.baseElement
+            : Base.baseElement;
+
+        if (type != null)
+            type.ApplyTo(Stats, 0f);
+
+        if (element != null)
         {
             Elements.Add(new ElementClaim(
-                Base.baseElement,
+                element,
                 0,
                 "base:chassis",
                 float.PositiveInfinity,

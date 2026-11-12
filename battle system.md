@@ -533,14 +533,14 @@ Every non-neutral element carries a short stat status, applied when it lands an 
 
 | Element | Status | Effect |
 |---|---|---|
-| Pyre | Burn | Target `RpmDecay ×1.5` |
-| Crye | Chill | Target `Attack ×0.9` |
-| Gyre | Gust | Target `Weight ×0.9` |
-| Hydre | Siphon | Self `RpmDecay ×0.8` |
-| Sparke | Surge | Self `Attack ×1.1` |
+| Pyre | Burn | Target `RpmDecay ×1.8` |
+| Crye | Chill | Target `Attack ×0.975` |
+| Gyre | Gust | Target `Weight ×0.98` |
+| Hydre | Siphon | Self `RpmDecay ×0.97` |
+| Sparke | Surge | Self `Attack ×1.02` |
 | Neutral | None | — |
 
-The balance simulation does not apply these statuses yet; it remains the matchup-only reference matrix.
+The reference matrix now includes these statuses on per-duel stat clones.
 
 ---
 
@@ -1135,7 +1135,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
   - **Exit:** a part changes stats and the element. Removing it restores the exact previous values, with no residue.
 - **8b: Granted skills, budget, assembly.** Granted abilities with their limits. The budget validator. `BeyBlueprint` and `BeyBuilder`, with full loadout validation across all three sources.
   - **Exit:** any bey can be assembled from assets. Invalid builds are rejected with clear messages. The reference parts (§13.5) work in the sandbox.
-- **Status: complete.** Added `PartSlotDefinition`, `PartDefinition`, `StatModifierSpec`, `BeyBlueprint`, `BeyBuilder`, and `BeyBlueprintValidator`. Parts install stat/element contributions with `part:<id>` sources; granted abilities install with `grant:<part>/<ability>` and are removed with the part. Validation covers duplicate slots, budget, granted/equipped limits, duplicate ability ids, and active cost. Reference content added: 3 slots, 7 parts, and Frost Guard / Ember Aura / Burst Dash. 3 PlayMode part tests. A deterministic `BalanceSimulator` (seeded impact exchanges) and 2 tests are in. `BalanceCatalog` generates the 18 type × element reference builds and installs innate passives; `BalanceMatrix` runs the symmetrized round-robin and emits CSV; `PartSimulation` swaps each reference part into a control build, simulates granted actives, applies ring-out, and reports win-rate deltas. `Bey/Run Balance Matrix` and `Bey/Run Part Simulation` write `Logs/BalanceMatrix.csv` and `Logs/PartSimulation.csv`. All 18 builds pass the band and all 7 parts pass their slot band. Golden unchanged.
+- **Status: complete.** Added `PartSlotDefinition`, `PartDefinition`, `StatModifierSpec`, `BeyBlueprint`, `BeyBuilder`, and `BeyBlueprintValidator`. Parts install stat/element contributions with `part:<id>` sources; granted abilities install with `grant:<part>/<ability>` and are removed with the part. Validation covers duplicate slots, budget, granted/equipped limits, duplicate ability ids, and active cost. Reference content added: 3 slots, 7 parts, and Frost Guard / Ember Aura / Burst Dash. 3 PlayMode part tests. A deterministic `BalanceSimulator` (seeded impact exchanges) and 2 tests are in. `BalanceCatalog` generates the 18 type × element reference builds and installs innate passives; `BalanceMatrix` runs the symmetrized round-robin and emits CSV; `PartSimulation` swaps each reference part into a control build, simulates granted actives, applies ring-out, and reports win-rate deltas. `Bey/Run Balance Matrix` and `Bey/Run Part Simulation` write `Logs/BalanceMatrix.csv` and `Logs/PartSimulation.csv`. All 18 builds pass the band and all 7 parts pass their slot band. `PlayerBlueprint` and `EnemyBlueprint` now drive the live player/enemy prefabs through `BeyBuilder`; the enemy carries the Pyre pair synergy and an equipped Ignition active. Golden unchanged.
 
 ### Track C: Intelligence and Flow
 
@@ -1143,7 +1143,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Sensors (§16), behaviors, scoring with commit time, dash wind-up telegraph, `AiProfile`.
 - Inject the target; remove `GameObject.FindWithTag` (M9).
 - **Exit:** enemy dashes depend on the player's state. The telegraph is visible. The enemy reacts to element changes, including aura flips. Profiles produce measurably different results in simulation.
-- **Status: complete.** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter with a wind-up before dashing; `BeyVisual` pulses on `DashWindUpStarted`. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. `UseActiveBehavior` requests an active slot when the opponent is below 45% RPM; `EnemyInput` throttles requests. `AiSimulation` runs headless profile comparisons. 5 PlayMode brain tests.
+- **Status: complete.** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter with a wind-up before dashing; `BeyVisual` pulses on `DashWindUpStarted`. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. `UseActiveBehavior` requests an active slot when the opponent is below 45% RPM and a real active is ready; `BattleSnapshot` carries active readiness and cooldowns. `EnemyInput` throttles requests. `AiSimulation` runs headless profile comparisons. 6 PlayMode brain tests. Input producers now receive the battle-state gate from `BeyController` and no longer resolve `ServiceLocator` themselves.
 
 **Phase 10: Battle flow**
 - `BattleController`, `IWinCondition`, migration of `RpmDepletedCondition` from `GameManager`.
@@ -1159,7 +1159,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Element-typed damage (optional).
 - Part synergies (optional). Pairs of parts that unlock a bonus.
 - **Exit per feature:** adds new files only. The solver, `BattleCombat`, and the existing rules are unchanged.
-- **Status: partial - seven features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`), and a `BurstCondition` triggered when one impact deals at least 50% of the target's max RPM. Element-typed damage and part synergies are deferred by decision; the notes stay in §20.4/§13.
+- **Status: partial - seven features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`), and a `BurstCondition` triggered when one impact deals at least 50% of the target's max RPM. Element-typed damage is implemented as §11.7 on-hit statuses, and part synergies are implemented in §13.8. Both are in the status-aware balance matrix.
 
 ---
 
@@ -1202,15 +1202,15 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Tooling.** `BalanceCatalog.CreateReferenceBuilds()` builds the 18 references from the content manifest, applies each type's innate passive, and stores the innate for dash handling. `BalanceMatrix.Run(...)` fills the win/loss/draw matrices through `BalanceSimulator`, `WinRate(i)` aggregates each build, `BuildsOutsideBand(min, max)` lists offenders, and `ToCsv()` emits the matrix. Run `Bey/Run Balance Matrix` from the editor; the CSV lands at `Logs/BalanceMatrix.csv` (gitignored).
 
-**Simulation model.** Each duel fixes the spin relationship for all exchanges, then rolls per-exchange dash states and a 0.85–1.15 contact-quality multiplier per side. Dashes set `DashingA/B`, which activates the clash and dash-hit rules; ATK's Surge Strike adds its pending 1.15 impact modifier after a dash. Innate `AddModifierEffect`s (Hard Shell's +10% defense, Steady Core's ×0.6 matchup scale) are installed onto the build's stats. `MatchupRule` now applies `MatchupScale`, so Steady Core softens both advantages and disadvantages.
+**Simulation model.** Each duel fixes the spin relationship for all exchanges, then rolls per-exchange dash states and a 0.85–1.15 contact-quality multiplier per side. Dashes set `DashingA/B`, which activates the clash and dash-hit rules; ATK's Surge Strike adds its pending 1.15 impact modifier after a dash. Innate `AddModifierEffect`s (Hard Shell's +10% defense, Steady Core's ×0.6 matchup scale) are installed onto the build's stats. `MatchupRule` now applies `MatchupScale`, so Steady Core softens both advantages and disadvantages. Per-duel stat clones apply passive RPM decay and the element on-hit statuses after each impact, so the matrix covers the live status layer.
 
 **Band.** Every reference build between 40% and 60% overall.
 
-**Reference run (25 seeds per direction, no parts).** All 18 builds pass the band: ATK 51.9–52.8%, BAL 49.0–49.4%, DEF 48.2–48.8%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. Element variants sit within ±1 point of their type's neutral build; the matrix is exactly antisymmetric.
+**Reference run (25 seeds per direction, no parts).** All 18 builds pass the band with statuses on: ATK 46.4–55.3%, BAL 42.5–57.5%, DEF 41.4–59.5%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. The matrix stays exactly antisymmetric.
 
 **Part simulation.** `PartSimulation.Run(...)` swaps each part into the `bal_neutral` control, applies its stat modifiers, element claim, granted `AddModifierEffect`/`ClaimElementEffect` values, and grants any active abilities. `BalanceActives` now simulates those actives: RPM cost, cooldown, `ForceDash`, `ScaleNextImpact`, and `DrainRpm`, with `AbilityCost`, `AbilityCooldown`, and scoped `AbilityPower` from the build's stats. `Bey/Run Part Simulation` writes `Logs/PartSimulation.csv`. Slot-band check: every part's delta within ±5 points of its slot average.
 
-**Part run with actives and ring-out (25 seeds, start variance 0.2, arena radius 8).** Control 51.9%. Heavy Ratchet +48.1, Crye Ratchet +43.7, Pyre Blade +24.8, Neutral Blade +21.1, Grip Bit +5.0, Ember Bit −0.2, Burst Bit −1.1. All seven pass the ±5 slot band.
+**Part run with actives, statuses, and ring-out (25 seeds, start variance 0.2, arena radius 8).** Control 48.7%. Heavy Ratchet +51.1, Crye Ratchet +47.0, Pyre Blade +27.7, Neutral Blade +20.8, Grip Bit +3.9, Ember Bit +2.4, Burst Bit 0.0. All seven pass the ±5 slot band.
 
 **Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
 
@@ -1359,6 +1359,9 @@ Fill in as each phase lands.
 | 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
 | 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
+| 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
+| 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |
+| 20 | Balance simulator applies passive decay and element statuses on per-duel stat clones | §20.4 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |

@@ -41,7 +41,9 @@ public static class AiSimulation
                 null,
                 false,
                 1f,
-                i * 0.15f);
+                i * 0.15f,
+                new[] { true },
+                new[] { 0f });
 
             AiCommand command = brain.Tick(snapshot, 0.15f);
 

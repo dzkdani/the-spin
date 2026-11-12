@@ -1,10 +1,15 @@
 using UnityEngine;
 
-public class PlayerBeyInput : MonoBehaviour, IBeyInput
+public class PlayerBeyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
 {
     public Vector2 MoveTarget { get; private set; }
 
     public bool DashRequested { get; private set; }
+
+    public void SetGate(IBattleStateGate newGate)
+    {
+        gate = newGate;
+    }
 
     private int abilitySlotRequest = -1;
 
@@ -16,6 +21,7 @@ public class PlayerBeyInput : MonoBehaviour, IBeyInput
     }
 
     private Camera cam;
+    private IBattleStateGate gate;
 
     private void Awake()
     {
@@ -24,8 +30,6 @@ public class PlayerBeyInput : MonoBehaviour, IBeyInput
 
     private void Update()
     {
-        IBattleStateGate gate = ServiceLocator.Get<IBattleStateGate>();
-
         if (gate != null && !gate.CanReceiveGameplayInput)
         {
             DashRequested = false;

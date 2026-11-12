@@ -69,6 +69,20 @@ public class EnemyBrainTests
     }
 
     [Test]
+    public void UseActiveDoesNotRequestWhenNoActiveIsReady()
+    {
+        object profile = CreateProfile(0f, 0f);
+
+        object command = Decide(
+            profile,
+            CreateSnapshot(0.8f, 0.2f, 2f, activeReady: false));
+
+        Assert.AreEqual(
+            -1,
+            (int)ProductionReflection.Field(command, "AbilitySlot"));
+    }
+
+    [Test]
     public void AggressiveProfileDashesMoreInSimulation()
     {
         object aggressive = CreateProfile(5f, 1f);
@@ -120,7 +134,8 @@ public class EnemyBrainTests
     private static object CreateSnapshot(
         float selfRpm,
         float opponentRpm,
-        float distance)
+        float distance,
+        bool activeReady = true)
     {
         return ProductionReflection.New(
             "BattleSnapshot",
@@ -133,6 +148,8 @@ public class EnemyBrainTests
             null,
             false,
             1f,
-            0f);
+            0f,
+            new[] { activeReady },
+            new[] { 0f });
     }
 }

@@ -6,7 +6,8 @@ public sealed class UseActiveBehavior : IAiBehavior
 
     public float Score(in BattleSnapshot snapshot, AiProfile profile)
     {
-        if (snapshot.SelfRpm < 0.3f ||
+        if (ReadySlot(snapshot) < 0 ||
+            snapshot.SelfRpm < 0.3f ||
             snapshot.OpponentRpm > 0.45f)
         {
             return 0f;
@@ -23,6 +24,20 @@ public sealed class UseActiveBehavior : IAiBehavior
         return new AiCommand(
             snapshot.OpponentPosition,
             false,
-            0);
+            ReadySlot(snapshot));
+    }
+
+    private static int ReadySlot(in BattleSnapshot snapshot)
+    {
+        if (snapshot.ActiveReady == null)
+            return -1;
+
+        for (int i = 0; i < snapshot.ActiveReady.Length; i++)
+        {
+            if (snapshot.ActiveReady[i])
+                return i;
+        }
+
+        return -1;
     }
 }
