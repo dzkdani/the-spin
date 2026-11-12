@@ -1220,6 +1220,52 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 Simulation drives numbers. Playtests decide whether fights feel readable. Both are needed.
 
+### 20.5 Game Feel Test (run after all features are online)
+
+**Preconditions:** player and enemy prefabs assemble from `BeyBlueprint`; all 18 reference builds and 7 parts still pass their bands; `Bey/Battle Debug` is open.
+
+**A. Core loop**
+
+1. Mouse follow is smooth: no jitter, no overshoot, no stuck acceleration.
+2. One click = one dash; RPM cost is visible; exactly one charged hit lands.
+3. Every collision drops both RPM bars once. Four drops means double resolution.
+4. First enemy dies in roughly 3–6 clean hits; one full wave stays under ~90s.
+5. Pause and post-match clicks do not drain RPM or bank charged hits.
+
+**B. Elements**
+
+1. Pyre burn visibly speeds RPM loss; the bar does not flash every frame.
+2. Crye chill makes enemy hits noticeably softer while it lasts.
+3. Gyre gust produces visibly stronger knockback.
+4. Hydre siphon slows the attacker's own decay; confirm in the debug stats.
+5. Sparke surge makes the next hits harder and refreshes on re-hit; all statuses expire after ~2s.
+
+**C. Parts and synergies**
+
+1. A two-piece same-element build shows `synergy:<element>` and +5% attack/defense.
+2. Remove one part: the synergy and that part's stats disappear exactly.
+3. Granted abilities install and remove with their part; no duplicate IDs.
+4. An over-budget blueprint is rejected with a readable message.
+5. Pyre Blade + Ember Bit counts as a Pyre pair; Ember Aura's element flip is visible.
+
+**D. Abilities and AI**
+
+1. Player 1/2/3 casts only equipped actives; RPM cost and cooldown match the asset.
+2. Guard Spin, Charge Strike, Ignition, Frost Guard, Ember Aura, and Burst Dash each produce a visible effect in their intended situation.
+3. Cast interrupts happen only when `interruptOnHit` is set.
+4. Enemy telegraphs its dash, uses an active when the player is low, and retreats when its own RPM is low.
+5. Aggressive and passive profiles produce measurably different dash rates in `AiSimulation`.
+
+**E. Flow, UI, and feedback**
+
+1. RPM depletion, ring-out, and burst each show the correct end text.
+2. Enemy death waits ~1s, spawns the next enemy, and the final kill shows the win panel.
+3. The debug overlay updates RPM, element, ability cooldowns, and matchup live.
+4. The impact trace has exactly one entry per collision with plausible damage and impulse.
+5. Hit SFX, camera shake, and particles fire once per impact; no double audio.
+
+**Pass criteria:** no blocker (double damage, stuck input, missing end state); all five sections pass; feel notes recorded per section.
+
 ---
 
 ## 21. Open Questions
