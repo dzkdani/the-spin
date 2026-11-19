@@ -4,7 +4,7 @@ using UnityEngine;
 public class BeyElementTintTests
 {
     [Test]
-    public void TintUsesElementColorAndLighterShades()
+    public void TintUsesMonochromaticShades()
     {
         GameObject bey = new GameObject("TintedBey");
         bey.SetActive(false);
@@ -30,12 +30,12 @@ public class BeyElementTintTests
             ProductionReflection.SetField(element, "color", baseColor);
             ProductionReflection.Call(tint, "Apply", element);
 
-            Assert.AreEqual(baseColor, outer.color);
             Assert.AreEqual(
-                Color.Lerp(baseColor, Color.white, 0.35f),
-                middle.color);
+                Color.Lerp(baseColor, Color.black, 0.2f),
+                outer.color);
+            Assert.AreEqual(baseColor, middle.color);
             Assert.AreEqual(
-                Color.Lerp(baseColor, Color.white, 0.7f),
+                Color.Lerp(baseColor, Color.white, 0.25f),
                 inner.color);
         }
         finally

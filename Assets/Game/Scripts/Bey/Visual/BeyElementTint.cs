@@ -40,15 +40,15 @@ public sealed class BeyElementTint : MonoBehaviour
 
         applied = element;
 
-        Color outer = element.color;
+        Color baseColor = element.color;
 
         if (outerLayer != null)
-            outerLayer.color = outer;
+            outerLayer.color = Color.Lerp(baseColor, Color.black, 0.2f);
 
         if (middleLayer != null)
-            middleLayer.color = Color.Lerp(outer, Color.white, 0.35f);
+            middleLayer.color = baseColor;
 
         if (innerLayer != null)
-            innerLayer.color = Color.Lerp(outer, Color.white, 0.7f);
+            innerLayer.color = Color.Lerp(baseColor, Color.white, 0.25f);
     }
 }

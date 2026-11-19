@@ -35,9 +35,11 @@ always 1.0 in both directions.
 `BeyElementTint` on `Player.prefab` and `Enemy.prefab` reads
 `BeyData.Elements.Current.color` and tints the three sprite layers:
 
-- outer = element color
-- middle = 35% toward white
-- inner = 70% toward white
+- outer = 20% toward black (dark shade)
+- middle = element color
+- inner = 25% toward white (light shade)
+
+All three stay on the same hue; only the value changes.
 
 It applies in `Start` (after `BeyBlueprint.Configure`) and re-applies in `Update`
 whenever the current element changes, so an ability-driven element flip also
