@@ -994,6 +994,9 @@ public struct AiCommand
 
 ## 17. Battle Flow
 
+Ring-out is designed but **not implemented**; the future-slice spec lives in
+`ring out feature.md` (boundary, scene blockers, code points, tests, risks).
+
 `BattleController` runs `Countdown → Fighting → Finished(result)` and evaluates the `IWinCondition` list each tick.
 
 - `RpmDepletedCondition` reproduces current behavior.
@@ -1224,7 +1227,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
 
-**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent) and then raised to **5000** to lengthen fights; damage per hit does not scale with max RPM, so time-to-kill rises with the pool. At 5000 the 80% burst threshold is 4000, leaving burst as a rare finisher rather than a common early end.
+**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights, and finally the **player alone** raised to **9000** for an 80% easier demo while enemy HP and time-to-kill stay at 5000. Damage per hit does not scale with max RPM. At 9000 the player's 80% burst threshold is 7200, so burst is effectively disabled; the enemy threshold stays 4000.
 
 **Part exit criteria met.** Every part sits inside the Bit/Blade/Ratchet slot band, the 18-build reference matrix stays 40–60%, and the golden row is unchanged. `budgetCost` remains a design estimate; the simulation does not price it directly.
 
@@ -1369,13 +1372,14 @@ Fill in as each phase lands.
 | 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
 | 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
 | 6b | Stronger element pass: matchups 1.35/0.75, statuses 3–4 s at ×2.5/×0.9/×0.9/×0.9/×1.08 | §11 |
+| 20 | Demo difficulty: player maxRPM 9000, enemy stays 5000; ring-out spec written as a future slice (`ring out feature.md`) | §20.4 |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |
 | 20 | Balance simulator applies passive decay and element statuses on per-duel stat clones | §20.4 |
 | 20 | Battle demo slice: six enemy blueprints, AI profiles, HUD, six-wave scene, wave checkpoint reset | §20.5 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
-| 8b | Playtest: player/enemy maxRPM normalized to 3000, then raised to 5000 for longer fights | §20.4 |
+| 8b | Playtest: maxRPM normalized to 3000, both raised to 5000, then player alone to 9000 for an easier demo | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
 | 20 | Wave reset always runs at next spawn; drop the unserialized toggle that disabled it | Fix wave reset |
 | 9 | Retreat is a short inward spiral with a 2 s cooldown; orbit 0 falls back to 1; jitter skipped | §16 |

@@ -209,9 +209,11 @@ The player's own Crye status lands on every enemy the player hits:
 
 ### Current feel
 
-The matchup swing is now large on waves 2 and 6. On a 5000 RPM pool:
+The matchup swing is now large on waves 2 and 6. Player pool is 9000, enemy
+pool 5000; damage per hit does not scale with the pool, but the Pyre burn does:
 
-- Pyre burn ≈ **45 extra RPM** per proc (decay 7.5 → 18.75 RPM/s for 4 s).
+- Pyre burn ≈ **81 extra RPM** on the player per proc (decay 13.5 → 33.75 RPM/s
+  for 4 s), or ≈ 45 on an enemy.
 - Crye chill ≈ **10%** weaker attacks for 3 s.
 - Gyre gust ≈ **10%** less weight for 3 s (more knockback).
 - Hydre siphon ≈ **10%** less passive decay for 3 s.
