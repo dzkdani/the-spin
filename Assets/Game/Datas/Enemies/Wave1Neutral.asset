@@ -20,4 +20,4 @@ MonoBehaviour:
   aiProfile: {fileID: 11400000, guid: f90123456789abcdef02345678901234, type: 2}
   parts: []
   equippedPassives: []
-  equippedActives: []
+equippedActives: []

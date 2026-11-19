@@ -21,5 +21,7 @@ MonoBehaviour:
   parts:
   - {fileID: 11400000, guid: d4e4a2b3c4d5e6f708192a3b4c5d6e7f, type: 2}
   - {fileID: 11400000, guid: d6e6a2b3c4d5e6f708192a3b4c5d6e7f, type: 2}
-  equippedPassives: []
-  equippedActives: []
+  equippedPassives:
+- {fileID: 11400000, guid: f3c4d5e6f708192a3b4c5d6e7f8091a2, type: 2}
+equippedActives:
+- {fileID: 11400000, guid: 9e2f4a6b8c1d40e3f5a7b9c1d3e6f8a0, type: 2}

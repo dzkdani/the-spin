@@ -23,9 +23,9 @@ MonoBehaviour:
   commitTime: 0.6
   pressureWeight: 0.7
   elementWeight: 1.1
-  baitWeight: 0.8
+  baitWeight: 1.3
   strikeWeight: 1.6
-  retreatWeight: 0.6
+  retreatWeight: 1
   activeWeight: 1
   strikeRange: 5
   retreatRpm: 0.15

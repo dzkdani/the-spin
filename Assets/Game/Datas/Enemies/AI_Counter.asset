@@ -23,7 +23,7 @@ MonoBehaviour:
   commitTime: 0.6
   pressureWeight: 0.9
   elementWeight: 1.6
-  baitWeight: 0.9
+  baitWeight: 0.7
   strikeWeight: 1.2
   retreatWeight: 0.6
   activeWeight: 1
