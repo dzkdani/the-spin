@@ -49,5 +49,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f4d5e6f708192a3b4c5d6e7f8091a2b3, type: 2}
   - {fileID: 11400000, guid: a8b9c0d1e2f3a4b5c6d7e8f901234567, type: 2}
   - {fileID: 11400000, guid: b9c0d1e2f3a4b5c6d7e8f90123456789, type: 2}
+  - {fileID: 11400000, guid: a4b5c6d7e8f90123456789abcdef0234, type: 2}
+  - {fileID: 11400000, guid: b5c6d7e8f90123456789abcdef023456, type: 2}
+  - {fileID: 11400000, guid: c6d7e8f90123456789abcdef02345678, type: 2}
+  - {fileID: 11400000, guid: d7e8f90123456789abcdef0234567890, type: 2}
+  - {fileID: 11400000, guid: e8f90123456789abcdef023456789012, type: 2}
+  - {fileID: 11400000, guid: f90123456789abcdef02345678901234, type: 2}
+  - {fileID: 11400000, guid: a123456789abcdef0234567890123456, type: 2}
+  - {fileID: 11400000, guid: b23456789abcdef02345678901234567, type: 2}
+  - {fileID: 11400000, guid: c3456789abcdef023456789012345678, type: 2}
+  - {fileID: 11400000, guid: d456789abcdef0234567890123456789, type: 2}
   combatTuning: {fileID: 11400000, guid: 1a2b3c4d5e6f47a8b9c0d1e2f3a4b5c6, type: 2}
   matchupTable: {fileID: 11400000, guid: 4d5e6f7a8b9c40d1e2f3a4b5c6d7e8f9, type: 2}

@@ -12,6 +12,8 @@ public class BeyBlueprint : ContentDefinition
 
     public ElementDefinition baseElement;
 
+    public AiProfile aiProfile;
+
     public List<PartDefinition> parts =
         new List<PartDefinition>();
 

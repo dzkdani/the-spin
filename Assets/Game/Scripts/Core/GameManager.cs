@@ -28,6 +28,18 @@ public class GameManager : MonoBehaviour
     public int CurrentEnemyIndex => enemiesDefeated + 1;
     public int TotalEnemies => totalEnemies;
 
+    public BeyController Player => player;
+    public BeyData CurrentEnemy => currentEnemy;
+
+    public int Wave =>
+        Mathf.Min(enemiesDefeated + 1, totalEnemies);
+
+    public FinishReason? LastFinishReason =>
+        battle != null ? battle.Reason : null;
+
+    public float PlayerRpm =>
+        subscribedPlayer != null ? subscribedPlayer.CurrentRPM : 0f;
+
     private int enemiesDefeated;
     private BeyData currentEnemy;
     private BeyData subscribedPlayer;
@@ -83,7 +95,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        BeyController enemy = spawner.SpawnEnemy();
+        BeyController enemy = spawner.SpawnEnemy(enemiesDefeated);
 
         if (enemy == null || enemy.Data == null)
         {

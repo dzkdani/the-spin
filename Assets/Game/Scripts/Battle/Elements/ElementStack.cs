@@ -58,6 +58,12 @@ public sealed class ElementStack
         claims.RemoveAll(claim => claim.SourceId == sourceId);
     }
 
+    public void Clear()
+    {
+        claims.Clear();
+        sequence = 0;
+    }
+
     public void Tick(float now)
     {
         claims.RemoveAll(claim => claim.IsExpired(now));

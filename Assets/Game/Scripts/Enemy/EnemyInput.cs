@@ -37,6 +37,12 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
     private float abilityCooldown;
     private int abilityRequest = -1;
 
+    public void SetProfile(AiProfile newProfile)
+    {
+        profile = newProfile;
+        brain = new EnemyBrain(profile, random);
+    }
+
     private void Awake()
     {
         data = GetComponent<BeyData>();

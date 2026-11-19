@@ -23,6 +23,20 @@ public class BeyData : MonoBehaviour
 
     private void Awake()
     {
+        ApplyIdentity();
+    }
+
+    public void Configure(BeyBlueprint next)
+    {
+        blueprint = next;
+        ApplyIdentity();
+    }
+
+    private void ApplyIdentity()
+    {
+        Stats.Clear();
+        Elements.Clear();
+
         BeyStats resolved = blueprint != null && blueprint.chassis != null
             ? blueprint.chassis
             : Base;

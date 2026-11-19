@@ -1222,7 +1222,7 @@ Simulation drives numbers. Playtests decide whether fights feel readable. Both a
 
 ### 20.5 Game Feel Test (run after all features are online)
 
-**Preconditions:** player and enemy prefabs assemble from `BeyBlueprint`; all 18 reference builds and 7 parts still pass their bands; `Bey/Battle Debug` is open.
+**Preconditions:** player and enemy prefabs assemble from `BeyBlueprint`; all 18 reference builds and 7 parts still pass their bands; `Bey/Battle Debug` is open. Demo slice wires `BattleScene` with five enemy blueprints, a battle HUD, and a hidden title Continue button.
 
 **A. Core loop**
 
@@ -1362,6 +1362,7 @@ Fill in as each phase lands.
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |
 | 20 | Balance simulator applies passive decay and element statuses on per-duel stat clones | §20.4 |
+| 20 | Battle demo slice: five enemy blueprints, AI profiles, HUD, five-wave scene | §20.5 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: enemy maxRPM 800 → 600 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |

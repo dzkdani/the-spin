@@ -33,6 +33,12 @@ public sealed class StatBlock : IStatView
         return clone;
     }
 
+    public void Clear()
+    {
+        baseValues.Clear();
+        modifiers.Clear();
+    }
+
     public float GetBase(StatId stat)
     {
         return baseValues.TryGetValue(stat, out float value)

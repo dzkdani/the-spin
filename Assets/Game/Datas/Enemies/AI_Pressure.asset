@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f6b8c0e2a1357b9d1f3a5c7e9b2d4f, type: 3}
+  m_Name: AI_Pressure
+  m_EditorClassIdentifier: Assembly-CSharp::AiProfile
+  id: ai_pressure
+  displayName: Pressure
+  jitterRadius: 1
+  jitterInterval: 1
+  farDistance: 4.5
+  dashChanceFar: 0.9
+  dashChanceNear: 0.35
+  dashIntervalMin: 1.2
+  dashIntervalMax: 2.2
+  decisionInterval: 0.12
+  commitTime: 0.5
+  dashWindUp: 0.25
+  pressureWeight: 1.4
+  elementWeight: 0.8
+  baitWeight: 0.4
+  strikeWeight: 1.4
+  retreatWeight: 0.8
+  activeWeight: 1
+  strikeRange: 4.5
+  retreatRpm: 0.2
+  dashAggression: 0.9

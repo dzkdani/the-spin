@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f6b8c0e2a1357b9d1f3a5c7e9b2d4f, type: 3}
+  m_Name: AI_Climax
+  m_EditorClassIdentifier: Assembly-CSharp::AiProfile
+  id: ai_climax
+  displayName: Climax
+  jitterRadius: 1.2
+  jitterInterval: 1
+  farDistance: 5
+  dashChanceFar: 1
+  dashChanceNear: 0.5
+  dashIntervalMin: 1
+  dashIntervalMax: 1.8
+  decisionInterval: 0.1
+  commitTime: 0.4
+  dashWindUp: 0.22
+  pressureWeight: 1.5
+  elementWeight: 1.2
+  baitWeight: 0.6
+  strikeWeight: 1.6
+  retreatWeight: 0.9
+  activeWeight: 1.4
+  strikeRange: 5
+  retreatRpm: 0.2
+  dashAggression: 1
