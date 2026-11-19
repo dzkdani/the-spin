@@ -45,6 +45,10 @@ public sealed class BattleHUD : MonoBehaviour
                 $"RESULT: {game.LastFinishReason.Value}  " +
                 $"RPM {game.PlayerRpm:F0}");
         }
+        else if (Time.time - game.WaveResetAt < 2f)
+        {
+            GUILayout.Label("WAVE CLEARED · RPM RESTORED");
+        }
         else if (game.Wave == 1)
         {
             GUILayout.Label("MOUSE move  ·  CLICK dash");

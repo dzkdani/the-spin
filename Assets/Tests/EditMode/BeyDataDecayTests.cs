@@ -49,6 +49,48 @@ public class BeyDataDecayTests
         Object.DestroyImmediate(gameObject);
     }
 
+    [Test]
+    public void RestoreRpmRefillsCurrentRpm()
+    {
+        GameObject gameObject = new GameObject("RestoreBey");
+        gameObject.SetActive(false);
+
+        Component data = gameObject.AddComponent(
+            ProductionReflection.TypeOf("BeyData"));
+
+        object stats = ScriptableObject.CreateInstance(
+            ProductionReflection.TypeOf("BeyStats"));
+
+        SetField(stats, "maxRPM", 3000f);
+        SetField(stats, "attack", 10f);
+        SetField(stats, "weight", 5f);
+
+        data.GetType()
+            .GetField(
+                "<Base>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(data, stats);
+
+        gameObject.SetActive(true);
+        ProductionReflection.CallPrivate(data, "Awake");
+
+        ProductionReflection.Call(data, "ReduceRPM", 1200f);
+
+        Assert.AreEqual(
+            1800f,
+            (float)ProductionReflection.Property(data, "CurrentRPM"),
+            0.01f);
+
+        ProductionReflection.Call(data, "RestoreRPM");
+
+        Assert.AreEqual(
+            3000f,
+            (float)ProductionReflection.Property(data, "CurrentRPM"),
+            0.01f);
+
+        Object.DestroyImmediate(gameObject);
+    }
+
     private static void SetField(object instance, string field, object value)
     {
         instance

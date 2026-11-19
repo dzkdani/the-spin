@@ -9,12 +9,13 @@ public class BattleSceneDemoTests
         string scene = File.ReadAllText(
             "Assets/Game/Scenes/BattleScene.unity");
 
-        StringAssert.Contains("totalEnemies: 5", scene);
+        StringAssert.Contains("totalEnemies: 6", scene);
         StringAssert.Contains("a4b5c6d7e8f90123456789abcdef0234", scene);
         StringAssert.Contains("b5c6d7e8f90123456789abcdef023456", scene);
         StringAssert.Contains("c6d7e8f90123456789abcdef02345678", scene);
         StringAssert.Contains("d7e8f90123456789abcdef0234567890", scene);
         StringAssert.Contains("e8f90123456789abcdef023456789012", scene);
+        StringAssert.Contains("d1eb6f2ae14d443faf3ecd6ec17486e7", scene);
         StringAssert.Contains("f3a4b5c6d7e8f90123456789abcdef01", scene);
     }
 }

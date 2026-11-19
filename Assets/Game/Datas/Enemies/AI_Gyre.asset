@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f6b8c0e2a1357b9d1f3a5c7e9b2d4f, type: 3}
+  m_Name: AI_Gyre
+  m_EditorClassIdentifier: Assembly-CSharp::AiProfile
+  id: ai_gyre
+  displayName: Gyre
+  jitterRadius: 1.1
+  jitterInterval: 1
+  farDistance: 4
+  dashChanceFar: 0.55
+  dashChanceNear: 0.18
+  dashIntervalMin: 1.6
+  dashIntervalMax: 2.8
+  decisionInterval: 0.15
+  commitTime: 0.6
+  dashWindUp: 0.3
+  pressureWeight: 1
+  elementWeight: 1.1
+  baitWeight: 0.8
+  strikeWeight: 1.1
+  retreatWeight: 1
+  activeWeight: 0.7
+  strikeRange: 4
+  retreatRpm: 0.25
+  dashAggression: 0.6

@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BeyUI playerUI;
     [SerializeField] private BeyUI enemyUI;
 
+    [Header("Demo")]
+    [SerializeField] private bool resetPlayerBetweenWaves = true;
+
     public int CurrentEnemyIndex => enemiesDefeated + 1;
     public int TotalEnemies => totalEnemies;
 
@@ -39,6 +42,10 @@ public class GameManager : MonoBehaviour
 
     public float PlayerRpm =>
         subscribedPlayer != null ? subscribedPlayer.CurrentRPM : 0f;
+
+    public float WaveResetAt => waveResetAt;
+
+    private float waveResetAt = -100f;
 
     private int enemiesDefeated;
     private BeyData currentEnemy;
@@ -131,7 +138,31 @@ public class GameManager : MonoBehaviour
         if (battle.Finished)
             return;
 
+        ResetPlayerForNextWave();
+
         StartCoroutine(SpawnNextAfterDelay(1f));
+    }
+
+    private void ResetPlayerForNextWave()
+    {
+        if (!resetPlayerBetweenWaves ||
+            player == null ||
+            player.Data == null)
+        {
+            return;
+        }
+
+        player.Data.RestoreRPM();
+        player.Data.Stats.RemoveBySourcePrefix("element:");
+        player.transform.position = Vector3.zero;
+
+        if (player.Physics != null &&
+            player.Physics.Rigidbody != null)
+        {
+            player.Physics.Rigidbody.linearVelocity = Vector2.zero;
+        }
+
+        waveResetAt = Time.time;
     }
 
     private IEnumerator SpawnNextAfterDelay(float delay)

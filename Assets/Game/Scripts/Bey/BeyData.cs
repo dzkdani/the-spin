@@ -124,6 +124,11 @@ public class BeyData : MonoBehaviour
         SetRPM(CurrentRPM + amount);
     }
 
+    public void RestoreRPM()
+    {
+        SetRPM(MaxRPM);
+    }
+
     private void SetRPM(float value)
     {
         if (Base == null || MaxRPM <= 0f)

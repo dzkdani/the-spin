@@ -640,7 +640,7 @@ MonoBehaviour:
   contentManifest: {fileID: 11400000, guid: 5e6f7a8b9c0d41e2f3a4b5c6d7e8f9a0, type: 2}
   player: {fileID: 702985766}
   spawner: {fileID: 2021865331}
-  totalEnemies: 5
+  totalEnemies: 6
   playerUI: {fileID: 1443930321}
   enemyUI: {fileID: 1943876542}
 --- !u!1 &479253542
@@ -2856,6 +2856,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c6d7e8f90123456789abcdef02345678, type: 2}
   - {fileID: 11400000, guid: d7e8f90123456789abcdef0234567890, type: 2}
   - {fileID: 11400000, guid: e8f90123456789abcdef023456789012, type: 2}
+  - {fileID: 11400000, guid: d1eb6f2ae14d443faf3ecd6ec17486e7, type: 2}
 --- !u!1 &2072405811
 GameObject:
   m_ObjectHideFlags: 0
