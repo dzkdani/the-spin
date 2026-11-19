@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 6633471249439355389}
   - component: {fileID: 8659105866794387965}
   - component: {fileID: 4968648668799547481}
+  - component: {fileID: 1900000000000000101}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -599,3 +600,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402532d4e4cb3984298961b29f10c17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeyController
+--- !u!114 &1900000000000000101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7373601026641001770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de9912f64424cadbd24a38f298e247b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BeyElementTint
+  outerLayer: {fileID: 5015929683903707256}
+  middleLayer: {fileID: 8921491448117665603}
+  innerLayer: {fileID: 7738308273016393432}

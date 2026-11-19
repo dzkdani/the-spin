@@ -30,6 +30,20 @@ layer.
 The five non-neutral elements form a ring. Neutral sits outside the ring and is
 always 1.0 in both directions.
 
+### Visual tint
+
+`BeyElementTint` on `Player.prefab` and `Enemy.prefab` reads
+`BeyData.Elements.Current.color` and tints the three sprite layers:
+
+- outer = element color
+- middle = 35% toward white
+- inner = 70% toward white
+
+It applies in `Start` (after `BeyBlueprint.Configure`) and re-applies in `Update`
+whenever the current element changes, so an ability-driven element flip also
+changes the colors. The enemy's `BeyVisualRandomizer` still randomizes layer
+**sprites**; its random palette is overridden by the tint.
+
 ---
 
 ## 2. Matchup matrix
@@ -287,5 +301,6 @@ matrix was re-run after this pass and all 18 still pass the band. Re-run
 - Only ring strong/weak pairs differ; 3 of 5 opponents are neutral for any given
   element.
 - Neutral has no bonus and a no-op status asset.
-- No element-specific hit VFX; feedback is the HUD `STATUS` line and bar decay.
+- No element-specific hit VFX; feedback is the HUD `STATUS` line, bar decay, and
+  the sprite tint.
 - Type (ATK/DEF/BAL) currently dominates element in practice.
