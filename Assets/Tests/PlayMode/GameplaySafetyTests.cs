@@ -93,6 +93,103 @@ public class GameplaySafetyTests
         }
     }
 
+    [UnityTest]
+    public IEnumerator WaveResetIgnoresSerializedToggles()
+    {
+        GameObject playerObject = new GameObject("Player");
+        GameObject managerObject = new GameObject("GameManager");
+
+        try
+        {
+            playerObject.SetActive(false);
+            managerObject.SetActive(false);
+
+            Component data = playerObject.AddComponent(
+                GetProductionType("BeyData"));
+
+            object stats = ScriptableObject.CreateInstance(
+                GetProductionType("BeyStats"));
+
+            SetField(stats, "maxRPM", 3000f);
+            SetBackingField(data, "Base", stats);
+            InvokePrivateMethod(data, "Awake");
+
+            Component controller = playerObject.AddComponent(
+                GetProductionType("BeyController"));
+
+            SetBackingField(controller, "Data", data);
+
+            Component manager = managerObject.AddComponent(
+                GetProductionType("GameManager"));
+
+            SetPrivateField(manager, "player", controller);
+
+            ClearBoolFields(manager);
+
+            InvokeMethod(data, "ReduceRPM", 1200f);
+
+            Assert.AreEqual(
+                1800f,
+                (float)GetProperty(data, "CurrentRPM"),
+                0.01f);
+
+            InvokePrivateMethod(manager, "ResetPlayerForNextWave");
+
+            Assert.AreEqual(
+                3000f,
+                (float)GetProperty(data, "CurrentRPM"),
+                0.01f);
+
+            yield return null;
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(playerObject);
+            UnityEngine.Object.DestroyImmediate(managerObject);
+        }
+    }
+
+    private static void SetField(object instance, string fieldName, object value)
+    {
+        FieldInfo field = instance.GetType().GetField(
+            fieldName,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+        field.SetValue(instance, value);
+    }
+
+    private static void SetBackingField(
+        object instance,
+        string propertyName,
+        object value)
+    {
+        SetField(instance, "<" + propertyName + ">k__BackingField", value);
+    }
+
+    private static void ClearBoolFields(object instance)
+    {
+        foreach (FieldInfo field in instance.GetType().GetFields(
+            BindingFlags.Instance | BindingFlags.NonPublic))
+        {
+            if (field.FieldType == typeof(bool))
+                field.SetValue(instance, false);
+        }
+    }
+
+    private static object InvokeMethod(
+        object instance,
+        string methodName,
+        params object[] args)
+    {
+        MethodInfo method = instance.GetType().GetMethod(
+            methodName,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+        Assert.IsNotNull(method, methodName + " must exist.");
+
+        return method.Invoke(instance, args);
+    }
+
     private static void SetPrivateField(object instance, string fieldName, object value)
     {
         FieldInfo field = instance.GetType().GetField(

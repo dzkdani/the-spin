@@ -1224,7 +1224,7 @@ Simulation drives numbers. Playtests decide whether fights feel readable. Both a
 
 ### 20.5 Game Feel Test (run after all features are online)
 
-**Preconditions:** player and enemy prefabs assemble from `BeyBlueprint`; all 18 reference builds and 7 parts still pass their bands; `Bey/Battle Debug` is open. Demo slice wires `BattleScene` with six enemy blueprints — one per element (Neutral plus all five ring members) — a battle HUD, and a hidden title Continue button. Player RPM, elemental statuses, and position reset after each cleared wave so every element matchup is tested from the same starting state.
+**Preconditions:** player and enemy prefabs assemble from `BeyBlueprint`; all 18 reference builds and 7 parts still pass their bands; `Bey/Battle Debug` is open. Demo slice wires `BattleScene` with six enemy blueprints — one per element (Neutral plus all five ring members) — a battle HUD, and a hidden title Continue button. Player RPM, elemental statuses, and position reset unconditionally just before the next enemy spawns, so every element matchup starts from the same state regardless of scene serialization.
 
 **A. Core loop**
 
@@ -1368,6 +1368,7 @@ Fill in as each phase lands.
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: player/enemy maxRPM normalized to 3000 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
+| 20 | Wave reset always runs at next spawn; drop the unserialized toggle that disabled it | Fix wave reset |
 | 9 | Retreat orbits the arena center with inward edge bias; jitter skipped while retreating | §16 |
 | 11 | Each feature recorded as it lands | Phase 11 |
 | 11 | Same-spin, clash, and dash-hit multipliers added (same-spin neutral by default) | §14.1, §15 |

@@ -25,9 +25,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BeyUI playerUI;
     [SerializeField] private BeyUI enemyUI;
 
-    [Header("Demo")]
-    [SerializeField] private bool resetPlayerBetweenWaves = true;
-
     public int CurrentEnemyIndex => enemiesDefeated + 1;
     public int TotalEnemies => totalEnemies;
 
@@ -141,19 +138,13 @@ public class GameManager : MonoBehaviour
         if (battle.Finished)
             return;
 
-        ResetPlayerForNextWave();
-
         StartCoroutine(SpawnNextAfterDelay(1f));
     }
 
     private void ResetPlayerForNextWave()
     {
-        if (!resetPlayerBetweenWaves ||
-            player == null ||
-            player.Data == null)
-        {
+        if (player == null || player.Data == null)
             return;
-        }
 
         player.Data.RestoreRPM();
         player.Data.Stats.RemoveBySourcePrefix("element:");
@@ -172,6 +163,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
+        ResetPlayerForNextWave();
         SpawnNextEnemy();
     }
 
