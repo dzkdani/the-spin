@@ -15,7 +15,7 @@ public readonly struct BattleSnapshot
     public readonly bool[] ActiveReady;
     public readonly float[] ActiveCooldowns;
     public readonly Vector2 ArenaCenter;
-    public readonly float ArenaRadius;
+    public readonly Vector2 ArenaRadii;
 
     public BattleSnapshot(
         float selfRpm,
@@ -71,7 +71,7 @@ public readonly struct BattleSnapshot
             activeReady,
             activeCooldowns,
             Vector2.zero,
-            0f)
+            Vector2.zero)
     {
     }
 
@@ -89,7 +89,7 @@ public readonly struct BattleSnapshot
         bool[] activeReady,
         float[] activeCooldowns,
         Vector2 arenaCenter,
-        float arenaRadius)
+        Vector2 arenaRadii)
     {
         SelfRpm = selfRpm;
         OpponentRpm = opponentRpm;
@@ -104,6 +104,6 @@ public readonly struct BattleSnapshot
         ActiveReady = activeReady;
         ActiveCooldowns = activeCooldowns;
         ArenaCenter = arenaCenter;
-        ArenaRadius = arenaRadius;
+        ArenaRadii = arenaRadii;
     }
 }

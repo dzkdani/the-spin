@@ -3,7 +3,8 @@ using UnityEngine;
 public sealed class RetreatBehavior : IAiBehavior
 {
     private const float OrbitSpeed = 3f;
-    private const float EdgeMargin = 0.8f;
+    private const float EdgeStart = 0.9f;
+    private const float ClampMargin = 0.08f;
     private const float Cooldown = 2f;
 
     private float nextAllowedAt = float.NegativeInfinity;
@@ -54,14 +55,20 @@ public sealed class RetreatBehavior : IAiBehavior
 
         float inwardStep = Mathf.Lerp(0f, OrbitSpeed * 0.5f, urgency);
 
-        if (snapshot.ArenaRadius > 0f)
-        {
-            float limit = snapshot.ArenaRadius - EdgeMargin;
+        bool bounded =
+            snapshot.ArenaRadii.x > 0f && snapshot.ArenaRadii.y > 0f;
 
-            if (radius > limit)
+        if (bounded)
+        {
+            float distance = ArenaBounds.NormalizedDistance(
+                snapshot.SelfPosition,
+                snapshot.ArenaCenter,
+                snapshot.ArenaRadii);
+
+            if (distance > EdgeStart)
             {
                 inwardStep +=
-                    Mathf.Clamp01((radius - limit) / EdgeMargin) *
+                    Mathf.Clamp01((distance - EdgeStart) / (1f - EdgeStart)) *
                     OrbitSpeed * 2f;
             }
         }
@@ -70,13 +77,13 @@ public sealed class RetreatBehavior : IAiBehavior
             tangent * tangentStep +
             inward * inwardStep;
 
-        if (snapshot.ArenaRadius > 0f)
+        if (bounded)
         {
-            float limit = snapshot.ArenaRadius - EdgeMargin;
-            Vector2 offset = target - snapshot.ArenaCenter;
-
-            if (offset.sqrMagnitude > limit * limit)
-                target = snapshot.ArenaCenter + offset.normalized * limit;
+            target = ArenaBounds.Clamp(
+                target,
+                snapshot.ArenaCenter,
+                snapshot.ArenaRadii,
+                ClampMargin);
         }
 
         return new AiCommand(target, false, -1);

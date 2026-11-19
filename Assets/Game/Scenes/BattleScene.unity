@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 39808802}
   - component: {fileID: 39808801}
+  - component: {fileID: 1900000000000000201}
   m_Layer: 0
   m_Name: Arena
   m_TagString: Untagged
@@ -185,7 +186,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -4473841763632299001, guid: 2b9c51ca27ba876478bb53c6d4032c33, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9891eb16125f49b2ba3bb7e2a584588a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -587,7 +588,7 @@ Transform:
   m_GameObject: {fileID: 353981873}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.7, y: 3.4, z: 0}
+  m_LocalPosition: {x: -5.2, y: 2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,6 +644,7 @@ MonoBehaviour:
   totalEnemies: 6
   playerUI: {fileID: 1443930321}
   enemyUI: {fileID: 1943876542}
+  arena: {fileID: 1900000000000000201}
 --- !u!1 &479253542
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,6 +694,7 @@ GameObject:
   - component: {fileID: 487802333}
   - component: {fileID: 487802337}
   - component: {fileID: 487802336}
+  - component: {fileID: 1900000000000000202}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -929,7 +932,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 584957523}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -1270,7 +1273,7 @@ Transform:
   m_GameObject: {fileID: 727166251}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: -3.6, z: 0}
+  m_LocalPosition: {x: -5.2, y: -2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1433,7 +1436,7 @@ Transform:
   m_GameObject: {fileID: 1084668896}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.2, y: -3.4, z: 0}
+  m_LocalPosition: {x: 5.2, y: -2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1687,7 +1690,7 @@ Transform:
   m_GameObject: {fileID: 1414716363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: -0.3, z: 0}
+  m_LocalPosition: {x: 5.2, y: 2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1928,7 +1931,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688287610}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -2187,7 +2190,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1780332280}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -3109,7 +3112,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124995463}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -3206,3 +3209,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a4b5c6d7e8f90123456789abcdef01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleHUD
+--- !u!114 &1900000000000000201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39808800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5d4f2590014c9a958d6dce1a42a2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArenaBounds
+  arenaCenter: {x: 0, y: 0}
+  arenaRadii: {x: 8.2, y: 4.4}
+  wallScale: 1.05
+  wallSegments: 64
+--- !u!114 &1900000000000000202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487802332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7cf457b20e64af3a8889f705239c588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArenaFraming
+  arena: {fileID: 1900000000000000201}
+  targetCamera: {fileID: 487802334}
+  margin: 0.5

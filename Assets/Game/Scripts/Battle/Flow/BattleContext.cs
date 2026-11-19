@@ -6,7 +6,7 @@ public readonly struct BattleContext
     public readonly int EnemiesDefeated;
     public readonly int TotalEnemies;
     public readonly Vector2 PlayerPosition;
-    public readonly float ArenaRadius;
+    public readonly Vector2 ArenaRadii;
     public readonly bool PlayerBurst;
     public readonly bool EnemyBurst;
 
@@ -19,7 +19,7 @@ public readonly struct BattleContext
             enemiesDefeated,
             totalEnemies,
             Vector2.zero,
-            0f,
+            Vector2.zero,
             false,
             false)
     {
@@ -30,13 +30,13 @@ public readonly struct BattleContext
         int enemiesDefeated,
         int totalEnemies,
         Vector2 playerPosition,
-        float arenaRadius)
+        Vector2 arenaRadii)
         : this(
             playerRpm,
             enemiesDefeated,
             totalEnemies,
             playerPosition,
-            arenaRadius,
+            arenaRadii,
             false,
             false)
     {
@@ -47,7 +47,7 @@ public readonly struct BattleContext
         int enemiesDefeated,
         int totalEnemies,
         Vector2 playerPosition,
-        float arenaRadius,
+        Vector2 arenaRadii,
         bool playerBurst,
         bool enemyBurst)
     {
@@ -55,7 +55,7 @@ public readonly struct BattleContext
         EnemiesDefeated = enemiesDefeated;
         TotalEnemies = totalEnemies;
         PlayerPosition = playerPosition;
-        ArenaRadius = arenaRadius;
+        ArenaRadii = arenaRadii;
         PlayerBurst = playerBurst;
         EnemyBurst = enemyBurst;
     }

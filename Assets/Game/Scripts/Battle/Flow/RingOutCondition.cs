@@ -8,7 +8,12 @@ public sealed class RingOutCondition : IWinCondition
 
     public bool IsSatisfied(in BattleContext context)
     {
-        return context.ArenaRadius > 0f &&
-            context.PlayerPosition.magnitude > context.ArenaRadius;
+        if (context.ArenaRadii.x <= 0f || context.ArenaRadii.y <= 0f)
+            return false;
+
+        return ArenaBounds.NormalizedDistance(
+            context.PlayerPosition,
+            Vector2.zero,
+            context.ArenaRadii) > 1f;
     }
 }

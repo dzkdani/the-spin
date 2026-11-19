@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RetreatBehaviorTests
 {
-    private const float ArenaRadius = 8f;
+    private static readonly Vector2 ArenaRadii = new Vector2(8f, 8f);
 
     [Test]
     public void RetreatOrbitsAroundArenaCenter()
@@ -39,7 +39,9 @@ public class RetreatBehaviorTests
 
         Vector2 target = Decide(profile, snapshot);
 
-        Assert.LessOrEqual(target.magnitude, ArenaRadius - 0.8f + 0.0001f);
+        Assert.LessOrEqual(
+            target.magnitude,
+            ArenaRadii.x * 0.92f + 0.0001f);
     }
 
     [Test]
@@ -152,6 +154,6 @@ public class RetreatBehaviorTests
             System.Array.Empty<bool>(),
             System.Array.Empty<float>(),
             Vector2.zero,
-            ArenaRadius);
+            ArenaRadii);
     }
 }

@@ -33,7 +33,7 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
     private AbilityRunner runner;
     private IBattleStateGate gate;
     private Vector2 arenaCenter;
-    private float arenaRadius;
+    private Vector2 arenaRadii;
     private float windUpTimer;
     private float dashCooldown;
     private float abilityCooldown;
@@ -65,10 +65,10 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
         target = newTarget;
     }
 
-    public void SetArena(Vector2 center, float radius)
+    public void SetArena(Vector2 center, Vector2 radii)
     {
         arenaCenter = center;
-        arenaRadius = radius;
+        arenaRadii = radii;
     }
 
     private void Update()
@@ -160,6 +160,6 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
             activeReady,
             activeCooldowns,
             arenaCenter,
-            arenaRadius);
+            arenaRadii);
     }
 }

@@ -100,7 +100,7 @@ public class BattleFlowTests
             0,
             4,
             new Vector2(9f, 0f),
-            8f);
+            new Vector2(8f, 8f));
 
         object inside = ProductionReflection.New(
             "BattleContext",
@@ -108,7 +108,7 @@ public class BattleFlowTests
             0,
             4,
             new Vector2(1f, 0f),
-            8f);
+            new Vector2(8f, 8f));
 
         Assert.IsTrue((bool)ProductionReflection.Call(
             condition,
@@ -140,7 +140,7 @@ public class BattleFlowTests
             0,
             4,
             Vector2.zero,
-            8f,
+            new Vector2(8f, 8f),
             true,
             false);
 
@@ -169,7 +169,7 @@ public class BattleFlowTests
             0,
             4,
             Vector2.zero,
-            8f,
+            new Vector2(8f, 8f),
             false,
             true);
 

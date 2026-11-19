@@ -994,8 +994,9 @@ public struct AiCommand
 
 ## 17. Battle Flow
 
-Ring-out is designed but **not implemented**; the future-slice spec lives in
-`ring out feature.md` (boundary, scene blockers, code points, tests, risks).
+Arena geometry, art, camera framing, and physics boundary are documented in
+`arena system.md`. Ring-out is designed but **not implemented**; the future-slice
+spec lives in `ring out feature.md`.
 
 `BattleController` runs `Countdown → Fighting → Finished(result)` and evaluates the `IWinCondition` list each tick.
 

@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour
     [Header("Enemy")]
     [SerializeField] private EnemySpawner spawner;
     [SerializeField] private int totalEnemies = 2;
-    [SerializeField] private float arenaRadius = 8f;
+
+    [Header("Arena")]
+    [SerializeField] private ArenaBounds arena;
 
     [Header("UI")]
     [SerializeField] private BeyUI playerUI;
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
         battle.AddCondition(new BurstCondition(true));
         battle.AddCondition(new BurstCondition(false));
         battle.AddCondition(new RpmDepletedCondition());
-        battle.AddCondition(new RingOutCondition());
+        // RingOutCondition is intentionally unregistered: ring-out is a future slice.
         battle.AddCondition(new EnemiesClearedCondition());
 
         BattleEvents.ImpactPending -= OnImpactPending;
@@ -112,7 +114,9 @@ public class GameManager : MonoBehaviour
         if (enemy.Input is EnemyInput enemyInput)
         {
             enemyInput.SetTarget(player);
-            enemyInput.SetArena(Vector2.zero, arenaRadius);
+
+            if (arena != null)
+                enemyInput.SetArena(arena.Center, arena.Radii);
         }
 
         enemyUI.Bind(currentEnemy);
@@ -179,7 +183,7 @@ public class GameManager : MonoBehaviour
             player != null
                 ? (Vector2)player.transform.position
                 : Vector2.zero,
-            arenaRadius,
+            arena != null ? arena.Radii : Vector2.zero,
             playerBurst,
             enemyBurst);
 
