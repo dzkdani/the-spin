@@ -1159,7 +1159,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Element-typed damage (optional).
 - Part synergies (optional). Pairs of parts that unlock a bonus.
 - **Exit per feature:** adds new files only. The solver, `BattleCombat`, and the existing rules are unchanged.
-- **Status: partial - seven features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`), and a `BurstCondition` triggered when one impact deals at least 50% of the target's max RPM. Element-typed damage is implemented as §11.7 on-hit statuses, and part synergies are implemented in §13.8. Both are in the status-aware balance matrix.
+- **Status: partial - seven features landed.** `SameSpinRule` (tuning default neutral), `ClashRule`, `DashHitRule` (contact flags from `BeyPhysics.IsDashing`), `SpinStealRule` (opposite-spin RPM gain), `RingOutCondition` with an arena radius, `FinishReason` plumbing (`RpmDepleted`/`RingOut`/`Burst`), and a `BurstCondition` triggered when one impact deals at least 80% of the target's max RPM (raised from 50% after dash-clash one-shots). Element-typed damage is implemented as §11.7 on-hit statuses, and part synergies are implemented in §13.8. Both are in the status-aware balance matrix.
 
 ---
 
@@ -1351,7 +1351,7 @@ Fill in as each phase lands.
 | 8b | Active abilities simulated: cost, cooldown, forced dash, next-impact scaling | §20.4 |
 | 8b | Deferred: position/ring-out model to value mobility and Burst Dash | §20.4 |
 | 8b | Mobility/ring-out model in part sim; all seven parts pass the slot band | §20.4 |
-| 11 | Burst condition: one impact ≥ 50% of max RPM | §17 |
+| 11 | Burst condition: one impact ≥ 80% of max RPM (raised from 50%) | §17 |
 | 7 | Counter Spin, Ember Core, Last Spin, Ignition authored | §12.8 |
 | 9 | AI Use Active behavior and headless profile simulation | §16 |
 | 20 | Battle Debug window, impact trace, overlay | §20.3 |

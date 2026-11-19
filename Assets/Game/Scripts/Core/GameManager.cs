@@ -216,11 +216,13 @@ public class GameManager : MonoBehaviour
             ResolveBattle();
     }
 
-    private static bool IsBurst(float damage, BeyData target)
+    public const float BurstThreshold = 0.8f;
+
+    public static bool IsBurst(float damage, BeyData target)
     {
         return target != null &&
             target.Base != null &&
             target.Base.maxRPM > 0f &&
-            damage >= target.Base.maxRPM * 0.5f;
+            damage >= target.Base.maxRPM * BurstThreshold;
     }
 }
