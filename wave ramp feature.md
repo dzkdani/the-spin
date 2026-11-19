@@ -1,7 +1,7 @@
 # Wave Ramp — Future Slice
 
-**Status: design only. Not implemented. Priority 2**, after `ring out feature.md`,
-before `arena art feature.md`.
+**Status: implemented.** Ring-out is done; `arena art feature.md` remains the
+last future slice.
 
 Goal: a difficulty curve across the six demo waves that does not break the
 element comparison that the checkpoint reset was built for.
@@ -42,9 +42,11 @@ fair. Any HP scaling should be a separate, explicit follow-up.
 
 ## 3. Levers, ranked
 
-1. **AI profile data only (recommended)** — zero code. Each wave already has its
-   own `AiProfile`, so tune `dashChanceFar`, `dashChanceNear`, `decisionInterval`,
-   `commitTime`, and behavior weights per wave.
+1. **AI profile data only (chosen)** — zero code. Each wave already has its own
+   `AiProfile`. Note: `dashChanceFar` / `dashChanceNear` were **dead fields** — no
+   behavior read them — so they were removed from `AiProfile` and all six assets.
+   The live aggression knobs are `strikeWeight`, `dashAggression`,
+   `pressureWeight`, `strikeRange`, and `dashIntervalMin/Max`.
 2. **Per-wave chassis HP** — needs code: clone `BeyStats` at spawn via
    `ScriptableObject.Instantiate` and add `BeyData.SetChassis(BeyStats)` to update
    `Base` and `CurrentRPM`. Six new assets or a runtime multiplier.
@@ -54,19 +56,22 @@ fair. Any HP scaling should be a separate, explicit follow-up.
 
 ## 4. Proposed data-only ramp
 
-Keep the personality names; make the aggression numbers monotonic:
+Applied values. Personality names stay; the live aggression numbers are monotonic:
 
-| Wave | Profile | Dash far | Dash near | Commit | Decision |
-|---|---|---|---|---|---|
-| 1 | Calm | 0.30 | 0.05 | 0.90 | 0.18 |
-| 2 | Pressure | 0.40 | 0.08 | 0.78 | 0.17 |
-| 3 | Tank | 0.50 | 0.12 | 0.70 | 0.16 |
-| 4 | Counter | 0.60 | 0.16 | 0.62 | 0.15 |
-| 5 | Climax | 0.70 | 0.20 | 0.54 | 0.14 |
-| 6 | Gyre | 0.80 | 0.24 | 0.48 | 0.13 |
+| Wave | Profile | Strike | Aggression | Pressure | Strike range | Dash interval |
+|---|---|---|---|---|---|---|
+| 1 | Calm | 0.6 | 0.20 | 1.2 | 4.0 | 2.5–4.0 |
+| 2 | Pressure | 0.8 | 0.36 | 1.1 | 4.2 | 2.2–3.6 |
+| 3 | Tank | 1.0 | 0.52 | 1.0 | 4.4 | 1.9–3.2 |
+| 4 | Counter | 1.2 | 0.68 | 0.9 | 4.6 | 1.6–2.8 |
+| 5 | Climax | 1.4 | 0.84 | 0.8 | 4.8 | 1.3–2.4 |
+| 6 | Gyre | 1.6 | 1.00 | 0.7 | 5.0 | 1.0–2.0 |
 
-Keep `retreatRpm: 0.15` and `retreatWeight: 0.6` for all profiles so the softer
-retreat stays consistent. Type and element assets stay unchanged.
+`commitTime` (0.6) and `decisionInterval` (0.15) are now **equal across profiles**:
+a shorter commit actually lowers the simulated dash count because the brain
+repeats the cached command, so ramping them broke monotonicity. `activeWeight`
+is 1.0 everywhere. `retreatRpm: 0.15` and `retreatWeight: 0.6` stay fixed.
+Type and element assets are unchanged.
 
 This raises pressure without changing HP or damage, so fight length falls a
 little on later waves. Verify against the 40–60 s target.
@@ -85,9 +90,12 @@ If aggression alone is not enough:
 
 ## 6. Tests
 
-- EditMode: `AiSimulation` dash counts rise monotonically across the six profiles.
-- PlayMode: full six-wave run; record clear time per wave and player RPM left.
-- Regression: checkpoint reset still restores full RPM at each wave.
+- EditMode `WaveRampTests.DashPressureNeverFallsAcrossWaves` — `AiSimulation`
+  dash counts are non-decreasing across the six profiles. RED before the ramp
+  (AI_Tank 12 vs AI_Pressure 36), GREEN after.
+- `ContentFoundationTests` updated after removing the dead dash-chance fields.
+- EditMode 98/98, PlayMode 20/20.
+- Remaining: full six-wave playtest to record clear time per wave.
 
 ---
 
@@ -103,8 +111,8 @@ If aggression alone is not enough:
 
 ## 8. Slice checklist
 
-1. Decide data-only vs data + HP ramp.
-2. Apply per-profile values.
-3. Add `AiSimulation` monotonic test.
-4. Run the six-wave playtest and record clear times.
-5. Update `battle system.md` §16 and changelog.
+1. Remove dead dash-chance fields — done.
+2. Apply per-profile values — done.
+3. Add `AiSimulation` monotonic test — done.
+4. Run the six-wave playtest and record clear times — pending.
+5. Update `battle system.md` §16 and changelog — done.

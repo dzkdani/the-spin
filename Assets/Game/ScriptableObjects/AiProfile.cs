@@ -13,10 +13,6 @@ public class AiProfile : ContentDefinition
     [Header("Dash")]
     public float farDistance = 4f;
 
-    public float dashChanceFar = 0.7f;
-
-    public float dashChanceNear = 0.2f;
-
     public float dashIntervalMin = 1.5f;
 
     public float dashIntervalMax = 3f;

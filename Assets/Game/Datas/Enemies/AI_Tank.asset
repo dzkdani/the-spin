@@ -17,18 +17,16 @@ MonoBehaviour:
   jitterRadius: 0.6
   jitterInterval: 1
   farDistance: 3
-  dashChanceFar: 0.2
-  dashChanceNear: 0.05
-  dashIntervalMin: 2.5
-  dashIntervalMax: 4.5
-  decisionInterval: 0.18
-  commitTime: 0.8
-  pressureWeight: 0.5
+  dashIntervalMin: 1.9
+  dashIntervalMax: 3.2
+  decisionInterval: 0.15
+  commitTime: 0.6
+  pressureWeight: 1
   elementWeight: 0.4
   baitWeight: 0.8
-  strikeWeight: 0.5
+  strikeWeight: 1
   retreatWeight: 0.6
-  activeWeight: 0.3
-  strikeRange: 3.2
+  activeWeight: 1
+  strikeRange: 4.4
   retreatRpm: 0.15
-  dashAggression: 0.2
+  dashAggression: 0.52
