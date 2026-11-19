@@ -107,9 +107,9 @@ That leaves room for a future ring-out condition to fire first.
 
 ## 6. Ring-out
 
-`RingOutCondition` now uses elliptical normalized distance, but it is
-**intentionally not registered** in `BattleController` — ring-out remains a
-future slice. See `ring out feature.md` for the full design.
+`RingOutCondition` uses elliptical normalized distance and **is registered** in
+`BattleController`. `GameManager` checks both beys every 0.05 s; player out loses,
+enemy out wins or advances the wave. See `ring out feature.md`.
 
 No RPM is lost when a bey crosses the ring; the finish reason would carry the
 result.
@@ -143,5 +143,5 @@ result.
 - The camera background is dark blue; the placeholder art is full-bleed tan, so
   any aspect extreme can reveal a thin strip of background.
 - The disabled legacy wall children are still in the scene.
-- Ring-out is not enabled.
+- Ring-out is enabled; manual six-wave playtest still pending.
 - There is no visible edge warning; the white ring is the only cue.

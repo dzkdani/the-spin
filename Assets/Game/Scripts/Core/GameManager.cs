@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
     private BattleController battle;
     private bool playerBurst;
     private bool enemyBurst;
+    private float ringOutTimer;
+
+    private const float RingOutCheckInterval = 0.05f;
 
     private void Awake()
     {
@@ -80,7 +83,7 @@ public class GameManager : MonoBehaviour
         battle.AddCondition(new BurstCondition(true));
         battle.AddCondition(new BurstCondition(false));
         battle.AddCondition(new RpmDepletedCondition());
-        // RingOutCondition is intentionally unregistered: ring-out is a future slice.
+        battle.AddCondition(new RingOutCondition());
         battle.AddCondition(new EnemiesClearedCondition());
 
         BattleEvents.ImpactPending -= OnImpactPending;
@@ -91,6 +94,58 @@ public class GameManager : MonoBehaviour
         playerUI.Bind(player.Data);
 
         SpawnNextEnemy();
+    }
+
+    private void Update()
+    {
+        if (battle == null || battle.Finished || arena == null ||
+            Time.timeScale <= 0f)
+            return;
+
+        ringOutTimer -= Time.deltaTime;
+
+        if (ringOutTimer > 0f)
+            return;
+
+        ringOutTimer = RingOutCheckInterval;
+        CheckRingOut();
+    }
+
+    private void CheckRingOut()
+    {
+        if (player != null && player.transform != null)
+        {
+            Vector2 playerPos = player.transform.position;
+
+            if (ArenaBounds.NormalizedDistance(
+                    playerPos, arena.Center, arena.Radii) > 1f)
+            {
+                ResolveBattle();
+                return;
+            }
+        }
+
+        if (currentEnemy == null || currentEnemy.transform == null)
+            return;
+
+        Vector2 enemyPos = currentEnemy.transform.position;
+
+        if (ArenaBounds.NormalizedDistance(
+                enemyPos, arena.Center, arena.Radii) <= 1f)
+            return;
+
+        if (CurrentEnemyIndex >= totalEnemies)
+        {
+            battle.Finish(GameResult.Win, FinishReason.RingOut);
+
+            ServiceLocator.Get<GameUIManager>()?.ShowGameOver(
+                GameResult.Win,
+                FinishReason.RingOut);
+
+            return;
+        }
+
+        DefeatEnemy();
     }
 
     private void SpawnNextEnemy()
@@ -126,17 +181,31 @@ public class GameManager : MonoBehaviour
 
     private void EnemyDefeated()
     {
+        if (currentEnemy == null)
+            return;
+
         currentEnemy.OnRPMDepleted -= EnemyDefeated;
+        DefeatEnemy();
+    }
 
-        enemyUI.Bind(null);
+    private void DefeatEnemy()
+    {
+        if (currentEnemy == null)
+            return;
 
-        Destroy(currentEnemy.gameObject);
+        BeyData defeated = currentEnemy;
+
+        currentEnemy = null;
+        defeated.OnRPMDepleted -= EnemyDefeated;
+
+        enemyUI?.Bind(null);
+
+        Destroy(defeated.gameObject);
 
         if (battle == null || battle.Finished)
             return;
 
         enemiesDefeated++;
-
         ResolveBattle();
 
         if (battle.Finished)

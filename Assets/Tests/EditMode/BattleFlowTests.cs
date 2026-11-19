@@ -194,6 +194,26 @@ public class BattleFlowTests
             Context(100f, 0, 4)));
     }
 
+    [Test]
+    public void BattleControllerFinishSetsResultAndReason()
+    {
+        object controller = ProductionReflection.New("BattleController");
+
+        ProductionReflection.Call(
+            controller,
+            "Finish",
+            ProductionReflection.EnumValue("GameResult", "Win"),
+            ProductionReflection.EnumValue("FinishReason", "RingOut"));
+
+        Assert.IsTrue((bool)ProductionReflection.Property(controller, "Finished"));
+        Assert.AreEqual(
+            "Win",
+            ProductionReflection.Property(controller, "Result").ToString());
+        Assert.AreEqual(
+            "RingOut",
+            ProductionReflection.Property(controller, "Reason").ToString());
+    }
+
     private static object Context(
         float playerRpm,
         int enemiesDefeated,

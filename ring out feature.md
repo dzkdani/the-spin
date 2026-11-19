@@ -1,12 +1,16 @@
 # Ring-Out Feature — Future Slice
 
-**Status: design only. Not implemented. Priority 1 of the future-slice queue**,
-followed by `wave ramp feature.md` and `arena art feature.md`.
+**Status: implemented.** Remaining future slices: `wave ramp feature.md` and
+`arena art feature.md`.
 
-`BattleContext` and `RingOutCondition`
-already use elliptical math, but `GameManager.Start` deliberately does **not**
-register `RingOutCondition`, so no ring-out occurs. `ResolveBattle` still runs only
-on RPM depletion, burst, or enemy defeat.
+`RingOutCondition` uses elliptical math and is registered in `GameManager.Start`.
+`GameManager.Update` checks both beys every 0.05 s:
+
+- player outside → `ResolveBattle()` → Lose / `RING OUT!`
+- enemy outside on the last wave → `BattleController.Finish(Win, RingOut)`
+- enemy outside on an earlier wave → `DefeatEnemy()` advances the wave
+
+`ResolveBattle` still also runs on RPM depletion, burst, and enemy defeat.
 
 The arena itself has been reworked to an ellipse; see `arena system.md`.
 
@@ -84,11 +88,11 @@ so wave starts are safe. Keep it that way.
 | File | State / change |
 |---|---|
 | `ArenaBounds.cs` | Done. Ellipse math, `NormalizedDistance`, `Clamp`, edge wall. |
-| `BattleContext.cs` | Done. Carries `ArenaRadii`. Add `EnemyPosition` in the slice. |
-| `RingOutCondition.cs` | Done (player lose, ellipse math). Add an enemy-win variant. |
-| `GameManager.cs` | Add a `RingOutTick()` accumulator in `Update`; gate on match state and `Time.timeScale`. |
-| `GameManager.cs` | Extract `DefeatEnemy()` from `EnemyDefeated()` so RPM depletion and ring-out share the wave-advance path. |
-| `GameManager.cs` | Register `RingOutCondition` in `Start()` (currently deliberately omitted). |
+| `BattleContext.cs` | Carries `ArenaRadii`. No `EnemyPosition` needed — `GameManager` checks the enemy transform directly. |
+| `RingOutCondition.cs` | Player lose, ellipse math; registered in `Start()`. |
+| `BattleController.cs` | `Finish(result, reason)` for the last-wave enemy win. |
+| `GameManager.cs` | `Update` accumulator at 0.05 s; `CheckRingOut()` gates on match state and `Time.timeScale`. |
+| `GameManager.cs` | `DefeatEnemy()` extracted from `EnemyDefeated()`, shared with ring-out wave advance. |
 | `GameUIManager.cs` | No change needed — already prints `RING OUT!` for `FinishReason.RingOut`. |
 
 `BattleSnapshot` already carries `ArenaCenter`/`ArenaRadii` for AI, sourced from
@@ -143,12 +147,12 @@ so wave starts are safe. Keep it that way.
 
 ## Slice checklist
 
-1. Add `EnemyPosition` to `BattleContext`.
-2. Add enemy-win ring-out condition.
-3. Add `GameManager.RingOutTick()` and `DefeatEnemy()`.
-4. Register the conditions in `Start()`.
-5. Add EditMode + PlayMode tests.
-6. Run suites, balance matrix, and the six-wave playtest.
-7. Update `battle system.md` §17 and changelog.
+1. Register `RingOutCondition` in `Start()` — done.
+2. Add `GameManager.Update` tick and `CheckRingOut()` — done.
+3. Extract `DefeatEnemy()` — done.
+4. Add `BattleController.Finish()` — done.
+5. Add EditMode flow tests — done (`RingOutFlowTests`, `BattleFlowTests`).
+6. Run suites — EditMode 97/97, PlayMode 20/20.
+7. Playtest all six waves and both ring-out directions.
 
-**Estimate:** 1–2 hours plus test and playtest time.
+Remaining verification: manual play test.

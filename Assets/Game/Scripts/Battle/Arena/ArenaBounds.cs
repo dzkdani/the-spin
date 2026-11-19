@@ -20,7 +20,8 @@ public sealed class ArenaBounds : MonoBehaviour
         if (Application.isPlaying)
             return;
 
-        BuildWall();
+        if (GetComponent<EdgeCollider2D>() != null)
+            BuildWall();
     }
 
     public float NormalizedDistance(Vector2 point)

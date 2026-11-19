@@ -17,6 +17,16 @@ public sealed class BattleController
             conditions.Add(condition);
     }
 
+    public void Finish(GameResult result, FinishReason reason)
+    {
+        if (Finished)
+            return;
+
+        Finished = true;
+        Result = result;
+        Reason = reason;
+    }
+
     public GameResult? Evaluate(in BattleContext context)
     {
         if (Finished)
@@ -27,9 +37,7 @@ public sealed class BattleController
             if (!conditions[i].IsSatisfied(context))
                 continue;
 
-            Finished = true;
-            Result = conditions[i].Result;
-            Reason = conditions[i].Reason;
+            Finish(conditions[i].Result, conditions[i].Reason);
 
             return Result;
         }
