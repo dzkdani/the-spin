@@ -28,8 +28,8 @@ MonoBehaviour:
   elementWeight: 1.2
   baitWeight: 0.6
   strikeWeight: 1.6
-  retreatWeight: 0.9
+  retreatWeight: 0.6
   activeWeight: 1.4
   strikeRange: 5
-  retreatRpm: 0.2
+  retreatRpm: 0.15
   dashAggression: 1

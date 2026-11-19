@@ -60,6 +60,56 @@ public class RetreatBehaviorTests
             (Vector2)ProductionReflection.Field(command, "MoveTarget"));
     }
 
+    [Test]
+    public void RetreatOrbitZeroFallsBackToDefault()
+    {
+        object profile = CreateProfile(0f);
+        object snapshot = CreateSnapshot(new Vector2(5f, 0f), Vector2.zero);
+
+        Vector2 target = Decide(profile, snapshot);
+
+        Assert.Greater(
+            Mathf.Abs(target.y),
+            0.5f,
+            "An unserialized orbit value must still produce tangential drift.");
+    }
+
+    [Test]
+    public void RetreatSpiralsInwardAsRpmFalls()
+    {
+        object profile = CreateProfile(1f);
+        object weak = CreateSnapshot(
+            new Vector2(5f, 0f), Vector2.zero, selfRpm: 0.14f);
+        object dying = CreateSnapshot(
+            new Vector2(5f, 0f), Vector2.zero, selfRpm: 0.01f);
+
+        Assert.Less(
+            Decide(profile, dying).x,
+            Decide(profile, weak).x);
+    }
+
+    [Test]
+    public void RetreatCooldownBlocksImmediateRetry()
+    {
+        object behavior = ProductionReflection.New("RetreatBehavior");
+        object profile = CreateProfile(1f);
+        object snapshot = CreateSnapshot(new Vector2(5f, 0f), Vector2.zero);
+
+        ProductionReflection.Call(behavior, "Decide", snapshot, profile);
+
+        Assert.AreEqual(
+            0f,
+            (float)ProductionReflection.Call(behavior, "Score", snapshot, profile),
+            0.0001f);
+
+        object later = CreateSnapshot(
+            new Vector2(5f, 0f), Vector2.zero, now: 2.1f);
+
+        Assert.Greater(
+            (float)ProductionReflection.Call(behavior, "Score", later, profile),
+            0f);
+    }
+
     private static Vector2 Decide(object profile, object snapshot)
     {
         object behavior = ProductionReflection.New("RetreatBehavior");
@@ -75,17 +125,21 @@ public class RetreatBehaviorTests
             ProductionReflection.TypeOf("AiProfile"));
 
         ProductionReflection.SetField(profile, "retreatOrbit", orbit);
-        ProductionReflection.SetField(profile, "retreatRpm", 0.25f);
+        ProductionReflection.SetField(profile, "retreatRpm", 0.15f);
         ProductionReflection.SetField(profile, "retreatWeight", 2f);
 
         return profile;
     }
 
-    private static object CreateSnapshot(Vector2 self, Vector2 opponent)
+    private static object CreateSnapshot(
+        Vector2 self,
+        Vector2 opponent,
+        float selfRpm = 0.05f,
+        float now = 0f)
     {
         return ProductionReflection.New(
             "BattleSnapshot",
-            0.05f,
+            selfRpm,
             1f,
             self,
             opponent,
@@ -94,7 +148,7 @@ public class RetreatBehaviorTests
             null,
             false,
             1f,
-            0f,
+            now,
             System.Array.Empty<bool>(),
             System.Array.Empty<float>(),
             Vector2.zero,
