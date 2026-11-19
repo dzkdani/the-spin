@@ -19,7 +19,7 @@ MonoBehaviour:
   onHitModifiers:
   - stat: 0
     op: 2
-    value: 1.02
+    value: 1.08
     scope: 
   onHitAffectsSelf: 1
-  onHitDuration: 2
+  onHitDuration: 3

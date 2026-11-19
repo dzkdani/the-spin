@@ -1,12 +1,12 @@
 # Elemental System
 
 Reference for the-spin's element roster, matchup matrix, on-hit effects, claim
-resolution, and tuning. Reflects HEAD `72083f7`. See also `battle system.md`.
+resolution, and tuning. See also `battle system.md`.
 
 Elements are **not** cosmetic. Two mechanics are live:
 
 1. **Matchup multiplier** — outgoing damage is scaled by the attacker/defender
-   element pair (1.25 strong, 0.8 weak, 1.0 otherwise).
+   element pair (1.35 strong, 0.75 weak, 1.0 otherwise).
 2. **On-hit status** — a short stat modifier applied to the defender or the
    attacker after each resolved impact.
 
@@ -40,15 +40,15 @@ multiplier.
 | Attacker ↓ / Defender → | Neutral | Pyre | Crye | Gyre | Hydre | Sparke |
 |---|---|---|---|---|---|---|
 | **Neutral** | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
-| **Pyre** | 1.00 | 1.00 | **1.25** | 1.00 | **0.80** | 1.00 |
-| **Crye** | 1.00 | **0.80** | 1.00 | **1.25** | 1.00 | 1.00 |
-| **Gyre** | 1.00 | 1.00 | **0.80** | 1.00 | 1.00 | **1.25** |
-| **Hydre** | 1.00 | **1.25** | 1.00 | 1.00 | 1.00 | **0.80** |
-| **Sparke** | 1.00 | 1.00 | 1.00 | **0.80** | **1.25** | 1.00 |
+| **Pyre** | 1.00 | 1.00 | **1.35** | 1.00 | **0.75** | 1.00 |
+| **Crye** | 1.00 | **0.75** | 1.00 | **1.35** | 1.00 | 1.00 |
+| **Gyre** | 1.00 | 1.00 | **0.75** | 1.00 | 1.00 | **1.35** |
+| **Hydre** | 1.00 | **1.35** | 1.00 | 1.00 | 1.00 | **0.75** |
+| **Sparke** | 1.00 | 1.00 | 1.00 | **0.75** | **1.35** | 1.00 |
 
 Ring summary:
 
-| Element | Strong vs (1.25×) | Weak vs (0.8×) |
+| Element | Strong vs (1.35×) | Weak vs (0.75×) |
 |---|---|---|
 | Pyre | Crye | Hydre |
 | Crye | Gyre | Pyre |
@@ -88,18 +88,18 @@ current element is applied to the other side (or to itself when
 
 | Element | Target | Stat | Op | Value | Duration |
 |---|---|---|---|---|---|
-| Pyre | Defender | `RpmDecay` | Multiply | **1.80** | 2 s |
-| Crye | Defender | `Attack` | Multiply | **0.975** | 2 s |
-| Gyre | Defender | `Defense` | Multiply | **0.98** | 2 s |
-| Hydre | Attacker (self) | `RpmDecay` | Multiply | **0.97** | 2 s |
-| Sparke | Attacker (self) | `Attack` | Multiply | **1.02** | 2 s |
+| Pyre | Defender | `RpmDecay` | Multiply | **2.50** | 4 s |
+| Crye | Defender | `Attack` | Multiply | **0.90** | 3 s |
+| Gyre | Defender | `Weight` | Multiply | **0.90** | 3 s |
+| Hydre | Attacker (self) | `RpmDecay` | Multiply | **0.90** | 3 s |
+| Sparke | Attacker (self) | `Attack` | Multiply | **1.08** | 3 s |
 | Neutral | Defender | — | — | — | — |
 
 Plain-language:
 
 - **Pyre** — burn: the target loses RPM faster to passive decay.
 - **Crye** — chill: the target's attacks are weaker.
-- **Gyre** — gust: the target's defense is lower.
+- **Gyre** — gust: the target's weight is lower, so it gets knocked around more.
 - **Hydre** — siphon: the attacker's own decay is lower.
 - **Sparke** — surge: the attacker's own attack is higher.
 - **Neutral** — no status. The asset currently holds `stat: -1, value: 0`, which
@@ -198,27 +198,26 @@ Player: **Crye**, type **BAL**.
 | Wave | Enemy | Enemy element | Player deals | Player takes | Status applied to player |
 |---|---|---|---|---|---|
 | 1 | Warmup | Neutral | 1.00 | 1.00 | none |
-| 2 | Ember Press | Pyre | **0.80** | **1.25** | `RpmDecay ×1.8` |
+| 2 | Ember Press | Pyre | **0.75** | **1.35** | `RpmDecay ×2.5`, 4 s |
 | 3 | Tidal Wall | Hydre | 1.00 | 1.00 | none (Hydre buffs the enemy) |
-| 4 | Frost Counter | Crye | 1.00 | 1.00 | `Attack ×0.975` |
+| 4 | Frost Counter | Crye | 1.00 | 1.00 | `Attack ×0.90`, 3 s |
 | 5 | Final Surge | Sparke | 1.00 | 1.00 | none (Sparke buffs the enemy) |
-| 6 | Vortex Spin | Gyre | **1.25** | **0.80** | `Defense ×0.98` |
+| 6 | Vortex Spin | Gyre | **1.35** | **0.75** | `Weight ×0.90`, 3 s |
 
 The player's own Crye status lands on every enemy the player hits:
-`Attack ×0.975` for 2 s.
+`Attack ×0.90` for 3 s.
 
 ### Current feel
 
-The matchup swing is visible on waves 2 and 6. The statuses are numerically
-small on a 5000 RPM pool:
+The matchup swing is now large on waves 2 and 6. On a 5000 RPM pool:
 
-- Pyre burn ≈ **12 extra RPM** per proc (base decay 7.5 RPM/s × 1.8 for 2 s).
-- Crye chill ≈ **2.5%** weaker attacks for 2 s.
-- Gyre gust ≈ **2%** less defense for 2 s.
-- Hydre siphon ≈ **3%** less passive decay for 2 s.
-- Sparke surge ≈ **2%** more attack for 2 s.
+- Pyre burn ≈ **45 extra RPM** per proc (decay 7.5 → 18.75 RPM/s for 4 s).
+- Crye chill ≈ **10%** weaker attacks for 3 s.
+- Gyre gust ≈ **10%** less weight for 3 s (more knockback).
+- Hydre siphon ≈ **10%** less passive decay for 3 s.
+- Sparke surge ≈ **8%** more attack for 3 s.
 
-That is why element currently reads as a tag in normal play.
+These are large enough to feel during a wave.
 
 ---
 
@@ -233,19 +232,19 @@ That is why element currently reads as a tag in normal play.
 | `MatchupScale` | `StatId` modifiers | per-bey scaling of matchup deviation |
 | `damageMultiplier` | `CombatTuning.asset` | global damage scale |
 
-### Suggested stronger pass (not implemented)
+### Applied stronger pass
 
-| Element | Proposed |
-|---|---|
-| Pyre | `RpmDecay ×2.5`, 4 s |
-| Crye | `Attack ×0.90`, 3 s |
-| Gyre | `Defense ×0.90`, 3 s |
-| Hydre | `RpmDecay ×0.90`, 3 s |
-| Sparke | `Attack ×1.08`, 3 s |
-| Matchups | 1.35 strong / 0.75 weak |
+| Element | Value | Duration | Previous |
+|---|---|---|---|
+| Pyre | `RpmDecay ×2.5` | 4 s | ×1.8, 2 s |
+| Crye | `Attack ×0.90` | 3 s | ×0.975, 2 s |
+| Gyre | `Weight ×0.90` | 3 s | ×0.98, 2 s |
+| Hydre | `RpmDecay ×0.90` (self) | 3 s | ×0.97, 2 s |
+| Sparke | `Attack ×1.08` (self) | 3 s | ×1.02, 2 s |
+| Matchups | 1.35 strong / 0.75 weak | — | 1.25 / 0.8 |
 
-Re-run the status-aware balance matrix after any change; the 18 reference builds
-are tuned around the current values.
+The 18 reference builds in the status-aware balance matrix were tuned around the
+weaker values. Re-run `BalanceMatrixTests` after any further change.
 
 ---
 
@@ -280,7 +279,8 @@ are tuned around the current values.
 
 ## 10. Known gaps
 
-- Statuses are tuned low enough to be nearly invisible.
+- Statuses are now substantial; confirm they do not dominate type or dash
+  tactics in play.
 - Only ring strong/weak pairs differ; 3 of 5 opponents are neutral for any given
   element.
 - Neutral has no bonus and a no-op status asset.

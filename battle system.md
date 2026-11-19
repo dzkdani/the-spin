@@ -476,7 +476,7 @@ and authoring checklist: **`elemental system.md`**.
 
 The five non-neutral elements form a ring. Each is strong against one and weak against another. This is a placeholder for designers to review.
 
-| Element | Strong vs (×1.25 when attacking) | Weak vs (×0.8 when attacking) | Rationale |
+| Element | Strong vs (×1.35 when attacking) | Weak vs (×0.75 when attacking) | Rationale |
 |---|---|---|---|
 | Pyre | Crye | Hydre | Heat melts ice. Water douses fire. |
 | Crye | Gyre | Pyre | Ice wedge stalls the vortex. Heat melts ice. |
@@ -484,7 +484,7 @@ The five non-neutral elements form a ring. Each is strong against one and weak a
 | Sparke | Hydre | Gyre | Current runs through water. Wind scatters charge. |
 | Hydre | Pyre | Sparke | Water douses fire. Current runs through water. |
 
-A Pyre bey attacking a Crye bey uses ×1.25. A Crye bey attacking a Pyre bey uses ×0.8.
+A Pyre bey attacking a Crye bey uses ×1.35. A Crye bey attacking a Pyre bey uses ×0.75.
 
 ### 11.3 Neutral Rules
 
@@ -500,13 +500,16 @@ Pairs not listed in the matchup table are ×1.0.
 
 ```
 raw       = matchupTable[attacker, defender]     (1.0 if not listed)
-effective = 1 + (raw − 1) × min(attacker.MatchupScale, defender.MatchupScale)
+effective = 1 + (raw − 1) × attacker.MatchupScale
 ```
 
-- `MatchupScale` defaults to 1.0. Lower values dampen matchups involving that bey.
-- The `min` means the stronger dampening wins. Two dampened beys don't compound.
+`MatchupRule` scales each side's outgoing power with **that side's** `MatchupScale`; it
+does not take the minimum of the two. `MatchupScale` defaults to 1.0, and lower values
+dampen that bey's own matchup deviation (both advantages and disadvantages).
 
-Example: a Pyre bey (scale 1.0) attacks a Steady Core bey (scale 0.6). Raw is ×1.25, so effective is `1 + 0.25 × 0.6 = ×1.15`.
+Example: a Pyre bey (scale 1.0) attacking a Steady Core bey uses raw ×1.35, so its
+outgoing power stays ×1.35. A Steady Core bey (scale 0.6) attacking a Pyre bey uses raw
+×0.75, so its outgoing power becomes `1 + (−0.25 × 0.6) = ×0.85`.
 
 ### 11.5 Deciding the Element
 
@@ -534,15 +537,15 @@ What follows from this table:
 
 ### 11.7 On-Hit Statuses
 
-Every non-neutral element carries a short stat status, applied when it lands an impact and refreshed on each hit. `ElementStatusResolver` applies `ElementDefinition.onHitModifiers` for `onHitDuration` seconds (default 2). `onHitAffectsSelf` chooses the attacker or defender.
+Every non-neutral element carries a short stat status, applied when it lands an impact and refreshed on each hit. `ElementStatusResolver` applies `ElementDefinition.onHitModifiers` for `onHitDuration` seconds (3–4 in the tuned demo). `onHitAffectsSelf` chooses the attacker or defender.
 
 | Element | Status | Effect |
 |---|---|---|
-| Pyre | Burn | Target `RpmDecay ×1.8` |
-| Crye | Chill | Target `Attack ×0.975` |
-| Gyre | Gust | Target `Weight ×0.98` |
-| Hydre | Siphon | Self `RpmDecay ×0.97` |
-| Sparke | Surge | Self `Attack ×1.02` |
+| Pyre | Burn | Target `RpmDecay ×2.5`, 4 s |
+| Crye | Chill | Target `Attack ×0.90`, 3 s |
+| Gyre | Gust | Target `Weight ×0.90`, 3 s |
+| Hydre | Siphon | Self `RpmDecay ×0.90`, 3 s |
+| Sparke | Surge | Self `Attack ×1.08`, 3 s |
 | Neutral | None | — |
 
 The reference matrix now includes these statuses on per-duel stat clones.
@@ -1213,7 +1216,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Band.** Every reference build between 40% and 60% overall.
 
-**Reference run (25 seeds per direction, no parts).** All 18 builds pass the band with statuses on: ATK 46.4–55.3%, BAL 42.5–57.5%, DEF 41.4–59.5%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. The matrix stays exactly antisymmetric.
+**Reference run (25 seeds per direction, no parts).** All 18 builds pass the band with statuses on: ATK 46.4–55.3%, BAL 42.5–57.5%, DEF 41.4–59.5%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. The matrix stays exactly antisymmetric. These figures predate the stronger element pass; re-run the matrix against the new multipliers and status values.
 
 **Part simulation.** `PartSimulation.Run(...)` swaps each part into the `bal_neutral` control, applies its stat modifiers, element claim, granted `AddModifierEffect`/`ClaimElementEffect` values, and grants any active abilities. `BalanceActives` now simulates those actives: RPM cost, cooldown, `ForceDash`, `ScaleNextImpact`, and `DrainRpm`, with `AbilityCost`, `AbilityCooldown`, and scoped `AbilityPower` from the build's stats. `Bey/Run Part Simulation` writes `Logs/PartSimulation.csv`. Slot-band check: every part's delta within ±5 points of its slot average.
 
@@ -1245,7 +1248,7 @@ Simulation drives numbers. Playtests decide whether fights feel readable. Both a
 2. Crye chill makes enemy hits noticeably softer while it lasts.
 3. Gyre gust produces visibly stronger knockback.
 4. Hydre siphon slows the attacker's own decay; confirm in the debug stats.
-5. Sparke surge makes the next hits harder and refreshes on re-hit; all statuses expire after ~2s.
+5. Sparke surge makes the next hits harder and refreshes on re-hit; statuses expire after 3–4 s.
 
 **C. Parts and synergies**
 
@@ -1282,7 +1285,7 @@ Defaults are in brackets. Each one should be answered before the phase that depe
 **Design decisions**
 
 1. Element names and spelling, including Neutral. [Names as written.] *(Phase 6)*
-2. Ring and matchup multipliers 1.25 and 0.8. [Placeholders.] *(Phase 6)*
+2. Ring and matchup multipliers 1.35 and 0.75. [Applied; raised from 1.25/0.8 in the stronger-element pass.] *(Phase 6)*
 3. Type profiles and innate passives (§10). [Placeholders.] *(Phase 6)*
 4. Equipped loadout limits. [2 passive, 1 active.] *(Phase 7)*
 5. Granted limits across all parts. [2 passive, 1 active.] *(Phase 8)*
@@ -1365,6 +1368,7 @@ Fill in as each phase lands.
 | 6b | Live RPM decay (`BeyStats.rpmDecayRate`) and Tip Friction knockback resistance | §10 |
 | 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
 | 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
+| 6b | Stronger element pass: matchups 1.35/0.75, statuses 3–4 s at ×2.5/×0.9/×0.9/×0.9/×1.08 | §11 |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |
