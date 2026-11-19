@@ -16,6 +16,16 @@ public class ContentAssetsTests
 
         Assert.AreEqual("atk", Id(ProductionReflection.Field(enemy, "type")));
         Assert.AreEqual("pyre", Id(ProductionReflection.Field(enemy, "baseElement")));
+
+        Assert.AreEqual(
+            3000f,
+            (float)ProductionReflection.Field(player, "maxRPM"),
+            0.0001f);
+
+        Assert.AreEqual(
+            3000f,
+            (float)ProductionReflection.Field(enemy, "maxRPM"),
+            0.0001f);
     }
 
     [Test]
