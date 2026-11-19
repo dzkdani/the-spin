@@ -34,7 +34,8 @@ on all four sides.
 
 ## 2. Art
 
-`Assets/Game/Art/ArenaOval.png` is a **placeholder** drawn for this slice.
+`Assets/Game/Art/ArenaOval.png` is a textured sand/clay oval. The earlier flat
+placeholder is kept at `Assets/Game/Art/Placeholder/ArenaOval-placeholder.png`.
 
 | Property | Value |
 |---|---|

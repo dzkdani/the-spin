@@ -1,10 +1,16 @@
 # Arena Art — Future Slice
 
-**Status: design only. Not implemented. Priority 3**, after `ring out feature.md`
-and `wave ramp feature.md`.
+**Status: implemented.** This was the last future slice. The flat placeholder was
+replaced with a textured sand/clay oval; the geometry is unchanged.
 
 Goal: replace the procedural placeholder oval with real art **without changing
 the arena geometry**.
+
+The AI image generator was unavailable (insufficient credits), so the asset was
+drawn procedurally: a deterministic noise-based clay texture with a soft radial
+gradient, scuff arcs, speckles, the two white rings, the center disc, and 24
+radial ticks. A true artist asset can still be dropped in with the checklist
+below.
 
 ---
 
@@ -50,7 +56,8 @@ Geometry source of truth is `ArenaBounds`, not the art. See `arena system.md`.
 3. Import as **Single**, PPU **100**, filter Bilinear, max size 2048.
 4. Replace `ArenaOval.png` in place (keeps GUID and scene reference), or supply a
    new file and update the Arena SpriteRenderer.
-5. Keep the old placeholder in `Assets/Game/Art/Placeholder/` for rollback.
+5. The old placeholder is kept in `Assets/Game/Art/Placeholder/ArenaOval-placeholder.png`
+   for rollback; git history is the other backup.
 6. If the aspect or ring fraction changes, update `ArenaBounds.arenaRadii` and
    `ArenaFraming.margin` — the art must not redefine the physics boundary.
 
@@ -85,7 +92,7 @@ touches no scripts.
 
 ## 7. Slice checklist
 
-1. Produce the asset to the brief.
-2. Import and swap; keep placeholder for rollback.
-3. Capture the three aspect screenshots.
-4. Update `arena system.md` art section and changelog.
+1. Produce the asset to the brief — done (procedural texture).
+2. Import and swap; keep placeholder for rollback — done.
+3. Capture the three aspect screenshots — pending manual play check.
+4. Update `arena system.md` art section and changelog — done.

@@ -998,8 +998,8 @@ public struct AiCommand
 
 Arena geometry, art, camera framing, and physics boundary are documented in
 `arena system.md`. Ring-out is implemented (player lose, enemy win/advance) and
-documented in `ring out feature.md`. Wave ramp is implemented (`wave ramp
-feature.md`); only `arena art feature.md` remains as a future slice.
+documented in `ring out feature.md`. Wave ramp and arena art are also implemented
+(`wave ramp feature.md`, `arena art feature.md`); the future-slice queue is empty.
 
 `BattleController` runs `Countdown → Fighting → Finished(result)` and evaluates the `IWinCondition` list each tick.
 
@@ -1380,6 +1380,7 @@ Fill in as each phase lands.
 | 20 | Remove enemy dash wind-up and its punch-scale telegraph; pool hit particles (8 prewarm, 32 cap) | §15, §20.3 |
 | 11 | Ring-out implemented: 0.05 s tick, player lose, enemy win/advance, `DefeatEnemy()` shared path | §17 |
 | 9 | Wave ramp applied to six AI profiles; dead dash-chance fields removed | §16 |
+| 20 | Arena art replaced with textured oval; geometry and code unchanged | §3, `arena system.md` |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |
