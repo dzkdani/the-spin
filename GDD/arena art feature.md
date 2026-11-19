@@ -29,7 +29,7 @@ below.
 | Center disc | 18% of half-extents |
 | Background | full-bleed sand, no alpha |
 
-Geometry source of truth is `ArenaBounds`, not the art. See `arena system.md`.
+Geometry source of truth is `ArenaBounds`, not the art. See `GDD/arena system.md`.
 
 ---
 
@@ -95,4 +95,4 @@ touches no scripts.
 1. Produce the asset to the brief — done (procedural texture).
 2. Import and swap; keep placeholder for rollback — done.
 3. Capture the three aspect screenshots — pending manual play check.
-4. Update `arena system.md` art section and changelog — done.
+4. Update `GDD/arena system.md` art section and changelog — done.

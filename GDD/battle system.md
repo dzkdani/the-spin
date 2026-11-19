@@ -10,7 +10,7 @@
 
 Names are used as written in the brief: elements **Pyre, Crye, Gyre, Hydre, Sparke**, plus **Neutral**. Part slots use **Blade, Ratchet, Bit** as the default set. All names need confirmation before content is authored (Open Questions 1 and 7).
 
-**Extension docs:** `elemental system.md` (elements), `arena system.md` (oval arena), and three future-slice specs in priority order: `ring out feature.md`, `wave ramp feature.md`, `arena art feature.md`.
+**Extension docs:** `GDD/elemental system.md` (elements), `GDD/arena system.md` (oval arena), and three future-slice specs in priority order: `GDD/ring out feature.md`, `GDD/wave ramp feature.md`, `GDD/arena art feature.md`.
 
 ---
 
@@ -461,7 +461,7 @@ A new type is an asset. It needs code only if its innate passive needs an effect
 ## 11. Elements
 
 Full roster, matchup matrix, on-hit status table, claim priorities, tuning knobs,
-and authoring checklist: **`elemental system.md`**.
+and authoring checklist: **`GDD/elemental system.md`**.
 
 ### 11.1 Roster
 
@@ -997,9 +997,9 @@ public struct AiCommand
 ## 17. Battle Flow
 
 Arena geometry, art, camera framing, and physics boundary are documented in
-`arena system.md`. Ring-out is implemented (player lose, enemy win/advance) and
-documented in `ring out feature.md`. Wave ramp and arena art are also implemented
-(`wave ramp feature.md`, `arena art feature.md`); the future-slice queue is empty.
+`GDD/arena system.md`. Ring-out is implemented (player lose, enemy win/advance) and
+documented in `GDD/ring out feature.md`. Wave ramp and arena art are also implemented
+(`GDD/wave ramp feature.md`, `GDD/arena art feature.md`); the future-slice queue is empty.
 
 `BattleController` runs `Countdown → Fighting → Finished(result)` and evaluates the `IWinCondition` list each tick.
 
@@ -1376,11 +1376,11 @@ Fill in as each phase lands.
 | 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
 | 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
 | 6b | Stronger element pass: matchups 1.35/0.75, statuses 3–4 s at ×2.5/×0.9/×0.9/×0.9/×1.08 | §11 |
-| 20 | Demo difficulty: player maxRPM 9000, enemy stays 5000; ring-out spec written as a future slice (`ring out feature.md`) | §20.4 |
+| 20 | Demo difficulty: player maxRPM 9000, enemy stays 5000; ring-out spec written as a future slice (`GDD/ring out feature.md`) | §20.4 |
 | 20 | Remove enemy dash wind-up and its punch-scale telegraph; pool hit particles (8 prewarm, 32 cap) | §15, §20.3 |
 | 11 | Ring-out implemented: 0.05 s tick, player lose, enemy win/advance, `DefeatEnemy()` shared path | §17 |
 | 9 | Wave ramp applied to six AI profiles; dead dash-chance fields removed | §16 |
-| 20 | Arena art replaced with textured oval; geometry and code unchanged | §3, `arena system.md` |
+| 20 | Arena art replaced with textured oval; geometry and code unchanged | §3, `GDD/arena system.md` |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |

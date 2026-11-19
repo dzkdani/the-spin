@@ -1,8 +1,8 @@
 # Arena System
 
 Reference for the-spin's arena geometry, art, camera framing, physics boundary,
-and AI/spawn placement. Companion to `battle system.md` and
-`ring out feature.md`.
+and AI/spawn placement. Companion to `GDD/battle system.md` and
+`GDD/ring out feature.md`.
 
 ---
 
@@ -110,7 +110,7 @@ That leaves room for a future ring-out condition to fire first.
 
 `RingOutCondition` uses elliptical normalized distance and **is registered** in
 `BattleController`. `GameManager` checks both beys every 0.05 s; player out loses,
-enemy out wins or advances the wave. See `ring out feature.md`.
+enemy out wins or advances the wave. See `GDD/ring out feature.md`.
 
 No RPM is lost when a bey crosses the ring; the finish reason would carry the
 result.

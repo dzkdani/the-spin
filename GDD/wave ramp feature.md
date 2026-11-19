@@ -1,6 +1,6 @@
 # Wave Ramp — Future Slice
 
-**Status: implemented.** Ring-out is done; `arena art feature.md` remains the
+**Status: implemented.** Ring-out is done; `GDD/arena art feature.md` remains the
 last future slice.
 
 Goal: a difficulty curve across the six demo waves that does not break the
@@ -115,4 +115,4 @@ If aggression alone is not enough:
 2. Apply per-profile values — done.
 3. Add `AiSimulation` monotonic test — done.
 4. Run the six-wave playtest and record clear times — pending.
-5. Update `battle system.md` §16 and changelog — done.
+5. Update `GDD/battle system.md` §16 and changelog — done.

@@ -1,7 +1,7 @@
 # Ring-Out Feature — Future Slice
 
-**Status: implemented.** Remaining future slices: `wave ramp feature.md` and
-`arena art feature.md`.
+**Status: implemented.** Remaining future slices: `GDD/wave ramp feature.md` and
+`GDD/arena art feature.md`.
 
 `RingOutCondition` uses elliptical math and is registered in `GameManager.Start`.
 `GameManager.Update` checks both beys every 0.05 s:
@@ -12,9 +12,9 @@
 
 `ResolveBattle` still also runs on RPM depletion, burst, and enemy defeat.
 
-The arena itself has been reworked to an ellipse; see `arena system.md`.
+The arena itself has been reworked to an ellipse; see `GDD/arena system.md`.
 
-Companion docs: `battle system.md` §17, `elemental system.md`.
+Companion docs: `GDD/battle system.md` §17, `GDD/elemental system.md`.
 
 ---
 
@@ -29,7 +29,7 @@ terms: getting knocked out of the stadium.
 ## Boundary
 
 The arena is an **ellipse** centered at `(0, 0)` with radii **8.2 × 4.4** world
-units. `ArenaBounds` is the single source of truth; see `arena system.md` for the
+units. `ArenaBounds` is the single source of truth; see `GDD/arena system.md` for the
 placeholder art, camera framing, and physics wall.
 
 Crossing the outer white ring means crossing normalized distance 1:

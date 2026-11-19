@@ -1,7 +1,7 @@
 # Elemental System
 
 Reference for the-spin's element roster, matchup matrix, on-hit effects, claim
-resolution, and tuning. See also `battle system.md`.
+resolution, and tuning. See also `GDD/battle system.md`.
 
 Elements are **not** cosmetic. Two mechanics are live:
 
