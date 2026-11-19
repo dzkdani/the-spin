@@ -14,9 +14,9 @@ public class BeyElementTintTests
             Component tint = bey.AddComponent(
                 ProductionReflection.TypeOf("BeyElementTint"));
 
-            SpriteRenderer outer = bey.AddComponent<SpriteRenderer>();
-            SpriteRenderer middle = bey.AddComponent<SpriteRenderer>();
-            SpriteRenderer inner = bey.AddComponent<SpriteRenderer>();
+            SpriteRenderer outer = Layer(bey, "Outer");
+            SpriteRenderer middle = Layer(bey, "Middle");
+            SpriteRenderer inner = Layer(bey, "Inner");
 
             ProductionReflection.SetField(tint, "outerLayer", outer);
             ProductionReflection.SetField(tint, "middleLayer", middle);
@@ -42,5 +42,13 @@ public class BeyElementTintTests
         {
             Object.DestroyImmediate(bey);
         }
+    }
+
+    private static SpriteRenderer Layer(GameObject parent, string name)
+    {
+        GameObject layer = new GameObject(name);
+        layer.transform.SetParent(parent.transform, false);
+
+        return layer.AddComponent<SpriteRenderer>();
     }
 }
