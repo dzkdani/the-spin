@@ -458,6 +458,9 @@ A new type is an asset. It needs code only if its innate passive needs an effect
 
 ## 11. Elements
 
+Full roster, matchup matrix, on-hit status table, claim priorities, tuning knobs,
+and authoring checklist: **`elemental system.md`**.
+
 ### 11.1 Roster
 
 | Element | Role |
