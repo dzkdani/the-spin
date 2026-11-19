@@ -30,15 +30,15 @@ public class ImpactRuleTests
         ProductionReflection.SetField(input, "ElementB", crye);
         ProductionReflection.SetField(input, "Matchups", table);
         ProductionReflection.SetField(input, "StatsA", Stats(0.6f));
-        ProductionReflection.SetField(input, "StatsB", Stats(1f));
+        ProductionReflection.SetField(input, "StatsB", Stats(0.6f));
 
         object state = State();
         object rule = ProductionReflection.New("MatchupRule");
 
         ProductionReflection.Call(rule, "Apply", state, input);
 
-        Assert.AreEqual(115f, Read(state, "PowerA"), 0.0001f);
-        Assert.AreEqual(80f, Read(state, "PowerB"), 0.0001f);
+        Assert.AreEqual(121f, Read(state, "PowerA"), 0.0001f);
+        Assert.AreEqual(85f, Read(state, "PowerB"), 0.0001f);
     }
 
     [Test]

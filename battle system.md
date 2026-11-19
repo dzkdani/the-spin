@@ -1216,7 +1216,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Band.** Every reference build between 40% and 60% overall.
 
-**Reference run (25 seeds per direction, no parts).** All 18 builds pass the band with statuses on: ATK 46.4–55.3%, BAL 42.5–57.5%, DEF 41.4–59.5%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. The matrix stays exactly antisymmetric. These figures predate the stronger element pass; re-run the matrix against the new multipliers and status values.
+**Reference run (25 seeds per direction, no parts).** All 18 builds pass the band with statuses on: ATK 46.4–55.3%, BAL 42.5–57.5%, DEF 41.4–59.5%. Tuned type attacks: ATK ×1.25, BAL ×1.065, DEF ×0.81. The matrix stays exactly antisymmetric. These figures predate the stronger element pass; the suite was re-run after it and all 18 builds still pass the band.
 
 **Part simulation.** `PartSimulation.Run(...)` swaps each part into the `bal_neutral` control, applies its stat modifiers, element claim, granted `AddModifierEffect`/`ClaimElementEffect` values, and grants any active abilities. `BalanceActives` now simulates those actives: RPM cost, cooldown, `ForceDash`, `ScaleNextImpact`, and `DrainRpm`, with `AbilityCost`, `AbilityCooldown`, and scoped `AbilityPower` from the build's stats. `Bey/Run Part Simulation` writes `Logs/PartSimulation.csv`. Slot-band check: every part's delta within ±5 points of its slot average.
 

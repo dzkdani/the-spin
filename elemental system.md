@@ -243,8 +243,9 @@ These are large enough to feel during a wave.
 | Sparke | `Attack ×1.08` (self) | 3 s | ×1.02, 2 s |
 | Matchups | 1.35 strong / 0.75 weak | — | 1.25 / 0.8 |
 
-The 18 reference builds in the status-aware balance matrix were tuned around the
-weaker values. Re-run `BalanceMatrixTests` after any further change.
+The 18 reference builds were tuned around the weaker values; the status-aware
+matrix was re-run after this pass and all 18 still pass the band. Re-run
+`BalanceMatrixTests` after any further change.
 
 ---
 

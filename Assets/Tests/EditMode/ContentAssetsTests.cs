@@ -56,9 +56,9 @@ public class ContentAssetsTests
 
         Assert.AreEqual(10, entries.Count);
 
-        Assert.AreEqual(1.25f, FindMultiplier(entries, "pyre", "crye"), 0.0001f);
-        Assert.AreEqual(0.8f, FindMultiplier(entries, "crye", "pyre"), 0.0001f);
-        Assert.AreEqual(1.25f, FindMultiplier(entries, "hydre", "pyre"), 0.0001f);
+        Assert.AreEqual(1.35f, FindMultiplier(entries, "pyre", "crye"), 0.0001f);
+        Assert.AreEqual(0.75f, FindMultiplier(entries, "crye", "pyre"), 0.0001f);
+        Assert.AreEqual(1.35f, FindMultiplier(entries, "hydre", "pyre"), 0.0001f);
     }
 
     [Test]
@@ -101,8 +101,13 @@ public class ContentAssetsTests
             "RpmDecay",
             ProductionReflection.Field(pyreMods[0], "stat").ToString());
         Assert.AreEqual(
-            1.8f,
+            2.5f,
             (float)ProductionReflection.Field(pyreMods[0], "value"),
+            0.0001f);
+
+        Assert.AreEqual(
+            4f,
+            (float)ProductionReflection.Field(pyre, "onHitDuration"),
             0.0001f);
 
         Assert.IsTrue((bool)ProductionReflection.Field(
