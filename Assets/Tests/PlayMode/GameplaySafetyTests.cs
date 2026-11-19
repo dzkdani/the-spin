@@ -14,6 +14,8 @@ public class GameplaySafetyTests
         GameObject uiObject = new GameObject("GameUI");
         GameObject pausePanel = new GameObject("PausePanel");
         GameObject gameOverPanel = new GameObject("GameOverPanel");
+        float previousTimeScale = Time.timeScale;
+        Time.timeScale = 1f;
 
         try
         {
@@ -41,6 +43,7 @@ public class GameplaySafetyTests
         }
         finally
         {
+            Time.timeScale = previousTimeScale;
             UnityEngine.Object.DestroyImmediate(enemyObject);
             UnityEngine.Object.DestroyImmediate(uiObject);
             UnityEngine.Object.DestroyImmediate(pausePanel);

@@ -1,6 +1,9 @@
 # Ring-Out Feature — Future Slice
 
-**Status: design only. Not implemented.** `BattleContext` and `RingOutCondition`
+**Status: design only. Not implemented. Priority 1 of the future-slice queue**,
+followed by `wave ramp feature.md` and `arena art feature.md`.
+
+`BattleContext` and `RingOutCondition`
 already use elliptical math, but `GameManager.Start` deliberately does **not**
 register `RingOutCondition`, so no ring-out occurs. `ResolveBattle` still runs only
 on RPM depletion, burst, or enemy defeat.

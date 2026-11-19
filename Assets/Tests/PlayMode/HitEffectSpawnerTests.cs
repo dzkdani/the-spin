@@ -20,6 +20,8 @@ public class HitEffectSpawnerTests
         main.startLifetime = 0.05f;
 
         GameObject host = new GameObject("HitSpawner");
+        float previousTimeScale = Time.timeScale;
+        Time.timeScale = 1f;
 
         try
         {
@@ -59,6 +61,7 @@ public class HitEffectSpawnerTests
         }
         finally
         {
+            Time.timeScale = previousTimeScale;
             Object.DestroyImmediate(host);
             Object.DestroyImmediate(template);
         }

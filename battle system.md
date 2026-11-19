@@ -10,6 +10,8 @@
 
 Names are used as written in the brief: elements **Pyre, Crye, Gyre, Hydre, Sparke**, plus **Neutral**. Part slots use **Blade, Ratchet, Bit** as the default set. All names need confirmation before content is authored (Open Questions 1 and 7).
 
+**Extension docs:** `elemental system.md` (elements), `arena system.md` (oval arena), and three future-slice specs in priority order: `ring out feature.md`, `wave ramp feature.md`, `arena art feature.md`.
+
 ---
 
 ## 1. Summary
