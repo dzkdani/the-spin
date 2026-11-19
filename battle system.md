@@ -945,7 +945,7 @@ Unchanged from v1. One `BattleCombat` per battle dedupes contacts by unordered b
 - Slots index the held actives, equipped and granted together.
 - Requests come from player buttons or from `AiCommand`.
 - Consumers read requests in the same loop that drives physics (Open Question 20).
-- Dash state machine: `Idle → WindUp → Dashing → Recover`. `WindUp` is the telegraph.
+- Dash state machine: `Idle → Dashing → Recover`. There is no wind-up or telegraph; a dash request applies on the same update.
 - Dash cost is a self-cost. It goes through `DrainRpm` and bypasses mitigation.
 
 **v4 note.** `ConsumeDash()` replaces the current one-frame `DashRequested` flag. This is a design improvement, not a bug fix (B3 retired). The gate moves from `GameUIManager` to an `IBattleStateGate` service with `CanReceiveGameplayInput`, resolved once per battle rather than per input component.
@@ -1154,10 +1154,10 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 ### Track C: Intelligence and Flow
 
 **Phase 9: Enemy brain**
-- Sensors (§16), behaviors, scoring with commit time, dash wind-up telegraph, `AiProfile`.
+- Sensors (§16), behaviors, scoring with commit time, immediate dash requests, `AiProfile`.
 - Inject the target; remove `GameObject.FindWithTag` (M9).
-- **Exit:** enemy dashes depend on the player's state. The telegraph is visible. The enemy reacts to element changes, including aura flips. Profiles produce measurably different results in simulation.
-- **Status: complete.** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter with a wind-up before dashing; `BeyVisual` pulses on `DashWindUpStarted`. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. `UseActiveBehavior` requests an active slot when the opponent is below 45% RPM and a real active is ready; `BattleSnapshot` carries active readiness and cooldowns. `EnemyInput` throttles requests. `AiSimulation` runs headless profile comparisons. 6 PlayMode brain tests. Input producers now receive the battle-state gate from `BeyController` and no longer resolve `ServiceLocator` themselves.
+- **Exit:** enemy dashes depend on the player's state and fire immediately. The enemy reacts to element changes, including aura flips. Profiles produce measurably different results in simulation.
+- **Status: complete.** Added `BattleSnapshot`, `AiCommand`, `IAiBehavior`, five behaviors (Pressure, Exploit Element, Bait, Strike, Retreat), `EnemyBrain` with decision/commit timers, and expanded `AiProfile` weights. `EnemyInput` is now a sensor/adapter that dashes immediately on request; `BeyVisual` only spins the visual pivot. Target injection replaces `FindWithTag` (M9). 3 brain tests cover aggression, retreat, and seeded determinism. `UseActiveBehavior` requests an active slot when the opponent is below 45% RPM and a real active is ready; `BattleSnapshot` carries active readiness and cooldowns. `EnemyInput` throttles requests. `AiSimulation` runs headless profile comparisons. 6 PlayMode brain tests. Input producers now receive the battle-state gate from `BeyController` and no longer resolve `ServiceLocator` themselves.
 
 **Phase 10: Battle flow**
 - `BattleController`, `IWinCondition`, migration of `RpmDepletedCondition` from `GameManager`.
@@ -1267,7 +1267,7 @@ Simulation drives numbers. Playtests decide whether fights feel readable. Both a
 1. Player 1/2/3 casts only equipped actives; RPM cost and cooldown match the asset.
 2. Guard Spin, Charge Strike, Ignition, Frost Guard, Ember Aura, and Burst Dash each produce a visible effect in their intended situation.
 3. Cast interrupts happen only when `interruptOnHit` is set.
-4. Enemy telegraphs its dash, uses an active when the player is low, and retreats when its own RPM is low.
+4. Enemy dashes immediately, uses an active when the player is low, and retreats when its own RPM is low.
 5. Aggressive and passive profiles produce measurably different dash rates in `AiSimulation`.
 
 **E. Flow, UI, and feedback**
@@ -1374,6 +1374,7 @@ Fill in as each phase lands.
 | 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
 | 6b | Stronger element pass: matchups 1.35/0.75, statuses 3–4 s at ×2.5/×0.9/×0.9/×0.9/×1.08 | §11 |
 | 20 | Demo difficulty: player maxRPM 9000, enemy stays 5000; ring-out spec written as a future slice (`ring out feature.md`) | §20.4 |
+| 20 | Remove enemy dash wind-up and its punch-scale telegraph; pool hit particles (8 prewarm, 32 cap) | §15, §20.3 |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |
@@ -1381,7 +1382,7 @@ Fill in as each phase lands.
 | 20 | Battle demo slice: six enemy blueprints, AI profiles, HUD, six-wave scene, wave checkpoint reset | §20.5 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: maxRPM normalized to 3000, both raised to 5000, then player alone to 9000 for an easier demo | §20.4 |
-| 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
+| 9 | Enemy dash depends on player state, fires immediately, and reads the current element | Fixes D4, D5, M9 |
 | 20 | Wave reset always runs at next spawn; drop the unserialized toggle that disabled it | Fix wave reset |
 | 9 | Retreat is a short inward spiral with a 2 s cooldown; orbit 0 falls back to 1; jitter skipped | §16 |
 | 11 | Each feature recorded as it lands | Phase 11 |

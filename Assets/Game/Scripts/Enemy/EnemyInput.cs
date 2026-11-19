@@ -22,8 +22,6 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
         return slot;
     }
 
-    public bool IsWindingUp => windUpTimer > 0f;
-
     public string CurrentBehavior =>
         brain != null ? brain.CurrentBehavior : "none";
 
@@ -34,7 +32,6 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
     private IBattleStateGate gate;
     private Vector2 arenaCenter;
     private Vector2 arenaRadii;
-    private float windUpTimer;
     private float dashCooldown;
     private float abilityCooldown;
     private int abilityRequest = -1;
@@ -102,26 +99,13 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
 
         dashCooldown -= Time.deltaTime;
 
-        if (windUpTimer > 0f)
-        {
-            windUpTimer -= Time.deltaTime;
-
-            if (windUpTimer <= 0f)
-            {
-                DashRequested = true;
-
-                dashCooldown = random.Range(
-                    profile.dashIntervalMin,
-                    profile.dashIntervalMax);
-            }
-
-            return;
-        }
-
         if (command.RequestDash && dashCooldown <= 0f)
         {
-            windUpTimer = profile.dashWindUp;
-            BattleEvents.RaiseDashWindUpStarted(data);
+            DashRequested = true;
+
+            dashCooldown = random.Range(
+                profile.dashIntervalMin,
+                profile.dashIntervalMax);
         }
     }
 
