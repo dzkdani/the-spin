@@ -105,6 +105,8 @@ One structural gap was found in the v3 stat model and is resolved in v4: **movem
 | M8 | Bug (tuning) | `BeyVisual` | A second serialized `maxRPM` (3000) drives spin speed instead of `BeyData.Base.maxRPM`, so visual speed can drift from the bey's tuning. | **New** | 1 |
 | M9 | Maintainability | `EnemyInput.Start` | Falls back to `GameObject.FindWithTag("Player")`; scene lookup in an input component. | **New** | 9 |
 
+**Current status.** All findings above are resolved or retired at the current HEAD: B1/B2/B4 fixed in Phase 1, B3 retired, B5/M6/M7/M8 removed in code, D1–D7 resolved in Phases 3–9, and M1–M9 resolved through the ServiceLocator and input-gate refactor. The Status column records each finding at `63a0a0e`; §23 records the resolutions.
+
 **Phase 1 scope changed accordingly:** B1, B2, B4, B5, M3, M5, M6, M8. B3 and the double-subscription item are removed.
 
 ---

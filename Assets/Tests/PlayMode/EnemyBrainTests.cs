@@ -17,20 +17,24 @@ public class EnemyBrainTests
     }
 
     [Test]
-    public void RetreatMovesAwayFromOpponent()
+    public void RetreatDoesNotRepeatWithinCooldown()
     {
         object profile = CreateProfile(1f, 0.5f);
         object snapshot = CreateSnapshot(0.05f, 1f, 2f);
+        object random = ProductionReflection.New("SeededRandom", 7);
+        object brain = ProductionReflection.New("EnemyBrain", profile, random);
 
-        object command = Decide(profile, snapshot);
+        ProductionReflection.Call(brain, "Tick", snapshot, 0.15f);
 
-        Vector2 self = (Vector2)ProductionReflection.Field(snapshot, "SelfPosition");
-        Vector2 opponent = (Vector2)ProductionReflection.Field(snapshot, "OpponentPosition");
-        Vector2 target = (Vector2)ProductionReflection.Field(command, "MoveTarget");
+        Assert.AreEqual(
+            "retreat",
+            (string)ProductionReflection.Property(brain, "CurrentBehavior"));
 
-        Assert.Greater(
-            Vector2.Distance(target, opponent),
-            Vector2.Distance(self, opponent));
+        ProductionReflection.Call(brain, "Tick", snapshot, 0.7f);
+
+        Assert.AreNotEqual(
+            "retreat",
+            (string)ProductionReflection.Property(brain, "CurrentBehavior"));
     }
 
     [Test]

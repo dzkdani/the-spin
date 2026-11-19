@@ -1,4 +1,3 @@
-using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -7,30 +6,37 @@ public class BurstThresholdTests
     [Test]
     public void BurstRequiresEightyPercentOfMaxRpm()
     {
-        object stats = ScriptableObject.CreateInstance(
-            ProductionReflection.TypeOf("BeyStats"));
+        GameObject target = new GameObject("BurstTarget");
+        target.SetActive(false);
 
-        ProductionReflection.SetField(stats, "maxRPM", 1000f);
+        try
+        {
+            object stats = ScriptableObject.CreateInstance(
+                ProductionReflection.TypeOf("BeyStats"));
 
-        object data = ScriptableObject.CreateInstance(
-            ProductionReflection.TypeOf("BeyData"));
+            ProductionReflection.SetField(stats, "maxRPM", 1000f);
 
-        data.GetType()
-            .GetField(
-                "<Base>k__BackingField",
-                BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(data, stats);
+            Component data = target.AddComponent(
+                ProductionReflection.TypeOf("BeyData"));
 
-        Assert.IsTrue((bool)ProductionReflection.CallStatic(
-            "GameManager",
-            "IsBurst",
-            800f,
-            data));
+            ProductionReflection.SetField(
+                data, "<Base>k__BackingField", stats);
 
-        Assert.IsFalse((bool)ProductionReflection.CallStatic(
-            "GameManager",
-            "IsBurst",
-            799f,
-            data));
+            Assert.IsTrue((bool)ProductionReflection.CallStatic(
+                "GameManager",
+                "IsBurst",
+                801f,
+                data));
+
+            Assert.IsFalse((bool)ProductionReflection.CallStatic(
+                "GameManager",
+                "IsBurst",
+                799f,
+                data));
+        }
+        finally
+        {
+            Object.DestroyImmediate(target);
+        }
     }
 }
