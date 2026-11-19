@@ -72,8 +72,9 @@ public sealed class EnemyBrain
 
         AiCommand decided = best.Decide(snapshot, profile);
 
-        Vector2 jitter =
-            random.InsideUnitCircle() * profile.jitterRadius;
+        Vector2 jitter = best is RetreatBehavior
+            ? Vector2.zero
+            : random.InsideUnitCircle() * profile.jitterRadius;
 
         command = new AiCommand(
             decided.MoveTarget + jitter,

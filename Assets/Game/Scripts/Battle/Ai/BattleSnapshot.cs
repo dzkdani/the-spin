@@ -14,6 +14,8 @@ public readonly struct BattleSnapshot
     public readonly float Now;
     public readonly bool[] ActiveReady;
     public readonly float[] ActiveCooldowns;
+    public readonly Vector2 ArenaCenter;
+    public readonly float ArenaRadius;
 
     public BattleSnapshot(
         float selfRpm,
@@ -55,6 +57,39 @@ public readonly struct BattleSnapshot
         float now,
         bool[] activeReady,
         float[] activeCooldowns)
+        : this(
+            selfRpm,
+            opponentRpm,
+            selfPosition,
+            opponentPosition,
+            distance,
+            selfElement,
+            opponentElement,
+            opponentDashing,
+            matchup,
+            now,
+            activeReady,
+            activeCooldowns,
+            Vector2.zero,
+            0f)
+    {
+    }
+
+    public BattleSnapshot(
+        float selfRpm,
+        float opponentRpm,
+        Vector2 selfPosition,
+        Vector2 opponentPosition,
+        float distance,
+        ElementDefinition selfElement,
+        ElementDefinition opponentElement,
+        bool opponentDashing,
+        float matchup,
+        float now,
+        bool[] activeReady,
+        float[] activeCooldowns,
+        Vector2 arenaCenter,
+        float arenaRadius)
     {
         SelfRpm = selfRpm;
         OpponentRpm = opponentRpm;
@@ -68,5 +103,7 @@ public readonly struct BattleSnapshot
         Now = now;
         ActiveReady = activeReady;
         ActiveCooldowns = activeCooldowns;
+        ArenaCenter = arenaCenter;
+        ArenaRadius = arenaRadius;
     }
 }

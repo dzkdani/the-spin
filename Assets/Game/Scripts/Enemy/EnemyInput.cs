@@ -32,6 +32,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
     private EnemyBrain brain;
     private AbilityRunner runner;
     private IBattleStateGate gate;
+    private Vector2 arenaCenter;
+    private float arenaRadius;
     private float windUpTimer;
     private float dashCooldown;
     private float abilityCooldown;
@@ -61,6 +63,12 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
     public void SetTarget(BeyController newTarget)
     {
         target = newTarget;
+    }
+
+    public void SetArena(Vector2 center, float radius)
+    {
+        arenaCenter = center;
+        arenaRadius = radius;
     }
 
     private void Update()
@@ -150,6 +158,8 @@ public class EnemyInput : MonoBehaviour, IBeyInput, IBattleStateGateConsumer
                 target.Data.Elements.Current),
             Time.time,
             activeReady,
-            activeCooldowns);
+            activeCooldowns,
+            arenaCenter,
+            arenaRadius);
     }
 }

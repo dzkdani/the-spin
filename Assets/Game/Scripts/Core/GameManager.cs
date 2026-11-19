@@ -113,7 +113,10 @@ public class GameManager : MonoBehaviour
         currentEnemy = enemy.Data;
 
         if (enemy.Input is EnemyInput enemyInput)
+        {
             enemyInput.SetTarget(player);
+            enemyInput.SetArena(Vector2.zero, arenaRadius);
+        }
 
         enemyUI.Bind(currentEnemy);
 

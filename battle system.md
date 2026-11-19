@@ -970,11 +970,13 @@ public struct AiCommand
 | Bait | Opponent is about to dash or has just finished | Holds mid-range for the counter window |
 | Strike | In range and opponent is in `Recover` | Winds up, then dashes |
 | Use Active | An active is ready and the enemy is in range | Requests the slot |
-| Retreat | Own RPM is critical | Backs away |
+| Retreat | Own RPM is critical | Orbits the arena center along a tangent, biased inward at the edge |
 
 **Scoring** picks the highest score with a minimum commit time (about 0.6 s).
 
-**Profiles.** `AiProfile` holds behavior weights, reaction delay, dash aggression, and random error. Behaviors are referenced by ID. `Legacy` is kept during transition for comparison.
+**Profiles.** `AiProfile` holds behavior weights, reaction delay, dash aggression, and random error. `retreatOrbit` sets the orbit direction (sign) and step scale (magnitude, default 1). Behaviors are referenced by ID. `Legacy` is kept during transition for comparison.
+
+`BattleSnapshot` carries `ArenaCenter` and `ArenaRadius`; `GameManager` passes them to `EnemyInput` on spawn. Retreat clamps its target inside `ArenaRadius - 0.8` and skips random jitter so a low-RPM bey spins around the ring instead of pinning itself in a corner.
 
 **Randomness** uses `IRandom`, seeded in tests (M4).
 
@@ -1366,6 +1368,7 @@ Fill in as each phase lands.
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
 | 8b | Playtest: player/enemy maxRPM normalized to 3000 | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
+| 9 | Retreat orbits the arena center with inward edge bias; jitter skipped while retreating | §16 |
 | 11 | Each feature recorded as it lands | Phase 11 |
 | 11 | Same-spin, clash, and dash-hit multipliers added (same-spin neutral by default) | §14.1, §15 |
 | 11 | Opposite spin steals RPM | §14.1 |

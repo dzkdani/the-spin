@@ -2,6 +2,9 @@ using UnityEngine;
 
 public sealed class RetreatBehavior : IAiBehavior
 {
+    private const float OrbitSpeed = 3f;
+    private const float EdgeMargin = 0.8f;
+
     public string Id => "retreat";
 
     public float Score(in BattleSnapshot snapshot, AiProfile profile)
@@ -17,15 +20,40 @@ public sealed class RetreatBehavior : IAiBehavior
 
     public AiCommand Decide(in BattleSnapshot snapshot, AiProfile profile)
     {
-        Vector2 away =
-            (snapshot.SelfPosition - snapshot.OpponentPosition).normalized;
+        Vector2 toCenter = snapshot.ArenaCenter - snapshot.SelfPosition;
+        float radius = toCenter.magnitude;
+        Vector2 inward = radius > 0.0001f
+            ? toCenter / radius
+            : Vector2.up;
 
-        if (away.sqrMagnitude < 0.0001f)
-            away = Vector2.right;
+        Vector2 tangent = new Vector2(-inward.y, inward.x);
 
-        return new AiCommand(
-            snapshot.SelfPosition + away * 3f,
-            false,
-            -1);
+        if (profile.retreatOrbit < 0f)
+            tangent = -tangent;
+
+        float orbitStep = OrbitSpeed * Mathf.Abs(profile.retreatOrbit);
+        float edgeBias = 0f;
+
+        if (snapshot.ArenaRadius > 0f)
+        {
+            float limit = snapshot.ArenaRadius - EdgeMargin;
+            if (radius > limit)
+                edgeBias = Mathf.Clamp01((radius - limit) / EdgeMargin) * 2f;
+        }
+
+        Vector2 target = snapshot.SelfPosition +
+            tangent * orbitStep +
+            inward * (OrbitSpeed * edgeBias);
+
+        if (snapshot.ArenaRadius > 0f)
+        {
+            float limit = snapshot.ArenaRadius - EdgeMargin;
+            Vector2 offset = target - snapshot.ArenaCenter;
+
+            if (offset.sqrMagnitude > limit * limit)
+                target = snapshot.ArenaCenter + offset.normalized * limit;
+        }
+
+        return new AiCommand(target, false, -1);
     }
 }

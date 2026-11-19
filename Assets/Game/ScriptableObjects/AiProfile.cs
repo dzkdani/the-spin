@@ -46,5 +46,10 @@ public class AiProfile : ContentDefinition
 
     public float retreatRpm = 0.25f;
 
+    /// <summary>
+    /// Sign picks the orbit direction; magnitude scales the tangential step.
+    /// </summary>
+    public float retreatOrbit = 1f;
+
     public float dashAggression = 0.5f;
 }
