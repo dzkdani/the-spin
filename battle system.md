@@ -1216,7 +1216,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
 
-**Adjusted from playtest.** Player and enemy `maxRPM` normalized to **3000**; the earlier 5200/600 split made damage-to-health feel inconsistent across every enemy type.
+**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent) and then raised to **5000** to lengthen fights; damage per hit does not scale with max RPM, so time-to-kill rises with the pool. At 5000 the 80% burst threshold is 4000, leaving burst as a rare finisher rather than a common early end.
 
 **Part exit criteria met.** Every part sits inside the Bit/Blade/Ratchet slot band, the 18-build reference matrix stays 40–60%, and the golden row is unchanged. `budgetCost` remains a design estimate; the simulation does not price it directly.
 
@@ -1366,7 +1366,7 @@ Fill in as each phase lands.
 | 20 | Balance simulator applies passive decay and element statuses on per-duel stat clones | §20.4 |
 | 20 | Battle demo slice: six enemy blueprints, AI profiles, HUD, six-wave scene, wave checkpoint reset | §20.5 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
-| 8b | Playtest: player/enemy maxRPM normalized to 3000 | §20.4 |
+| 8b | Playtest: player/enemy maxRPM normalized to 3000, then raised to 5000 for longer fights | §20.4 |
 | 9 | Enemy dash depends on player state, has a wind-up, and reads the current element | Fixes D4, D5, M9 |
 | 20 | Wave reset always runs at next spawn; drop the unserialized toggle that disabled it | Fix wave reset |
 | 9 | Retreat orbits the arena center with inward edge bias; jitter skipped while retreating | §16 |
