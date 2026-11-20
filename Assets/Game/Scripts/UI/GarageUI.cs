@@ -197,7 +197,13 @@ public sealed class GarageUI : MonoBehaviour
             if (i > 0)
                 parts += "\n";
 
-            parts += NameOf(candidate.parts[i]);
+            PartDefinition part = candidate.parts[i];
+            Color color = part != null && part.elementClaim != null
+                ? part.elementClaim.color
+                : new Color(0.75f, 0.78f, 0.85f, 1f);
+
+            parts += "<color=#" + ColorUtility.ToHtmlStringRGB(color) +
+                ">\u25A0</color> " + NameOf(part);
         }
 
         if (string.IsNullOrEmpty(parts))

@@ -15,6 +15,7 @@ public class BeyData : MonoBehaviour
     public ElementStack Elements { get; } = new ElementStack();
     public event Action<float> OnRPMChanged;
     public event Action OnRPMDepleted;
+    public event Action OnBlueprintChanged;
 
     private float MaxRPM => Base != null ? Base.maxRPM : 0f;
     public float RPMNormalized => MaxRPM > 0f ? CurrentRPM / MaxRPM : 0f;
@@ -24,12 +25,14 @@ public class BeyData : MonoBehaviour
     private void Awake()
     {
         ApplyIdentity();
+        OnBlueprintChanged?.Invoke();
     }
 
     public void Configure(BeyBlueprint next)
     {
         blueprint = next;
         ApplyIdentity();
+        OnBlueprintChanged?.Invoke();
     }
 
     private void ApplyIdentity()

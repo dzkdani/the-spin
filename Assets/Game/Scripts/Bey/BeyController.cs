@@ -50,6 +50,9 @@ public class BeyController : MonoBehaviour
             abilityRunner = gameObject.AddComponent<AbilityRunner>();
 
         abilityRunner.Initialize(Data, Physics, Combat, Input);
+
+        if (GetComponent<BeyPartVisuals>() == null)
+            gameObject.AddComponent<BeyPartVisuals>();
     }
 
     private void Start()

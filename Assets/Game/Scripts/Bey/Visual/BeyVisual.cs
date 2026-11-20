@@ -8,6 +8,8 @@ public class BeyVisual : MonoBehaviour
 
     BeyData data;
 
+    public Transform Pivot => visualPivot;
+
     public void Initialize(BeyData data)
     {
         this.data = data;
