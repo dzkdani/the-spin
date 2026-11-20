@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Steady Core
   accent: {r: 0.7, g: 0.8, b: 1, a: 1}
   vfxScale: 1.1
+  visualKind: 5
   kind: 0
   mode: 0
   tags: []

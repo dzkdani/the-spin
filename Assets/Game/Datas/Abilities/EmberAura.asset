@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Ember Aura
   accent: {r: 1, g: 0.4, b: 0.1, a: 1}
   vfxScale: 1.4
+  visualKind: 2
   kind: 0
   mode: 1
   tags: []

@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Guard Spin
   accent: {r: 0.3, g: 0.85, b: 0.85, a: 1}
   vfxScale: 1.5
+  visualKind: 1
   kind: 1
   mode: 0
   tags: []

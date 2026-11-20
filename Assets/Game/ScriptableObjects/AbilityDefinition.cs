@@ -30,4 +30,6 @@ public class AbilityDefinition : ContentDefinition
     public Color accent = Color.white;
 
     public float vfxScale = 1f;
+
+    public AbilityVisualKind visualKind = AbilityVisualKind.Strike;
 }

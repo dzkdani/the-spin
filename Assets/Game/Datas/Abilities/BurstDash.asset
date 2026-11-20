@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Burst Dash
   accent: {r: 0.7, g: 0.4, b: 1, a: 1}
   vfxScale: 0.9
+  visualKind: 3
   kind: 1
   mode: 0
   tags:

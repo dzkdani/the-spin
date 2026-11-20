@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Charge Strike
   accent: {r: 1, g: 0.85, b: 0.25, a: 1}
   vfxScale: 1.2
+  visualKind: 0
   kind: 1
   mode: 0
   tags: []

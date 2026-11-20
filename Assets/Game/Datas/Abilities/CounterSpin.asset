@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Counter Spin
   accent: {r: 0.75, g: 0.5, b: 1, a: 1}
   vfxScale: 1
+  visualKind: 4
   kind: 0
   mode: 0
   tags: []

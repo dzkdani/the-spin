@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Ignition
   accent: {r: 1, g: 0.25, b: 0.1, a: 1}
   vfxScale: 1.5
+  visualKind: 0
   kind: 1
   mode: 0
   tags: []

@@ -93,6 +93,105 @@ public class HitEffectSpawner : MonoBehaviour
         active.Add(effect);
     }
 
+    public void SpawnFx(
+        Vector3 pos,
+        Color color,
+        float scale,
+        AbilityVisualKind kind)
+    {
+        if (hitPrefab == null)
+            return;
+
+        ParticleSystem effect = Instantiate(
+            hitPrefab,
+            pos,
+            Quaternion.identity);
+
+        effect.gameObject.SetActive(true);
+        effect.transform.localScale = Vector3.one * scale;
+
+        ParticleSystem.MainModule main = effect.main;
+        main.startColor = color;
+
+        ParticleSystem.ShapeModule shape = effect.shape;
+        shape.enabled = true;
+        shape.shapeType = ParticleSystemShapeType.Cone;
+        shape.angle = 25f;
+        shape.radius = 0.3f;
+        shape.radiusThickness = 1f;
+
+        float lifetime = 0.5f;
+        float speed = 6f;
+        float size = 0.2f;
+        int count = 16;
+
+        switch (kind)
+        {
+            case AbilityVisualKind.Guard:
+                shape.shapeType = ParticleSystemShapeType.Circle;
+                shape.radius = 0.6f;
+                shape.radiusThickness = 0.12f;
+                lifetime = 0.55f;
+                speed = 2.5f;
+                size = 0.28f;
+                count = 24;
+                break;
+
+            case AbilityVisualKind.Aura:
+                shape.shapeType = ParticleSystemShapeType.Sphere;
+                shape.radius = 0.9f;
+                lifetime = 0.8f;
+                speed = 0.8f;
+                size = 0.22f;
+                count = 30;
+                break;
+
+            case AbilityVisualKind.Dash:
+                shape.shapeType = ParticleSystemShapeType.Cone;
+                shape.angle = 8f;
+                shape.radius = 0.2f;
+                lifetime = 0.25f;
+                speed = 12f;
+                size = 0.12f;
+                count = 12;
+                break;
+
+            case AbilityVisualKind.Counter:
+                shape.shapeType = ParticleSystemShapeType.Circle;
+                shape.radius = 0.4f;
+                lifetime = 0.2f;
+                speed = 4f;
+                size = 0.15f;
+                count = 10;
+                break;
+
+            case AbilityVisualKind.Sustain:
+                shape.shapeType = ParticleSystemShapeType.Circle;
+                shape.radius = 0.3f;
+                lifetime = 0.6f;
+                speed = 1.5f;
+                size = 0.25f;
+                count = 14;
+                break;
+        }
+
+        main.startLifetime = new ParticleSystem.MinMaxCurve(lifetime);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(speed);
+        main.startSize = new ParticleSystem.MinMaxCurve(size);
+        main.duration = Mathf.Max(0.2f, lifetime);
+
+        ParticleSystem.EmissionModule emission = effect.emission;
+        emission.SetBursts(new[]
+        {
+            new ParticleSystem.Burst(0f, (short)count)
+        });
+
+        effect.Clear(true);
+        effect.Play(true);
+
+        Destroy(effect.gameObject, lifetime + 0.5f);
+    }
+
     private ParticleSystem Take()
     {
         while (idle.Count > 0)

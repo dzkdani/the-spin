@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Frost Guard
   accent: {r: 0.6, g: 0.9, b: 1, a: 1}
   vfxScale: 1.5
+  visualKind: 1
   kind: 0
   mode: 0
   tags: []

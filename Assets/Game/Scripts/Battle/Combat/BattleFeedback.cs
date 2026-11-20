@@ -120,9 +120,14 @@ public sealed class BattleFeedback : MonoBehaviour
             ? definition.vfxScale * procScale
             : procScale;
 
-        ServiceLocator.Get<HitEffectSpawner>()?.Spawn(
+        AbilityVisualKind kind = definition != null
+            ? definition.visualKind
+            : AbilityVisualKind.Strike;
+
+        ServiceLocator.Get<HitEffectSpawner>()?.SpawnFx(
             bey.transform.position,
             color,
-            scale);
+            scale,
+            kind);
     }
 }
