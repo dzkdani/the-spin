@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LaunchTuning
   m_EditorClassIdentifier: Assembly-CSharp::LaunchTuning
   enabled: 1
-  playerPullMax: 3
+  playerRotationDegrees: 360
   minStartFactor: 0.7
   perfectThreshold: 0.9
   perfectChargedHits: 1

@@ -19,6 +19,9 @@ public static class LaunchOverlayPrefabBuilder
         Sprite uiSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(
             "UI/Skin/UISprite.psd");
 
+        Sprite knob = AssetDatabase.GetBuiltinExtraResource<Sprite>(
+            "UI/Skin/Knob.psd");
+
         TMP_FontAsset font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(
             "Assets/Game/Art/Font/Koulen-Regular SDF.asset");
 
@@ -52,35 +55,35 @@ public static class LaunchOverlayPrefabBuilder
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.pivot = new Vector2(0.5f, 0.5f);
-        panelRect.sizeDelta = new Vector2(300f, 460f);
+        panelRect.sizeDelta = new Vector2(460f, 460f);
         panelRect.anchoredPosition = Vector2.zero;
 
         TMP_Text title = CreateText(
             "Title", panel.transform, font, "LAUNCH", 34f);
 
-        Place(title.rectTransform, new Vector2(260f, 50f), new Vector2(0f, 180f));
+        Place(title.rectTransform, new Vector2(260f, 50f), new Vector2(0f, 190f));
 
         Image powerBg = CreateImage(
-            "PowerBg", panel.transform, uiSprite,
+            "PowerBg", panel.transform, knob,
             new Color(0.25f, 0.2f, 0.15f, 1f));
 
-        Place(powerBg.rectTransform, new Vector2(80f, 260f), new Vector2(0f, 10f));
+        Place(powerBg.rectTransform, new Vector2(300f, 300f), new Vector2(0f, 10f));
 
         Image powerFill = CreateImage(
-            "PowerFill", panel.transform, uiSprite,
+            "PowerFill", panel.transform, knob,
             new Color(0.95f, 0.75f, 0.2f, 1f));
 
-        Place(powerFill.rectTransform, new Vector2(80f, 260f), new Vector2(0f, 10f));
+        Place(powerFill.rectTransform, new Vector2(300f, 300f), new Vector2(0f, 10f));
         powerFill.type = Image.Type.Filled;
-        powerFill.fillMethod = Image.FillMethod.Vertical;
+        powerFill.fillMethod = Image.FillMethod.Radial360;
         powerFill.fillOrigin = 0;
         powerFill.fillAmount = 0f;
 
         TMP_Text hint = CreateText(
             "Hint", panel.transform, font,
-            "PULL DOWN", 24f);
+            "HOLD · CIRCLE · RELEASE", 24f);
 
-        Place(hint.rectTransform, new Vector2(260f, 50f), new Vector2(0f, -190f));
+        Place(hint.rectTransform, new Vector2(380f, 50f), new Vector2(0f, -200f));
 
         LaunchOverlay overlay = root.AddComponent<LaunchOverlay>();
 

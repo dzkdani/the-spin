@@ -2,12 +2,15 @@ using UnityEngine;
 
 public static class LaunchMath
 {
-    public static float Power(float pullDistance, float pullMax)
+    public static float RotationPower(
+        float degrees,
+        float fullRotationDegrees)
     {
-        if (pullMax <= 0f)
+        if (fullRotationDegrees <= 0f)
             return 0f;
 
-        return Mathf.Clamp01(pullDistance / pullMax);
+        return Mathf.Clamp01(
+            Mathf.Abs(degrees) / fullRotationDegrees);
     }
 
     public static float StartRpm(

@@ -21,16 +21,18 @@ The game version keeps that beat but stays simple: **hold, pull down, release**.
 
 ## 2. V1 interaction
 
-1. **Hold** left mouse anywhere during the launch phase.
-2. **Pull down**. A cord line follows the cursor.
-3. **Release**. The cord snaps out and the bey launches.
+1. **Hold** left mouse anywhere during the launch phase — the press point becomes
+   the pivot.
+2. **Circle** the mouse around the pivot. Signed angles accumulate.
+3. **Release**. The ripcord snaps out and the bey launches.
 
 ```text
-power = clamp01(pullDistanceY / tuning.playerPullMax)
+power = clamp01(|accumulated signed angle| / tuning.playerRotationDegrees)
 ```
 
-- Distance-based power for v1. A speed-based curve can replace it later behind
-  the same `ILaunchPowerModel` interface.
+- One full revolution (`360°`) is full power. Either direction counts.
+- Angle deltas are `Vector2.SignedAngle(lastDirection, direction)`, so circles
+  larger or smaller than the arena all map to the same 360° budget.
 - Start position: `arena.Center + (0, arena.Radii.y * launchSpotFactor)`, near the
   top of the oval.
 - Launch impulse toward the center, scaled by power.
@@ -85,7 +87,7 @@ in an asset" rule.
 | Field | Default | Meaning |
 |---|---|---|
 | `enabled` | true | fall back to the old auto-reset when false |
-| `playerPullMax` | 3.0 world units | distance that maps to power 1.0 |
+| `playerRotationDegrees` | 360 | signed rotation that maps to power 1.0 |
 | `minStartFactor` | 0.7 | worst-pull RPM floor |
 | `perfectThreshold` | 0.9 | charged-hit bonus cutoff |
 | `perfectChargedHits` | 1 | charged hits granted on a perfect launch |
@@ -115,12 +117,12 @@ background.
 LaunchOverlay (Canvas: Screen Space Overlay, high sorting order)
 ├── Darken   Image, default Background sprite, full-screen stretch,
 │            color (0, 0, 0, 0.55)
-├── Panel    Image, default UISprite, ~300 × 460, anchored center
+├── Panel    Image, default UISprite, ~460 × 460, anchored center
 │   ├── Title      TMP text: "LAUNCH" at the top
-│   ├── PowerBg    Image, default UISprite, ~80 × 260, vertical
-│   ├── PowerFill  Image, default UISprite, type Filled, vertical,
-│   │              fillOrigin 0 (bottom), fills upward as you pull down
-│   └── Hint       TMP text: "PULL DOWN" at the bottom
+│   ├── PowerBg    Image, default Knob sprite (circle), ~300 × 300
+│   ├── PowerFill  same circle, type Filled, fillMethod Radial360,
+│   │              fillOrigin 0 (bottom), fills clockwise as you circle
+│   └── Hint       TMP text: "HOLD · CIRCLE · RELEASE" at the bottom
 └── LaunchOverlay.cs  listens to launch events, drives fill, shows/hides root
 ```
 
@@ -159,7 +161,7 @@ Wave cleared
 | File | State |
 |---|---|
 | `LaunchController.cs` | Done. Phase, input, power, resolve, events. |
-| `LaunchMath.cs` | Done. Power, start RPM, enemy power. |
+| `LaunchMath.cs` | Done. Rotation power, start RPM, enemy power. |
 | `LaunchOverlay.cs` | Done. Show/hide and power fill. |
 | `LaunchTuning.cs` + `LaunchTuning.asset` | Done. All knobs, including enemy variance. |
 | `BattleEvents.cs` | Done. `LaunchStarted`, `LaunchResolved`. |
@@ -188,7 +190,7 @@ the player object is disabled for the phase.
 
 **EditMode — done** (`LaunchSystemTests`)
 
-- Power clamps to 0..1 and maps distance correctly.
+- `LaunchMath.RotationPower` clamps: 0°, 180°, 360°, 720°, and negative angles.
 - `BeyData.Launch` produces `maxRPM × Lerp(0.7, 1, power)`.
 - Enemy power with zero variance equals the base value.
 

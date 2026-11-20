@@ -4,24 +4,36 @@ using UnityEngine;
 public class LaunchSystemTests
 {
     [Test]
-    public void PowerClampsToUnitRange()
+    public void RotationPowerClampsToUnitRange()
     {
         Assert.AreEqual(
             0.5f,
             (float)ProductionReflection.CallStatic(
-                "LaunchMath", "Power", 1.5f, 3f),
+                "LaunchMath", "RotationPower", 180f, 360f),
             0.0001f);
 
         Assert.AreEqual(
             0f,
             (float)ProductionReflection.CallStatic(
-                "LaunchMath", "Power", -1f, 3f),
+                "LaunchMath", "RotationPower", 0f, 360f),
             0.0001f);
 
         Assert.AreEqual(
             1f,
             (float)ProductionReflection.CallStatic(
-                "LaunchMath", "Power", 9f, 3f),
+                "LaunchMath", "RotationPower", 360f, 360f),
+            0.0001f);
+
+        Assert.AreEqual(
+            1f,
+            (float)ProductionReflection.CallStatic(
+                "LaunchMath", "RotationPower", -360f, 360f),
+            0.0001f);
+
+        Assert.AreEqual(
+            1f,
+            (float)ProductionReflection.CallStatic(
+                "LaunchMath", "RotationPower", 720f, 360f),
             0.0001f);
     }
 

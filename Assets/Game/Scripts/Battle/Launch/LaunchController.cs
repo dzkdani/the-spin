@@ -12,7 +12,9 @@ public sealed class LaunchController : MonoBehaviour
     private Action onResolved;
     private bool active;
     private bool pulling;
-    private float pullStartY;
+    private Vector2 rotationCenter;
+    private Vector2 lastDirection;
+    private float accumulatedAngle;
     private float power;
 
     public bool Enabled => tuning != null && tuning.enabled;
@@ -43,6 +45,8 @@ public sealed class LaunchController : MonoBehaviour
 
         active = true;
         pulling = false;
+        accumulatedAngle = 0f;
+        lastDirection = Vector2.zero;
         power = 0f;
 
         if (player != null)
@@ -79,7 +83,9 @@ public sealed class LaunchController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 pulling = true;
-                pullStartY = MouseWorld().y;
+                rotationCenter = MouseWorld();
+                lastDirection = Vector2.zero;
+                accumulatedAngle = 0f;
                 SetPower(0f);
             }
 
@@ -88,9 +94,23 @@ public sealed class LaunchController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            SetPower(LaunchMath.Power(
-                pullStartY - MouseWorld().y,
-                tuning.playerPullMax));
+            Vector2 direction = (Vector2)MouseWorld() - rotationCenter;
+
+            if (direction.sqrMagnitude > 0.0001f)
+            {
+                if (lastDirection.sqrMagnitude > 0.0001f)
+                {
+                    accumulatedAngle += Vector2.SignedAngle(
+                        lastDirection,
+                        direction);
+                }
+
+                lastDirection = direction;
+            }
+
+            SetPower(LaunchMath.RotationPower(
+                accumulatedAngle,
+                tuning.playerRotationDegrees));
 
             return;
         }

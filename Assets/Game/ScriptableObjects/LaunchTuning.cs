@@ -8,7 +8,7 @@ public class LaunchTuning : ScriptableObject
     public bool enabled = true;
 
     [Header("Player")]
-    public float playerPullMax = 3f;
+    public float playerRotationDegrees = 360f;
 
     public float minStartFactor = 0.7f;
 
