@@ -260,9 +260,20 @@ public class GameManager : MonoBehaviour
             garage = GarageUI.EnsureInScene();
 
         if (garage != null && player != null)
-            garage.Show(player, BeginWave);
+        {
+            garage.Show(
+                player,
+                spawner != null
+                    ? spawner.GetBlueprint(enemiesDefeated)
+                    : null,
+                enemiesDefeated + 1,
+                totalEnemies,
+                BeginWave);
+        }
         else
+        {
             BeginWave();
+        }
     }
 
     private void ResolveBattle()

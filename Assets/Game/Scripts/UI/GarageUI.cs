@@ -12,6 +12,7 @@ public sealed class GarageUI : MonoBehaviour
     private bool built;
     private TMP_Text[] rowValues;
     private TMP_Text statsText;
+    private TMP_Text previewText;
     private TMP_Text budgetText;
     private TMP_Text errorText;
     private Button confirmButton;
@@ -42,7 +43,12 @@ public sealed class GarageUI : MonoBehaviour
         return ui;
     }
 
-    public void Show(BeyController target, Action done)
+    public void Show(
+        BeyController target,
+        BeyBlueprint nextEnemy,
+        int wave,
+        int totalWaves,
+        Action done)
     {
         player = target;
         onDone = done;
@@ -60,6 +66,7 @@ public sealed class GarageUI : MonoBehaviour
 
         gameObject.SetActive(true);
         Refresh();
+        ShowPreview(nextEnemy, wave, totalWaves);
 
         Time.timeScale = 0f;
         ServiceLocator.Get<GameUIManager>()?.SetGarageOpen(true);
@@ -90,8 +97,14 @@ public sealed class GarageUI : MonoBehaviour
 
         statsText = AddText(
             "Stats", card, "",
-            new Vector2(-280f, 70f), new Vector2(420f, 420f),
-            22, TextAlignmentOptions.TopLeft);
+            new Vector2(-280f, 140f), new Vector2(420f, 300f),
+            20, TextAlignmentOptions.TopLeft);
+
+        previewText = AddText(
+            "Preview", card, "",
+            new Vector2(-280f, -95f), new Vector2(420f, 110f),
+            20, TextAlignmentOptions.TopLeft);
+        previewText.color = new Color(0.55f, 0.78f, 1f, 1f);
 
         IReadOnlyList<GarageModel.Row> rows = model.Rows;
         rowValues = new TMP_Text[rows.Count];
@@ -145,6 +158,25 @@ public sealed class GarageUI : MonoBehaviour
         confirmButton.onClick.AddListener(Confirm);
 
         built = true;
+    }
+
+    private void ShowPreview(BeyBlueprint nextEnemy, int wave, int totalWaves)
+    {
+        if (previewText == null)
+            return;
+
+        if (nextEnemy == null)
+        {
+            previewText.text = "NEXT WAVE  " + wave + " / " + totalWaves +
+                "\nTYPE  -\nELEMENT  -\nAI  -";
+            return;
+        }
+
+        previewText.text =
+            "NEXT WAVE  " + wave + " / " + totalWaves + "\n" +
+            "TYPE  " + NameOf(nextEnemy.type) + "\n" +
+            "ELEMENT  " + NameOf(nextEnemy.baseElement) + "\n" +
+            "AI  " + NameOf(nextEnemy.aiProfile);
     }
 
     private void Refresh()

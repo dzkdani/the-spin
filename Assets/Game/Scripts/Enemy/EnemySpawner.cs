@@ -11,6 +11,14 @@ public class EnemySpawner : MonoBehaviour
         return SpawnEnemy(0);
     }
 
+    public BeyBlueprint GetBlueprint(int waveIndex)
+    {
+        if (blueprints == null || blueprints.Length == 0)
+            return null;
+
+        return blueprints[Mathf.Clamp(waveIndex, 0, blueprints.Length - 1)];
+    }
+
     public BeyController SpawnEnemy(int waveIndex)
     {
         if (enemyPrefab == null)
@@ -39,13 +47,7 @@ public class EnemySpawner : MonoBehaviour
             point.position,
             Quaternion.identity);
 
-        BeyBlueprint blueprint = null;
-
-        if (blueprints != null && blueprints.Length > 0)
-        {
-            int index = Mathf.Clamp(waveIndex, 0, blueprints.Length - 1);
-            blueprint = blueprints[index];
-        }
+        BeyBlueprint blueprint = GetBlueprint(waveIndex);
 
         if (blueprint != null && enemy.Data != null)
             enemy.Data.Configure(blueprint);
