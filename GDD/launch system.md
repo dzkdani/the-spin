@@ -92,7 +92,8 @@ in an asset" rule.
 | `perfectThreshold` | 0.9 | charged-hit bonus cutoff |
 | `perfectChargedHits` | 1 | charged hits granted on a perfect launch |
 | `enemyPower` | 0.9 | base AI launch power |
-| `enemyVariance` | 0.05 | `clamp01(enemyPower ± variance)` |
+| `enemyPowerRamp` | 0.01 | added per wave index (wave 6 ≈ 0.95) |
+| `enemyVariance` | 0.2 | `clamp01(enemyPower + ramp ± variance)` |
 | `launchImpulse` | 3.0 | impulse at power 1.0 |
 | `launchSpotFactor` | 0.75 | start position as a fraction of `arena.Radii.y` |
 

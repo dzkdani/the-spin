@@ -7,6 +7,7 @@ public static class BattleEvents
     public static event Action<ImpactEvent> ImpactResolved;
     public static event Action<BeyData> DashStarted;
     public static event Action<BeyData> DashEnded;
+    public static event Action<BeyData> DashWindUpStarted;
     public static event Action<BeyData> LaunchStarted;
     public static event Action<BeyData, float> LaunchResolved;
     public static event Action<BeyData, float> RpmChanged;
@@ -21,6 +22,7 @@ public static class BattleEvents
         ImpactResolved = null;
         DashStarted = null;
         DashEnded = null;
+        DashWindUpStarted = null;
         LaunchStarted = null;
         LaunchResolved = null;
         RpmChanged = null;
@@ -46,6 +48,11 @@ public static class BattleEvents
     public static void RaiseDashEnded(BeyData bey)
     {
         DashEnded?.Invoke(bey);
+    }
+
+    public static void RaiseDashWindUpStarted(BeyData bey)
+    {
+        DashWindUpStarted?.Invoke(bey);
     }
 
     public static void RaiseLaunchStarted(BeyData bey)

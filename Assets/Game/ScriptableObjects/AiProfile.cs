@@ -22,6 +22,8 @@ public class AiProfile : ContentDefinition
 
     public float commitTime = 0.6f;
 
+    public float dashWindUp = 0.15f;
+
     [Header("Behavior Weights")]
     public float pressureWeight = 1f;
 

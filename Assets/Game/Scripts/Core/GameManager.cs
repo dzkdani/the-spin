@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
         }
 
         if (launch != null)
-            launch.ApplyEnemyLaunch(currentEnemy);
+            launch.ApplyEnemyLaunch(currentEnemy, enemiesDefeated);
 
         enemyUI.Bind(currentEnemy);
 

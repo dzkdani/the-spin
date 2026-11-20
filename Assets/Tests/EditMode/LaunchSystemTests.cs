@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 
 public class LaunchSystemTests
@@ -67,6 +68,23 @@ public class LaunchSystemTests
             (float)ProductionReflection.CallStatic(
                 "LaunchMath", "EnemyPower", 0.9f, 0f),
             0.0001f);
+    }
+
+    [Test]
+    public void TuningCarriesEnemyLaunchSpreadAndRamp()
+    {
+        object tuning = AssetDatabase.LoadAssetAtPath(
+            "Assets/Game/Datas/LaunchTuning.asset",
+            ProductionReflection.TypeOf("LaunchTuning"));
+
+        Assert.IsNotNull(tuning);
+        Assert.AreEqual(
+            0.2f,
+            (float)ProductionReflection.Field(tuning, "enemyVariance"),
+            0.0001f);
+        Assert.Greater(
+            (float)ProductionReflection.Field(tuning, "enemyPowerRamp"),
+            0f);
     }
 
     [Test]

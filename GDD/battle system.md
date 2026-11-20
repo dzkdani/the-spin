@@ -947,7 +947,7 @@ Unchanged from v1. One `BattleCombat` per battle dedupes contacts by unordered b
 - Slots index the held actives, equipped and granted together.
 - Requests come from player buttons or from `AiCommand`.
 - Consumers read requests in the same loop that drives physics (Open Question 20).
-- Dash state machine: `Idle → Dashing → Recover`. There is no wind-up or telegraph; a dash request applies on the same update.
+- Dash state machine: `Idle → WindUp → Dashing → Recover`. The wind-up is a short **0.15 s** telegraph (punch-scale) before the dash applies.
 - Dash cost is a self-cost. It goes through `DrainRpm` and bypasses mitigation.
 
 **v4 note.** `ConsumeDash()` replaces the current one-frame `DashRequested` flag. This is a design improvement, not a bug fix (B3 retired). The gate moves from `GameUIManager` to an `IBattleStateGate` service with `CanReceiveGameplayInput`, resolved once per battle rather than per input component.
@@ -1233,7 +1233,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
 
-**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights, and finally the **player alone** raised to **9000** for an 80% easier demo while enemy HP and time-to-kill stay at 5000. Damage per hit does not scale with max RPM. At 9000 the player's 80% burst threshold is 7200, so burst is effectively disabled; the enemy threshold stays 4000.
+**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights. A temporary 9000 player pool made the demo too forgiving, so the skill pass settled on **player 6000 vs enemy 5000**. Damage per hit does not scale with max RPM. Player burst threshold is 4800, enemy 4000. `dashRPMCost` is **150** on both sides, so a dash costs ~2.5% of the player pool and remains a real decision.
 
 **Part exit criteria met.** Every part sits inside the Bit/Blade/Ratchet slot band, the 18-build reference matrix stays 40–60%, and the golden row is unchanged. `budgetCost` remains a design estimate; the simulation does not price it directly.
 
@@ -1272,7 +1272,7 @@ Simulation drives numbers. Playtests decide whether fights feel readable. Both a
 1. Player 1/2/3 casts only equipped actives; RPM cost and cooldown match the asset.
 2. Guard Spin, Charge Strike, Ignition, Frost Guard, Ember Aura, and Burst Dash each produce a visible effect in their intended situation.
 3. Cast interrupts happen only when `interruptOnHit` is set.
-4. Enemy dashes immediately, uses an active when the player is low, and retreats when its own RPM is low.
+4. Enemy telegraphs its dash with a short punch-scale, uses an active when the player is low, and retreats when its own RPM is low.
 5. Aggressive and passive profiles produce measurably different dash rates in `AiSimulation`.
 
 **E. Flow, UI, and feedback**
@@ -1378,7 +1378,7 @@ Fill in as each phase lands.
 | 8b | Grip Bit tip friction tuned to ×1.05 after the live friction change | §13.5 |
 | 11 | Element on-hit statuses: Pyre burn, Crye chill, Gyre gust, Hydre siphon, Sparke surge | §11.7 |
 | 6b | Stronger element pass: matchups 1.35/0.75, statuses 3–4 s at ×2.5/×0.9/×0.9/×0.9/×1.08 | §11 |
-| 20 | Demo difficulty: player maxRPM 9000, enemy stays 5000; ring-out spec written as a future slice (`GDD/ring out feature.md`) | §20.4 |
+| 20 | Skill pass: player maxRPM 6000, dash cost 150, 0.15 s telegraph restored, hit-stop + launch/dash feedback | §20.4 |
 | 20 | Remove enemy dash wind-up and its punch-scale telegraph; pool hit particles (8 prewarm, 32 cap) | §15, §20.3 |
 | 11 | Ring-out implemented: 0.05 s tick, player lose, enemy win/advance, `DefeatEnemy()` shared path | §17 |
 | 9 | Wave ramp applied to six AI profiles; dead dash-chance fields removed | §16 |
@@ -1390,7 +1390,7 @@ Fill in as each phase lands.
 | 20 | Balance simulator applies passive decay and element statuses on per-duel stat clones | §20.4 |
 | 20 | Battle demo slice: six enemy blueprints, AI profiles, HUD, six-wave scene, wave checkpoint reset | §20.5 |
 | 6b | Type attack tuned: BAL ×1.065, DEF ×0.81 | §10 |
-| 8b | Playtest: maxRPM normalized to 3000, both raised to 5000, then player alone to 9000 for an easier demo | §20.4 |
+| 8b | Playtest: maxRPM normalized to 3000, both raised to 5000, player temporarily 9000, settled at 6000 in the skill pass | §20.4 |
 | 9 | Enemy dash depends on player state, fires immediately, and reads the current element | Fixes D4, D5, M9 |
 | 20 | Wave reset always runs at next spawn; drop the unserialized toggle that disabled it | Fix wave reset |
 | 9 | Retreat is a short inward spiral with a 2 s cooldown; orbit 0 falls back to 1; jitter skipped | §16 |

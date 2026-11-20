@@ -45,6 +45,7 @@ public class ContentFoundationTests
         Assert.AreEqual(1f, ReadFloat(profile, "jitterInterval"));
         Assert.AreEqual(4f, ReadFloat(profile, "farDistance"));
         Assert.AreEqual(1.5f, ReadFloat(profile, "dashIntervalMin"));
+        Assert.AreEqual(0.15f, ReadFloat(profile, "dashWindUp"));
         Assert.AreEqual(3f, ReadFloat(profile, "dashIntervalMax"));
     }
 

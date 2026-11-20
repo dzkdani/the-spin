@@ -17,7 +17,7 @@ MonoBehaviour:
   maxVelocity: 10
   maxRPM: 5000
   acceleration: 25
-  dashRPMCost: 50
+  dashRPMCost: 150
   dashImpulse: 10
   attack: 10
   weight: 5

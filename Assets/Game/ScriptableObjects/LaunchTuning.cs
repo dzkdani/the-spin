@@ -19,7 +19,9 @@ public class LaunchTuning : ScriptableObject
     [Header("Enemy")]
     public float enemyPower = 0.9f;
 
-    public float enemyVariance = 0.05f;
+    public float enemyPowerRamp = 0.01f;
+
+    public float enemyVariance = 0.2f;
 
     [Header("Motion")]
     public float launchImpulse = 3f;

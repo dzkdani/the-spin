@@ -21,6 +21,7 @@ MonoBehaviour:
   dashIntervalMax: 2
   decisionInterval: 0.15
   commitTime: 0.6
+  dashWindUp: 0.15
   pressureWeight: 0.7
   elementWeight: 1.1
   baitWeight: 1.3

@@ -151,6 +151,8 @@ public class BeyCombat : MonoBehaviour
                 shake,
                 input.Speed,
                 input.OppositeSpin));
+
+        HitStop.Play(Mathf.Lerp(0.02f, 0.06f, result.Intensity));
     }
 
     public void AddPendingImpact(PendingImpactMod mod)

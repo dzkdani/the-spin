@@ -18,6 +18,7 @@ MonoBehaviour:
   perfectThreshold: 0.9
   perfectChargedHits: 1
   enemyPower: 0.9
-  enemyVariance: 0.05
+  enemyPowerRamp: 0.01
+  enemyVariance: 0.2
   launchImpulse: 3
   launchSpotFactor: 0.75

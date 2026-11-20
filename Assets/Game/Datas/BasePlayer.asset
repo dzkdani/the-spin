@@ -15,9 +15,9 @@ MonoBehaviour:
   id: base_player
   displayName: Player
   maxVelocity: 12
-  maxRPM: 9000
+  maxRPM: 6000
   acceleration: 25
-  dashRPMCost: 50
+  dashRPMCost: 150
   dashImpulse: 10
   attack: 10
   weight: 5

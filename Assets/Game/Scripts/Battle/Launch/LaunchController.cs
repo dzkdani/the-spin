@@ -59,13 +59,16 @@ public sealed class LaunchController : MonoBehaviour
             BattleEvents.RaiseLaunchStarted(player.Data);
     }
 
-    public void ApplyEnemyLaunch(BeyData enemy)
+    public void ApplyEnemyLaunch(BeyData enemy, int waveIndex)
     {
         if (enemy == null || tuning == null)
             return;
 
+        float basePower = tuning.enemyPower +
+            tuning.enemyPowerRamp * Mathf.Max(0, waveIndex);
+
         float enemyPower = LaunchMath.EnemyPower(
-            tuning.enemyPower,
+            basePower,
             tuning.enemyVariance);
 
         enemy.Launch(enemyPower, tuning.minStartFactor);
