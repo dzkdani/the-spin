@@ -7,35 +7,43 @@ public readonly struct GarageOption
     public readonly BeyTypeDefinition Type;
     public readonly ElementDefinition Element;
     public readonly PartDefinition Part;
+    public readonly AbilityDefinition Ability;
 
     private GarageOption(
         string label,
         BeyTypeDefinition type,
         ElementDefinition element,
-        PartDefinition part)
+        PartDefinition part,
+        AbilityDefinition ability)
     {
         Label = label;
         Type = type;
         Element = element;
         Part = part;
+        Ability = ability;
     }
 
     public static GarageOption None =>
-        new GarageOption("NONE", null, null, null);
+        new GarageOption("NONE", null, null, null, null);
 
     public static GarageOption ForType(BeyTypeDefinition type)
     {
-        return new GarageOption(LabelOf(type), type, null, null);
+        return new GarageOption(LabelOf(type), type, null, null, null);
     }
 
     public static GarageOption ForElement(ElementDefinition element)
     {
-        return new GarageOption(LabelOf(element), null, element, null);
+        return new GarageOption(LabelOf(element), null, element, null, null);
     }
 
     public static GarageOption ForPart(PartDefinition part)
     {
-        return new GarageOption(LabelOf(part), null, null, part);
+        return new GarageOption(LabelOf(part), null, null, part, null);
+    }
+
+    public static GarageOption ForAbility(AbilityDefinition ability)
+    {
+        return new GarageOption(LabelOf(ability), null, null, null, ability);
     }
 
     private static string LabelOf(ContentDefinition definition)
@@ -71,19 +79,25 @@ public sealed class GarageModel
     {
         Type,
         Element,
-        Slot
+        Slot,
+        Active,
+        Passive
     }
 
     private sealed class OptionSet
     {
         public string Label;
         public Kind Kind;
-        public List<GarageOption> Options;
+        public List<GarageOption> Options = new List<GarageOption>();
         public int Index;
+        public AbilityDefinition CurrentAbility;
     }
+
+    private const float MaxActiveRpmCost = 0.5f;
 
     private readonly BeyBlueprint template;
     private readonly CombatTuning tuning;
+    private readonly IReadOnlyList<AbilityDefinition> allAbilities;
     private readonly List<OptionSet> sets = new List<OptionSet>();
     private readonly List<string> errors = new List<string>();
     private readonly BeyBlueprint candidate;
@@ -93,10 +107,12 @@ public sealed class GarageModel
         CombatTuning tuning,
         IReadOnlyList<BeyTypeDefinition> types,
         IReadOnlyList<ElementDefinition> elements,
-        IReadOnlyList<PartDefinition> parts)
+        IReadOnlyList<PartDefinition> parts,
+        IReadOnlyList<AbilityDefinition> abilities)
     {
         this.template = template;
         this.tuning = tuning;
+        allAbilities = abilities ?? new List<AbilityDefinition>();
 
         candidate = ScriptableObject.CreateInstance<BeyBlueprint>();
         candidate.id = "player_loadout";
@@ -146,6 +162,21 @@ public sealed class GarageModel
             });
         }
 
+        AddAbilitySet(
+            "ACTIVE",
+            Kind.Active,
+            EquippedAt(template, true, 0));
+
+        AddAbilitySet(
+            "PASSIVE 1",
+            Kind.Passive,
+            EquippedAt(template, false, 0));
+
+        AddAbilitySet(
+            "PASSIVE 2",
+            Kind.Passive,
+            EquippedAt(template, false, 1));
+
         Apply();
     }
 
@@ -163,6 +194,10 @@ public sealed class GarageModel
             new List<PartDefinition>(
                 ContentRegistry.All<PartDefinition>());
 
+        List<AbilityDefinition> abilities =
+            new List<AbilityDefinition>(
+                ContentRegistry.All<AbilityDefinition>());
+
         types.Sort((a, b) => string.CompareOrdinal(a.id, b.id));
         elements.Sort((a, b) => string.CompareOrdinal(a.id, b.id));
 
@@ -176,12 +211,22 @@ public sealed class GarageModel
                 : string.CompareOrdinal(a.id, b.id);
         });
 
+        abilities.Sort((a, b) =>
+        {
+            int byKind = a.kind.CompareTo(b.kind);
+
+            return byKind != 0
+                ? byKind
+                : string.CompareOrdinal(a.id, b.id);
+        });
+
         return new GarageModel(
             template,
             ContentRegistry.Tuning,
             types,
             elements,
-            parts);
+            parts,
+            abilities);
     }
 
     public BeyBlueprint Candidate => candidate;
@@ -240,7 +285,35 @@ public sealed class GarageModel
         set.Index = (next % set.Options.Count + set.Options.Count)
             % set.Options.Count;
 
+        if (set.Kind == Kind.Active || set.Kind == Kind.Passive)
+            set.CurrentAbility = set.Options[set.Index].Ability;
+
         Apply();
+    }
+
+    private void AddAbilitySet(string label, Kind kind, AbilityDefinition selected)
+    {
+        sets.Add(new OptionSet
+        {
+            Label = label,
+            Kind = kind,
+            CurrentAbility = selected
+        });
+    }
+
+    private static AbilityDefinition EquippedAt(
+        BeyBlueprint blueprint,
+        bool active,
+        int index)
+    {
+        if (blueprint == null)
+            return null;
+
+        IReadOnlyList<AbilityDefinition> list = active
+            ? blueprint.equippedActives
+            : blueprint.equippedPassives;
+
+        return list.Count > index ? list[index] : null;
     }
 
     private void AddSet<T>(
@@ -327,29 +400,132 @@ public sealed class GarageModel
     private void Apply()
     {
         candidate.parts.Clear();
-        candidate.equippedPassives.Clear();
-        candidate.equippedActives.Clear();
+
+        BeyTypeDefinition type = null;
+        ElementDefinition element = null;
+        List<PartDefinition> selectedParts = new List<PartDefinition>();
 
         for (int i = 0; i < sets.Count; i++)
         {
             OptionSet set = sets[i];
-            GarageOption option = set.Options[set.Index];
+
+            if (set.Options.Count == 0)
+                continue;
+
+            GarageOption option = set.Options[
+                Mathf.Clamp(set.Index, 0, set.Options.Count - 1)];
 
             if (set.Kind == Kind.Type)
-                candidate.type = option.Type;
+                type = option.Type;
             else if (set.Kind == Kind.Element)
-                candidate.baseElement = option.Element;
-            else if (option.Part != null)
-                candidate.parts.Add(option.Part);
+                element = option.Element;
+            else if (set.Kind == Kind.Slot && option.Part != null)
+                selectedParts.Add(option.Part);
         }
 
-        if (template != null)
-        {
-            for (int i = 0; i < template.equippedPassives.Count; i++)
-                candidate.equippedPassives.Add(template.equippedPassives[i]);
+        candidate.type = type;
+        candidate.baseElement = element;
 
-            for (int i = 0; i < template.equippedActives.Count; i++)
-                candidate.equippedActives.Add(template.equippedActives[i]);
+        for (int i = 0; i < selectedParts.Count; i++)
+            candidate.parts.Add(selectedParts[i]);
+
+        HashSet<string> forbidden = new HashSet<string>();
+
+        if (type != null && !string.IsNullOrEmpty(type.innatePassiveId))
+            forbidden.Add(type.innatePassiveId);
+
+        for (int i = 0; i < selectedParts.Count; i++)
+        {
+            PartDefinition part = selectedParts[i];
+
+            for (int j = 0; j < part.grantedAbilities.Count; j++)
+            {
+                AbilityDefinition granted = part.grantedAbilities[j];
+
+                if (granted != null && !string.IsNullOrEmpty(granted.id))
+                    forbidden.Add(granted.id);
+            }
+        }
+
+        HashSet<string> chosen = new HashSet<string>();
+
+        for (int i = 0; i < sets.Count; i++)
+        {
+            OptionSet set = sets[i];
+
+            if (set.Kind != Kind.Active && set.Kind != Kind.Passive)
+                continue;
+
+            List<GarageOption> options = new List<GarageOption>
+            {
+                GarageOption.None
+            };
+
+            for (int j = 0; j < allAbilities.Count; j++)
+            {
+                AbilityDefinition ability = allAbilities[j];
+
+                if (string.IsNullOrEmpty(ability.id) ||
+                    forbidden.Contains(ability.id) ||
+                    chosen.Contains(ability.id))
+                    continue;
+
+                if (set.Kind == Kind.Active)
+                {
+                    if (ability.kind != AbilityKind.Active ||
+                        ability.active.rpmCost > MaxActiveRpmCost)
+                        continue;
+                }
+                else if (ability.kind != AbilityKind.Passive)
+                {
+                    continue;
+                }
+
+                options.Add(GarageOption.ForAbility(ability));
+            }
+
+            set.Options = options;
+
+            int index = -1;
+
+            for (int j = 0; j < options.Count; j++)
+            {
+                if (options[j].Ability == set.CurrentAbility)
+                {
+                    index = j;
+                    break;
+                }
+            }
+
+            if (index < 0)
+                set.CurrentAbility = null;
+
+            set.Index = index >= 0 ? index : 0;
+
+            if (set.Index > 0)
+                chosen.Add(options[set.Index].Ability.id);
+        }
+
+        candidate.equippedActives.Clear();
+        candidate.equippedPassives.Clear();
+
+        for (int i = 0; i < sets.Count; i++)
+        {
+            OptionSet set = sets[i];
+
+            if (set.Options.Count == 0)
+                continue;
+
+            AbilityDefinition ability =
+                set.Options[Mathf.Clamp(set.Index, 0, set.Options.Count - 1)].Ability;
+
+            if (ability == null)
+                continue;
+
+            if (set.Kind == Kind.Active)
+                candidate.equippedActives.Add(ability);
+            else if (set.Kind == Kind.Passive)
+                candidate.equippedPassives.Add(ability);
         }
 
         errors.Clear();

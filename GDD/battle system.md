@@ -1132,6 +1132,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - **Menu presentation.** `MenuCursor` installs a high-contrast dark/white ring cursor from `Assets/Resources/MenuCursor.png` on scene load and keeps it across scenes via a `DontDestroyOnLoad` host. `TargetPointer` still hides the OS cursor during battle input and restores it on pause/game over. `UIButtonSFX` now implements `IPointerExitHandler` and scales its button RectTransform to 1.08 on hover (0.12 s, DOTween), reverting on exit; wired onto the three battle buttons as well as the existing title buttons.
 - **Garage core (G0).** Reusable loadout rebuild: `BeyController.ApplyBlueprint` validates a blueprint, calls the new `AbilityRunner.ClearAll()` so old abilities and effects cannot stack, then `BeyData.Configure` + `BeyBuilder.Build`. `GarageModel` is UI-agnostic: generic rows derived from `ContentRegistry` (type, element, one row per part slot), a candidate blueprint, live `BeyBlueprintValidator` errors, and a budget readout.
 - **Inter-wave garage (G1).** `GameManager` creates `GarageUI` on demand after each non-final wave: `NextWaveRoutine` waits 1 s, calls `GarageUI.EnsureInScene()` → `garage.Show(player, BeginWave)`, and the player picks type, element, and one part per slot. The overlay pauses via `Time.timeScale = 0` and `GameUIManager.SetGarageOpen(true)`, which also blocks gameplay input and Esc. `SPIN!` applies the candidate through `ApplyBlueprint`; `SKIP` keeps the current build. The panel is built at runtime under the scene Canvas, so no scene authoring is needed.
+- **Garage G2 + ability HUD.** `GarageModel` adds `ACTIVE`, `PASSIVE 1`, and `PASSIVE 2` rows. Options are rebuilt on every change: the type's innate passive, part-granted abilities, and already-picked abilities are excluded; actives must cost ≤ 0.5 RPM. `AbilityHUD` shows up to three bottom-center slots with key number, name, RPM cost, and a cooldown fill; ready-and-affordable slots take the current element tint. The HUD reads `AbilityRunner.GetActiveDefinition / IsActiveReady / GetActiveCooldown`, so a garage rebuild updates it automatically.
 
 ### Track B: Systems
 
@@ -1410,6 +1411,8 @@ Fill in as each phase lands.
 | 11 | High-contrast menu cursor and button hover scale on title and battle menus | §20.3 |
 | 11 | Garage G0: reusable blueprint rebuild (`ApplyBlueprint`, `ClearAll`) and UI-agnostic `GarageModel` | §20.5 |
 | 11 | Garage G1: inter-wave loadout overlay with live validation, budget, and SPIN/SKIP | §20.5 |
+| 11 | Garage G2: active/passive rows with innate, granted, and duplicate filtering | §20.5 |
+| 11 | Ability HUD: three slots with name, RPM cost, cooldown fill, and element tint | §20.5 |
 | 11 | Cursor uses the imported PNG with enforced RGBA32 / readable / alphaIsTransparency / no mips; hover tweens use SetLink | §20.3 |
 | 10 | Three enemy chassis by type: ATK light/fast, BAL middle, DEF heavy/slow | §20.4 |
 | 11 | Ring-out lose condition with arena radius | §17 |

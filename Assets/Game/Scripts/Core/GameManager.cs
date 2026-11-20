@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BeyUI enemyUI;
 
     private GarageUI garage;
+    private AbilityHUD abilityHud;
 
     public int CurrentEnemyIndex => enemiesDefeated + 1;
     public int TotalEnemies => totalEnemies;
@@ -97,6 +98,9 @@ public class GameManager : MonoBehaviour
         subscribedPlayer.OnRPMDepleted -= ResolveBattle;
         subscribedPlayer.OnRPMDepleted += ResolveBattle;
         playerUI.Bind(player.Data);
+
+        abilityHud = AbilityHUD.EnsureInScene();
+        abilityHud.Bind(player);
 
         BeginWave();
     }

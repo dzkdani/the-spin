@@ -12,6 +12,8 @@ public class BeyController : MonoBehaviour
     public BeyVisual Visual { get; private set; }
     public IBeyInput Input { get; private set; }
 
+    public AbilityRunner Abilities => abilityRunner;
+
     private AbilityRunner abilityRunner;
 
     private void Awake()

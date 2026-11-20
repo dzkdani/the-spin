@@ -90,15 +90,15 @@ public sealed class GarageUI : MonoBehaviour
 
         statsText = AddText(
             "Stats", card, "",
-            new Vector2(-280f, 60f), new Vector2(420f, 380f),
-            26, TextAlignmentOptions.TopLeft);
+            new Vector2(-280f, 70f), new Vector2(420f, 420f),
+            22, TextAlignmentOptions.TopLeft);
 
         IReadOnlyList<GarageModel.Row> rows = model.Rows;
         rowValues = new TMP_Text[rows.Count];
 
         for (int i = 0; i < rows.Count; i++)
         {
-            float y = 220f - i * 62f;
+            float y = 250f - i * 52f;
 
             AddText(
                 "Label" + i, card, rows[i].Label,
@@ -171,9 +171,29 @@ public sealed class GarageUI : MonoBehaviour
         if (string.IsNullOrEmpty(parts))
             parts = "(none)";
 
+        string active = NameOf(
+            candidate.equippedActives.Count > 0
+                ? candidate.equippedActives[0]
+                : null);
+
+        string passives = "";
+
+        for (int i = 0; i < candidate.equippedPassives.Count; i++)
+        {
+            if (i > 0)
+                passives += ", ";
+
+            passives += NameOf(candidate.equippedPassives[i]);
+        }
+
+        if (string.IsNullOrEmpty(passives))
+            passives = "-";
+
         statsText.text =
             "TYPE   " + type + "\n" +
             "ELEMENT   " + element + "\n\n" +
+            "ACTIVE   " + active + "\n" +
+            "PASSIVES   " + passives + "\n\n" +
             "PARTS\n" + parts;
 
         budgetText.text =

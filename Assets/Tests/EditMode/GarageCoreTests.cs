@@ -123,10 +123,11 @@ public class GarageCoreTests
             tuning,
             ArrayOf("BeyTypeDefinition", bal, atk),
             ArrayOf("ElementDefinition", crye),
-            ArrayOf("PartDefinition", blade, bit));
+            ArrayOf("PartDefinition", blade, bit),
+            ArrayOf("AbilityDefinition"));
 
         IList rows = (IList)ProductionReflection.Property(model, "Rows");
-        Assert.AreEqual(4, rows.Count);
+        Assert.AreEqual(7, rows.Count);
         Assert.AreEqual(6, (int)ProductionReflection.Property(model, "Budget"));
         Assert.IsTrue((bool)ProductionReflection.Property(model, "IsValid"));
         Assert.AreEqual(2, CandidateParts(model).Count);

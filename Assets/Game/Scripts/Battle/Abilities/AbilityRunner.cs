@@ -195,6 +195,13 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
             : 0f;
     }
 
+    public AbilityDefinition GetActiveDefinition(int slot)
+    {
+        Runtime runtime = GetActive(slot);
+
+        return runtime != null ? runtime.Definition : null;
+    }
+
     private Runtime GetActive(int slot)
     {
         if (slot < 0)
