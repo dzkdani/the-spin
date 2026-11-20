@@ -18,7 +18,7 @@ MonoBehaviour:
   statModifiers:
   - stat: 0
     op: 2
-    value: 1.1
+    value: 1.05
     scope: 
   elementClaim: {fileID: 11400000, guid: 8192a3b4c5d6e7f8091a2b3c4d5e6f70, type: 2}
   grantedAbilities: []
