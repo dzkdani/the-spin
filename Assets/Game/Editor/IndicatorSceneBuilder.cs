@@ -7,6 +7,9 @@ public static class IndicatorSceneBuilder
     private const string TrianglePath =
         "Assets/Game/Art/UI/Triangle.png";
 
+    private const string GlowRingPath =
+        "Assets/Game/Art/UI/GlowRing.png";
+
     private const string PlayerPrefabPath =
         "Assets/Game/Prefabs/Player.prefab";
 
@@ -29,12 +32,34 @@ public static class IndicatorSceneBuilder
             importer.SaveAndReimport();
         }
 
+        TextureImporter glowImporter =
+            AssetImporter.GetAtPath(GlowRingPath) as TextureImporter;
+
+        if (glowImporter != null)
+        {
+            glowImporter.textureType = TextureImporterType.Sprite;
+            glowImporter.spriteImportMode = SpriteImportMode.Single;
+            glowImporter.spritePixelsPerUnit = 100f;
+            glowImporter.alphaIsTransparency = true;
+            glowImporter.mipmapEnabled = false;
+            glowImporter.SaveAndReimport();
+        }
+
         Sprite triangle =
             AssetDatabase.LoadAssetAtPath<Sprite>(TrianglePath);
 
         if (triangle == null)
         {
             Debug.LogError("Triangle sprite is missing.");
+            return;
+        }
+
+        Sprite glowRing =
+            AssetDatabase.LoadAssetAtPath<Sprite>(GlowRingPath);
+
+        if (glowRing == null)
+        {
+            Debug.LogError("Glow ring sprite is missing.");
             return;
         }
 
@@ -48,7 +73,7 @@ public static class IndicatorSceneBuilder
             indicator = playerContents.AddComponent<PlayerIndicator>();
 
         SerializedObject indicatorData = new SerializedObject(indicator);
-        indicatorData.FindProperty("sprite").objectReferenceValue = triangle;
+        indicatorData.FindProperty("glowSprite").objectReferenceValue = glowRing;
         indicatorData.ApplyModifiedPropertiesWithoutUndo();
 
         PrefabUtility.SaveAsPrefabAsset(

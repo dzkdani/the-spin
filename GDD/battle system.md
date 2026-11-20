@@ -1128,7 +1128,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Move SFX, shake, and VFX to subscribers. Remove `ServiceLocator` from combat.
 - **Exit:** combat tests run with no presentation attached.
 - **Status: complete.** `BattleEvents` + `ImpactEvent` (attacker/defender/result/point/shake). `SFXPlayer`, `CameraShake`, and `HitEffectSpawner` subscribe in `OnEnable` and unsubscribe in `OnDisable`; `BeyData` raises `RpmChanged`, `BeyPhysics` raises `DashStarted`/`DashEnded`, and `BeyCombat` raises `ImpactPending`/`ImpactResolved`. No `ServiceLocator` reference remains in combat. Golden unchanged.
-- **Indicators.** `PlayerIndicator` shows a cyan downward triangle above the player for 2 s on each wave, then fades. `TargetPointer` follows the mouse with an RGB hue cycle and a Y-axis spin on the same triangle; it is hidden during launch, pause, and game over, and the OS cursor is restored while hidden.
+- **Indicators.** `PlayerIndicator` draws a soft glow ring around the player on each launch resolve (when the player object re-activates): three pulses of 0.35 s each, scaling 1.0 → 1.35 and fading 0.85 → 0, then disabled. The ring is tinted to the player element (Crye cyan) and compensates for the prefab root's 0.4 scale so it renders at its true world size; the original triangle was shrunk to a speck by that scale and never read on screen. `TargetPointer` keeps the triangle: it follows the mouse with an RGB hue cycle and a Y-axis spin, hidden during launch, pause, and game over, restoring the OS cursor while hidden.
 
 ### Track B: Systems
 
@@ -1402,6 +1402,7 @@ Fill in as each phase lands.
 | 11 | Opposite spin steals RPM | §14.1 |
 | 11 | Finish reasons: RPM depleted, ring-out, burst | §17 |
 | 11 | Player indicator above the bey each wave; RGB Y-axis triangle mouse target pointer | §20.3 |
+| 11 | Player indicator reworked to a scale-compensated 3-pulse glow ring on launch resolve | §20.3 |
 | 10 | Three enemy chassis by type: ATK light/fast, BAL middle, DEF heavy/slow | §20.4 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 

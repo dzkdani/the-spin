@@ -626,7 +626,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df16c21a33e459b9e49599b2c1b3148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerIndicator
-  sprite: {fileID: 21300000, guid: ea75e8b684e14ce0ba00e8d993dcc9d0, type: 3}
-  height: 1.2
-  holdSeconds: 2
-  fadeSeconds: 0.5
+  glowSprite: {fileID: 21300000, guid: 2c6b490305c04c539ef0a581be90b36e, type: 3}
+  ringWorldSize: 2.2
+  pulseCount: 3
+  pulseSeconds: 0.35
+  peakAlpha: 0.85
+  peakScale: 1.35
