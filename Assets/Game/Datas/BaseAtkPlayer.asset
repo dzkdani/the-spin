@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfb8703be1e7bf74383a4101b954d6ee, type: 3}
+  m_Name: BaseAtkPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::BeyStats
+  id: base_atk_player
+  displayName: ATK Player
+  maxVelocity: 14
+  maxRPM: 6000
+  acceleration: 34
+  dashRPMCost: 150
+  dashImpulse: 12
+  attack: 10
+  weight: 4
+  rpmDecayRate: 0.0015
+  minMoveAccelerationMultiplier: 0.7
+  spinDirection: 0
+  type: {fileID: 11400000, guid: 6f7a8b9c0d1e42f3a4b5c6d7e8f9a0b1, type: 2}
+  baseElement: {fileID: 11400000, guid: 5e6f708192a3b4c5d6e7f8091a2b3c4d, type: 2}
+  equippedAbilities:
+  - {fileID: 11400000, guid: 9e2f4a6b8c1d40e3f5a7b9c1d3e6f8a0, type: 2}

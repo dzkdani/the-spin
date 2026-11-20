@@ -207,6 +207,52 @@ public class ContentAssetsTests
             ChassisId("Wave4Crye"));
     }
 
+    [Test]
+    public void ElementPartsAndPlayerChassisAreWired()
+    {
+        object player = Load("Assets/Game/Datas/BasePlayer.asset");
+        object atk = Load("Assets/Game/Datas/BaseAtkPlayer.asset");
+        object def = Load("Assets/Game/Datas/BaseDefPlayer.asset");
+
+        Assert.AreEqual(6000f, Float(atk, "maxRPM"), 0.0001f);
+        Assert.AreEqual(6000f, Float(def, "maxRPM"), 0.0001f);
+        Assert.Greater(Float(atk, "maxVelocity"), Float(player, "maxVelocity"));
+        Assert.Less(Float(def, "maxVelocity"), Float(player, "maxVelocity"));
+        Assert.Greater(Float(def, "weight"), Float(player, "weight"));
+        Assert.Less(Float(atk, "weight"), Float(player, "weight"));
+
+        Assert.AreEqual("gyre_blade",
+            Id(Load("Assets/Game/Datas/Parts/GyreBlade.asset")));
+        Assert.AreEqual("hydre_blade",
+            Id(Load("Assets/Game/Datas/Parts/HydreBlade.asset")));
+        Assert.AreEqual("sparke_blade",
+            Id(Load("Assets/Game/Datas/Parts/SparkeBlade.asset")));
+        Assert.AreEqual("gyre_ratchet",
+            Id(Load("Assets/Game/Datas/Parts/GyreRatchet.asset")));
+        Assert.AreEqual("hydre_ratchet",
+            Id(Load("Assets/Game/Datas/Parts/HydreRatchet.asset")));
+        Assert.AreEqual("sparke_ratchet",
+            Id(Load("Assets/Game/Datas/Parts/SparkeRatchet.asset")));
+
+        Assert.AreEqual("gyre",
+            Id(ProductionReflection.Field(
+                Load("Assets/Game/Datas/Parts/GyreRatchet.asset"),
+                "elementClaim")));
+
+        Assert.AreEqual("base_atk_player",
+            Id(ProductionReflection.Field(
+                Load("Assets/Game/Datas/Types/Atk.asset"),
+                "chassis")));
+        Assert.AreEqual("base_player",
+            Id(ProductionReflection.Field(
+                Load("Assets/Game/Datas/Types/Bal.asset"),
+                "chassis")));
+        Assert.AreEqual("base_def_player",
+            Id(ProductionReflection.Field(
+                Load("Assets/Game/Datas/Types/Def.asset"),
+                "chassis")));
+    }
+
     private static string ChassisId(string wave)
     {
         object blueprint = Load(

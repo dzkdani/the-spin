@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c9e1b3d5f2468a0c2e4b6d8f1a3c5e, type: 3}
   m_Name: Bal
   m_EditorClassIdentifier: Assembly-CSharp::BeyTypeDefinition
+  chassis: {fileID: 11400000, guid: 5625aa388c3491f4ea0721d39a97120c, type: 2}
   id: bal
   displayName: BAL
   attackMultiplier: 1.065

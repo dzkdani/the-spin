@@ -92,6 +92,12 @@ public class GarageCoreTests
         object atk = MakeContent("BeyTypeDefinition", "atk");
         object crye = MakeContent("ElementDefinition", "crye");
 
+        object chassisAtk = ScriptableObject.CreateInstance(
+            ProductionReflection.TypeOf("BeyStats"));
+        ProductionReflection.SetField(chassisAtk, "maxRPM", 6000f);
+        ProductionReflection.SetField(bal, "chassis", chassis);
+        ProductionReflection.SetField(atk, "chassis", chassisAtk);
+
         object bladeSlot = MakeContent("PartSlotDefinition", "blade");
         ProductionReflection.SetField(bladeSlot, "elementPriority", 30);
 
@@ -131,6 +137,9 @@ public class GarageCoreTests
         Assert.AreEqual(6, (int)ProductionReflection.Property(model, "Budget"));
         Assert.IsTrue((bool)ProductionReflection.Property(model, "IsValid"));
         Assert.AreEqual(2, CandidateParts(model).Count);
+        Assert.AreEqual(
+            chassis,
+            ProductionReflection.Field(Candidate(model), "chassis"));
 
         ProductionReflection.SetField(tuning, "partBudgetCap", 5);
         ProductionReflection.Call(model, "Cycle", 0, 1);
@@ -138,6 +147,9 @@ public class GarageCoreTests
         Assert.AreEqual(
             atk,
             ProductionReflection.Field(Candidate(model), "type"));
+        Assert.AreEqual(
+            chassisAtk,
+            ProductionReflection.Field(Candidate(model), "chassis"));
         Assert.IsFalse((bool)ProductionReflection.Property(model, "IsValid"));
 
         ProductionReflection.SetField(tuning, "partBudgetCap", 10);

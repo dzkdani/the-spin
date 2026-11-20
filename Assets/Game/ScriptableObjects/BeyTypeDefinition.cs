@@ -14,6 +14,9 @@ public class BeyTypeDefinition : ContentDefinition
 
     public float rpmDecayMultiplier = 1f;
 
+    [Header("Chassis")]
+    public BeyStats chassis;
+
     [Header("Innate")]
     public string innatePassiveId;
 

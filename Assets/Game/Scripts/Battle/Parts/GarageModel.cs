@@ -425,6 +425,9 @@ public sealed class GarageModel
 
         candidate.type = type;
         candidate.baseElement = element;
+        candidate.chassis = type != null && type.chassis != null
+            ? type.chassis
+            : template != null ? template.chassis : null;
 
         for (int i = 0; i < selectedParts.Count; i++)
             candidate.parts.Add(selectedParts[i]);
