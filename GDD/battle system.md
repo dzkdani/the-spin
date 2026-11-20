@@ -1410,7 +1410,7 @@ Fill in as each phase lands.
 | 11 | High-contrast menu cursor and button hover scale on title and battle menus | §20.3 |
 | 11 | Garage G0: reusable blueprint rebuild (`ApplyBlueprint`, `ClearAll`) and UI-agnostic `GarageModel` | §20.5 |
 | 11 | Garage G1: inter-wave loadout overlay with live validation, budget, and SPIN/SKIP | §20.5 |
-| 11 | Cursor uses a generated RGBA32 readable texture; no importer dependency | §20.3 |
+| 11 | Cursor uses the imported PNG with enforced RGBA32 / readable / alphaIsTransparency / no mips; hover tweens use SetLink | §20.3 |
 | 10 | Three enemy chassis by type: ATK light/fast, BAL middle, DEF heavy/slow | §20.4 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 

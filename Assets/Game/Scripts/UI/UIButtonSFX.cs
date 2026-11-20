@@ -36,7 +36,8 @@ public class UIButtonSFX : MonoBehaviour,
 
         hoverTarget.DOKill();
         hoverTarget.DOScale(hoverScale, hoverDuration)
-            .SetEase(Ease.OutQuad);
+            .SetEase(Ease.OutQuad)
+            .SetLink(gameObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -46,7 +47,8 @@ public class UIButtonSFX : MonoBehaviour,
 
         hoverTarget.DOKill();
         hoverTarget.DOScale(Vector3.one, hoverDuration)
-            .SetEase(Ease.OutQuad);
+            .SetEase(Ease.OutQuad)
+            .SetLink(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
