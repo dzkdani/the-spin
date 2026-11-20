@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BeyData))]
@@ -60,6 +61,30 @@ public class BeyController : MonoBehaviour
 
         if (Input is IBattleStateGateConsumer consumer)
             consumer.SetGate(gate);
+    }
+
+    public bool ApplyBlueprint(BeyBlueprint blueprint)
+    {
+        if (blueprint == null || Data == null || abilityRunner == null)
+            return false;
+
+        List<string> errors = BeyBlueprintValidator.Validate(
+            blueprint,
+            ContentRegistry.Tuning);
+
+        if (errors.Count > 0)
+        {
+            for (int i = 0; i < errors.Count; i++)
+                Debug.LogError("Blueprint: " + errors[i], this);
+
+            return false;
+        }
+
+        abilityRunner.ClearAll();
+        Data.Configure(blueprint);
+        BeyBuilder.Build(Data, abilityRunner);
+
+        return true;
     }
 
     private void Update()

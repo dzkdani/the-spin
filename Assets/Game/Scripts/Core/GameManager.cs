@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BeyUI playerUI;
     [SerializeField] private BeyUI enemyUI;
 
+    private GarageUI garage;
+
     public int CurrentEnemyIndex => enemiesDefeated + 1;
     public int TotalEnemies => totalEnemies;
 
@@ -229,7 +231,7 @@ public class GameManager : MonoBehaviour
         if (battle.Finished)
             return;
 
-        StartCoroutine(SpawnNextAfterDelay(1f));
+        StartCoroutine(NextWaveRoutine());
     }
 
     private void ResetPlayerForNextWave()
@@ -243,14 +245,21 @@ public class GameManager : MonoBehaviour
         waveResetAt = Time.time;
     }
 
-    private IEnumerator SpawnNextAfterDelay(float delay)
+    private IEnumerator NextWaveRoutine()
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(1f);
 
         if (battle == null || battle.Finished)
             yield break;
 
-        BeginWave();
+        if (garage == null)
+            garage = FindFirstObjectByType<GarageUI>(
+                FindObjectsInactive.Include);
+
+        if (garage != null && player != null)
+            garage.Show(player, BeginWave);
+        else
+            BeginWave();
     }
 
     private void ResolveBattle()

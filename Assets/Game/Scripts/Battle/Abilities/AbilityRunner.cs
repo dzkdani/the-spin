@@ -119,9 +119,15 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
     private void OnDestroy()
     {
         Unsubscribe();
+        ClearAll();
+    }
 
+    public void ClearAll()
+    {
         for (int i = 0; i < abilities.Count; i++)
             RemoveEffects(abilities[i].SourceId);
+
+        abilities.Clear();
     }
 
     private void Update()

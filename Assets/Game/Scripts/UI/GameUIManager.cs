@@ -13,9 +13,16 @@ public class GameUIManager : MonoBehaviour, IBattleStateGate
 
     private bool isPaused;
     private bool gameEnded;
+    private bool garageOpen;
 
     // Update still runs while paused or after game over, so input reads must be gated on this.
-    public bool CanReceiveGameplayInput => !isPaused && !gameEnded;
+    public bool CanReceiveGameplayInput =>
+        !isPaused && !gameEnded && !garageOpen;
+
+    public void SetGarageOpen(bool value)
+    {
+        garageOpen = value;
+    }
 
     private void Awake()
     {
@@ -47,7 +54,7 @@ public class GameUIManager : MonoBehaviour, IBattleStateGate
 
     private void Update()
     {
-        if (gameEnded)
+        if (gameEnded || garageOpen)
             return;
 
         if (Input.GetKeyDown(KeyCode.Escape))

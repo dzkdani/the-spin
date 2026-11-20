@@ -1130,6 +1130,8 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - **Status: complete.** `BattleEvents` + `ImpactEvent` (attacker/defender/result/point/shake). `SFXPlayer`, `CameraShake`, and `HitEffectSpawner` subscribe in `OnEnable` and unsubscribe in `OnDisable`; `BeyData` raises `RpmChanged`, `BeyPhysics` raises `DashStarted`/`DashEnded`, and `BeyCombat` raises `ImpactPending`/`ImpactResolved`. No `ServiceLocator` reference remains in combat. Golden unchanged.
 - **Indicators.** `PlayerIndicator` draws a soft glow ring around the player on each launch resolve (when the player object re-activates): three pulses of 0.35 s each, scaling 1.0 → 1.35 and fading 0.85 → 0, then disabled. The ring is tinted to the player element (Crye cyan) and compensates for the prefab root's 0.4 scale so it renders at its true world size; the original triangle was shrunk to a speck by that scale and never read on screen. `TargetPointer` keeps the triangle: it follows the mouse with an RGB hue cycle and a Y-axis spin, hidden during launch, pause, and game over, restoring the OS cursor while hidden.
 - **Menu presentation.** `MenuCursor` installs a high-contrast dark/white ring cursor from `Assets/Resources/MenuCursor.png` on scene load and keeps it across scenes via a `DontDestroyOnLoad` host. `TargetPointer` still hides the OS cursor during battle input and restores it on pause/game over. `UIButtonSFX` now implements `IPointerExitHandler` and scales its button RectTransform to 1.08 on hover (0.12 s, DOTween), reverting on exit; wired onto the three battle buttons as well as the existing title buttons.
+- **Garage core (G0).** Reusable loadout rebuild: `BeyController.ApplyBlueprint` validates a blueprint, calls the new `AbilityRunner.ClearAll()` so old abilities and effects cannot stack, then `BeyData.Configure` + `BeyBuilder.Build`. `GarageModel` is UI-agnostic: generic rows derived from `ContentRegistry` (type, element, one row per part slot), a candidate blueprint, live `BeyBlueprintValidator` errors, and a budget readout.
+- **Inter-wave garage (G1).** `GarageUI` self-installs in `BattleScene` and opens after each non-final wave: `GameManager.NextWaveRoutine` waits 1 s, calls `garage.Show(player, BeginWave)`, and the player picks type, element, and one part per slot with `◀ / ▶`. The overlay pauses via `Time.timeScale = 0` and `GameUIManager.SetGarageOpen(true)`, which also blocks gameplay input and Esc. `SPIN!` applies the candidate through `ApplyBlueprint`; `SKIP` keeps the current build. The panel is built at runtime under the scene Canvas, so no scene authoring is needed.
 
 ### Track B: Systems
 
@@ -1406,6 +1408,9 @@ Fill in as each phase lands.
 | 11 | Player indicator reworked to a scale-compensated 3-pulse glow ring on launch resolve | §20.3 |
 | 11 | Player charged clash bursts at 32% of target max RPM; impact events carry charge/clash flags | §17 |
 | 11 | High-contrast menu cursor and button hover scale on title and battle menus | §20.3 |
+| 11 | Garage G0: reusable blueprint rebuild (`ApplyBlueprint`, `ClearAll`) and UI-agnostic `GarageModel` | §20.5 |
+| 11 | Garage G1: inter-wave loadout overlay with live validation, budget, and SPIN/SKIP | §20.5 |
+| 11 | Cursor falls back to a generated CPU-readable texture when the imported PNG is not readable | §20.3 |
 | 10 | Three enemy chassis by type: ATK light/fast, BAL middle, DEF heavy/slow | §20.4 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 
