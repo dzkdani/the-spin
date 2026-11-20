@@ -13,6 +13,8 @@ public sealed class AbilityHUD : MonoBehaviour
     private readonly TMP_Text[] costs = new TMP_Text[SlotCount];
     private readonly Image[] backgrounds = new Image[SlotCount];
     private readonly Image[] fills = new Image[SlotCount];
+    private readonly float[] flashTimers = new float[SlotCount];
+    private const float FlashDuration = 0.25f;
 
     public static AbilityHUD EnsureInScene()
     {
@@ -37,12 +39,44 @@ public sealed class AbilityHUD : MonoBehaviour
         return host.AddComponent<AbilityHUD>();
     }
 
+    private void OnEnable()
+    {
+        BattleEvents.AbilityActivated += OnAbilityActivated;
+    }
+
+    private void OnDisable()
+    {
+        BattleEvents.AbilityActivated -= OnAbilityActivated;
+    }
+
     public void Bind(BeyController target)
     {
         player = target;
 
         if (!built)
             BuildUI();
+    }
+
+    private void OnAbilityActivated(BeyData bey, string abilityId)
+    {
+        if (player == null || player.Data == null || bey != player.Data)
+            return;
+
+        AbilityRunner runner = player.Abilities;
+
+        if (runner == null)
+            return;
+
+        for (int i = 0; i < SlotCount; i++)
+        {
+            AbilityDefinition definition = runner.GetActiveDefinition(i);
+
+            if (definition == null || definition.id != abilityId)
+                continue;
+
+            flashTimers[i] = FlashDuration;
+            return;
+        }
     }
 
     private void BuildUI()
@@ -146,6 +180,13 @@ public sealed class AbilityHUD : MonoBehaviour
                 : new Color(0.1f, 0.12f, 0.17f, 0.9f);
 
             fills[i].color = ready ? accent : new Color(0.4f, 0.4f, 0.45f, 1f);
+
+            if (flashTimers[i] > 0f)
+                flashTimers[i] -= Time.unscaledDeltaTime;
+
+            float pulse = Mathf.Clamp01(flashTimers[i] / FlashDuration);
+            panels[i].transform.localScale =
+                Vector3.one * (1f + 0.18f * pulse);
         }
     }
 

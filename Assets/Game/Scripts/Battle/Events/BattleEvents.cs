@@ -13,6 +13,7 @@ public static class BattleEvents
     public static event Action<BeyData, float> RpmChanged;
     public static event Action<BeyData, string> AbilityActivated;
     public static event Action<BeyData, string> CastComplete;
+    public static event Action<BeyData> Burst;
 
     [RuntimeInitializeOnLoadMethod(
         RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -28,6 +29,7 @@ public static class BattleEvents
         RpmChanged = null;
         AbilityActivated = null;
         CastComplete = null;
+        Burst = null;
     }
 
     public static void RaiseImpactPending(ImpactEvent impact)
@@ -81,5 +83,10 @@ public static class BattleEvents
     public static void RaiseCastComplete(BeyData bey, string abilityId)
     {
         CastComplete?.Invoke(bey, abilityId);
+    }
+
+    public static void RaiseBurst(BeyData loser)
+    {
+        Burst?.Invoke(loser);
     }
 }

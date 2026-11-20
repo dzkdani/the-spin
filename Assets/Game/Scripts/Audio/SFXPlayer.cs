@@ -41,6 +41,16 @@ public class SFXPlayer : MonoBehaviour
         Play(hitClips, 1f, 0.9f, 1.1f);
     }
 
+    public void PlayAbility()
+    {
+        Play(hitClips, 0.5f, 1.25f, 1.5f);
+    }
+
+    public void PlayBurst()
+    {
+        Play(hitClips, 1f, 0.65f, 0.8f);
+    }
+
     public void Play(
         AudioClip[] clips,
         float volume,

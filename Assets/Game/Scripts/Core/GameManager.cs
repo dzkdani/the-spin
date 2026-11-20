@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
 
         abilityHud = AbilityHUD.EnsureInScene();
         abilityHud.Bind(player);
+        BattleFeedback.EnsureInScene();
 
         BeginWave();
     }
@@ -298,7 +299,14 @@ public class GameManager : MonoBehaviour
             return;
 
         if (battle.Reason == FinishReason.Burst)
+        {
             ServiceLocator.Get<CameraShake>()?.Shake(0.6f);
+
+            BattleEvents.RaiseBurst(
+                result.Value == GameResult.Win
+                    ? currentEnemy
+                    : subscribedPlayer);
+        }
 
         ServiceLocator.Get<GameUIManager>()?.ShowGameOver(
             result.Value,
