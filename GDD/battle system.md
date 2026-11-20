@@ -10,7 +10,7 @@
 
 Names are used as written in the brief: elements **Pyre, Crye, Gyre, Hydre, Sparke**, plus **Neutral**. Part slots use **Blade, Ratchet, Bit** as the default set. All names need confirmation before content is authored (Open Questions 1 and 7).
 
-**Extension docs:** `GDD/elemental system.md` (elements), `GDD/arena system.md` (oval arena), and three future-slice specs in priority order: `GDD/ring out feature.md`, `GDD/wave ramp feature.md`, `GDD/arena art feature.md`.
+**Extension docs:** `GDD/elemental system.md` (elements), `GDD/arena system.md` (oval arena), completed slice specs (`GDD/ring out feature.md`, `GDD/wave ramp feature.md`, `GDD/arena art feature.md`), and the next future slice: `GDD/launch system.md` (pre-wave ripcord launch).
 
 ---
 
@@ -999,7 +999,8 @@ public struct AiCommand
 Arena geometry, art, camera framing, and physics boundary are documented in
 `GDD/arena system.md`. Ring-out is implemented (player lose, enemy win/advance) and
 documented in `GDD/ring out feature.md`. Wave ramp and arena art are also implemented
-(`GDD/wave ramp feature.md`, `GDD/arena art feature.md`); the future-slice queue is empty.
+(`GDD/wave ramp feature.md`, `GDD/arena art feature.md`). The next future slice is
+the pre-wave ripcord launch: `GDD/launch system.md`.
 
 `BattleController` runs `Countdown → Fighting → Finished(result)` and evaluates the `IWinCondition` list each tick.
 
