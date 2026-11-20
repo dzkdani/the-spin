@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BeyBlueprint
   id: wave6_gyre
   displayName: Vortex Spin
-  chassis: {fileID: 11400000, guid: 54de1d331e23bd044b4cb2f8aa721a78, type: 2}
+  chassis: {fileID: 11400000, guid: b6fc6bf577d54b5b963ba35e2319079a, type: 2}
   type: {fileID: 11400000, guid: 7a8b9c0d1e2f43a4b5c6d7e8f9a0b1c2, type: 2}
   baseElement: {fileID: 11400000, guid: 6f708192a3b4c5d6e7f8091a2b3c4d5e, type: 2}
   aiProfile: {fileID: 11400000, guid: d7defaf118814fdb9cf1fb12fbec0034, type: 2}

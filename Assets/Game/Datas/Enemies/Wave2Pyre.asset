@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BeyBlueprint
   id: wave2_pyre
   displayName: Ember Press
-  chassis: {fileID: 11400000, guid: 54de1d331e23bd044b4cb2f8aa721a78, type: 2}
+  chassis: {fileID: 11400000, guid: cb835e9979f84fef8b20e332398e75b4, type: 2}
   type: {fileID: 11400000, guid: 6f7a8b9c0d1e42f3a4b5c6d7e8f9a0b1, type: 2}
   baseElement: {fileID: 11400000, guid: 4d5e6f708192a3b4c5d6e7f8091a2b3c, type: 2}
   aiProfile: {fileID: 11400000, guid: a123456789abcdef0234567890123456, type: 2}

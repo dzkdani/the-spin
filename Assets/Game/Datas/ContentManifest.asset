@@ -61,5 +61,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d456789abcdef0234567890123456789, type: 2}
   - {fileID: 11400000, guid: d1eb6f2ae14d443faf3ecd6ec17486e7, type: 2}
   - {fileID: 11400000, guid: d7defaf118814fdb9cf1fb12fbec0034, type: 2}
+  - {fileID: 11400000, guid: cb835e9979f84fef8b20e332398e75b4, type: 2}
+  - {fileID: 11400000, guid: b6fc6bf577d54b5b963ba35e2319079a, type: 2}
   combatTuning: {fileID: 11400000, guid: 1a2b3c4d5e6f47a8b9c0d1e2f3a4b5c6, type: 2}
   matchupTable: {fileID: 11400000, guid: 4d5e6f7a8b9c40d1e2f3a4b5c6d7e8f9, type: 2}

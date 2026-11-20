@@ -167,6 +167,59 @@ public class ContentAssetsTests
         return (string)ProductionReflection.Field(content, "id");
     }
 
+    [Test]
+    public void EnemyChassisAreSplitByType()
+    {
+        object atk = Load("Assets/Game/Datas/BaseAtkEnemy.asset");
+        object bal = Load("Assets/Game/Datas/BaseEnemy.asset");
+        object def = Load("Assets/Game/Datas/BaseDefEnemy.asset");
+
+        Assert.AreEqual(5000f, Float(atk, "maxRPM"), 0.0001f);
+        Assert.AreEqual(5000f, Float(def, "maxRPM"), 0.0001f);
+
+        Assert.Greater(Float(atk, "maxVelocity"), Float(bal, "maxVelocity"));
+        Assert.Less(Float(def, "maxVelocity"), Float(bal, "maxVelocity"));
+
+        Assert.Greater(Float(def, "weight"), Float(bal, "weight"));
+        Assert.Less(Float(atk, "weight"), Float(bal, "weight"));
+    }
+
+    [Test]
+    public void WaveBlueprintsUseTheirTypeChassis()
+    {
+        Assert.AreEqual(
+            "base_atk_enemy",
+            ChassisId("Wave2Pyre"));
+        Assert.AreEqual(
+            "base_atk_enemy",
+            ChassisId("Wave5Sparke"));
+        Assert.AreEqual(
+            "base_def_enemy",
+            ChassisId("Wave3Hydre"));
+        Assert.AreEqual(
+            "base_def_enemy",
+            ChassisId("Wave6Gyre"));
+        Assert.AreEqual(
+            "base_enemy",
+            ChassisId("Wave1Neutral"));
+        Assert.AreEqual(
+            "base_enemy",
+            ChassisId("Wave4Crye"));
+    }
+
+    private static string ChassisId(string wave)
+    {
+        object blueprint = Load(
+            "Assets/Game/Datas/Enemies/" + wave + ".asset");
+
+        return Id(ProductionReflection.Field(blueprint, "chassis"));
+    }
+
+    private static float Float(object asset, string field)
+    {
+        return (float)ProductionReflection.Field(asset, field);
+    }
+
     private static object Load(string path)
     {
         object asset = AssetDatabase.LoadAssetAtPath(

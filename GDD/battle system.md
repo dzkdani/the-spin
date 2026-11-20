@@ -1234,7 +1234,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Mobility and ring-out model.** `BalanceSimulator` accepts an arena radius for the part run. It starts the beys at ±25% of the radius, applies forced-dash approach/push, converts impact impulses into displacement, and ends the duel when either bey leaves the radius. The 18-build reference matrix keeps the radius at zero.
 
-**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights. A temporary 9000 player pool made the demo too forgiving, so the skill pass settled on **player 6000 vs enemy 5000**. Damage per hit does not scale with max RPM. Player burst threshold is 4800, enemy 4000. `dashRPMCost` is **150** on both sides, so a dash costs ~2.5% of the player pool and remains a real decision.
+**Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights. A temporary 9000 player pool made the demo too forgiving, so the skill pass settled on **player 6000 vs enemy 5000**. Damage per hit does not scale with max RPM. Player burst threshold is 4800, enemy 4000. `dashRPMCost` is **150** on both sides, so a dash costs ~2.5% of the player pool and remains a real decision. Enemies now use three chassis at the same 5000 RPM: ATK is light and fast (weight 3.5, velocity 12, acceleration 32), BAL is the original middle (5 / 10 / 25), and DEF is heavy and slow (8 / 8 / 18). Type identity now reaches movement, not just stats.
 
 **Burst is asymmetric at these pools.** A fully stacked impact (dash + clash + charge + opposite spin) reaches roughly 4600 raw before mitigation — above the enemy's 4000 threshold but below the player's 4800. Burst is therefore an enemy-only finisher in practice. If a player burst is wanted, lower `GameManager.BurstThreshold` and retest for one-shots.
 
@@ -1402,6 +1402,7 @@ Fill in as each phase lands.
 | 11 | Opposite spin steals RPM | §14.1 |
 | 11 | Finish reasons: RPM depleted, ring-out, burst | §17 |
 | 11 | Player indicator above the bey each wave; RGB Y-axis triangle mouse target pointer | §20.3 |
+| 10 | Three enemy chassis by type: ATK light/fast, BAL middle, DEF heavy/slow | §20.4 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 
 **v4 re-baseline note (no runtime change):** audit re-run at `63a0a0e`; B3 and the double-subscription item retired; M3 widened to both input producers; M5 corrected; B5, D7, M6, M7, M8, M9 added; Phase 1 scope updated; Open Questions 19–22 and 24 answered from code.
