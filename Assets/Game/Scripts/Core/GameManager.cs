@@ -253,8 +253,7 @@ public class GameManager : MonoBehaviour
             yield break;
 
         if (garage == null)
-            garage = FindFirstObjectByType<GarageUI>(
-                FindObjectsInactive.Include);
+            garage = GarageUI.EnsureInScene();
 
         if (garage != null && player != null)
             garage.Show(player, BeginWave);

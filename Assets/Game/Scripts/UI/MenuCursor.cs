@@ -2,8 +2,7 @@ using UnityEngine;
 
 public sealed class MenuCursor : MonoBehaviour
 {
-    private const string ResourcePath = "MenuCursor";
-    private const int FallbackSize = 64;
+    private const int CursorSize = 64;
 
     private Texture2D cursor;
 
@@ -18,38 +17,33 @@ public sealed class MenuCursor : MonoBehaviour
         DontDestroyOnLoad(host);
 
         MenuCursor component = host.AddComponent<MenuCursor>();
-        component.cursor = LoadCursor();
+        component.cursor = CreateCursor();
         component.Apply();
-    }
-
-    private static Texture2D LoadCursor()
-    {
-        Texture2D imported = Resources.Load<Texture2D>(ResourcePath);
-
-        return imported != null && imported.isReadable
-            ? imported
-            : CreateCursor();
     }
 
     private static Texture2D CreateCursor()
     {
         Texture2D texture = new Texture2D(
-            FallbackSize,
-            FallbackSize,
+            CursorSize,
+            CursorSize,
             TextureFormat.RGBA32,
             false);
 
-        Color[] pixels = new Color[FallbackSize * FallbackSize];
+        texture.name = "MenuCursor";
+        texture.wrapMode = TextureWrapMode.Clamp;
+        texture.filterMode = FilterMode.Bilinear;
+
+        Color[] pixels = new Color[CursorSize * CursorSize];
         Color dark = new Color(0.06f, 0.06f, 0.08f, 1f);
         Color light = Color.white;
         Color clear = new Color(0f, 0f, 0f, 0f);
         Vector2 center = new Vector2(
-            (FallbackSize - 1) * 0.5f,
-            (FallbackSize - 1) * 0.5f);
+            (CursorSize - 1) * 0.5f,
+            (CursorSize - 1) * 0.5f);
 
-        for (int y = 0; y < FallbackSize; y++)
+        for (int y = 0; y < CursorSize; y++)
         {
-            for (int x = 0; x < FallbackSize; x++)
+            for (int x = 0; x < CursorSize; x++)
             {
                 float distance = Vector2.Distance(
                     new Vector2(x, y),
@@ -66,7 +60,7 @@ public sealed class MenuCursor : MonoBehaviour
                 else if (distance >= 22f && distance <= 26f)
                     color = dark;
 
-                pixels[y * FallbackSize + x] = color;
+                pixels[y * CursorSize + x] = color;
             }
         }
 

@@ -16,16 +16,13 @@ public sealed class GarageUI : MonoBehaviour
     private TMP_Text errorText;
     private Button confirmButton;
 
-    [RuntimeInitializeOnLoadMethod(
-        RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void Ensure()
+    public static GarageUI EnsureInScene()
     {
-        if (FindFirstObjectByType<GameManager>() == null)
-            return;
+        GarageUI existing = FindFirstObjectByType<GarageUI>(
+            FindObjectsInactive.Include);
 
-        if (FindFirstObjectByType<GarageUI>(
-                FindObjectsInactive.Include) != null)
-            return;
+        if (existing != null)
+            return existing;
 
         GameObject host = new GameObject("Garage", typeof(RectTransform));
         Canvas canvas = FindFirstObjectByType<Canvas>();
@@ -39,8 +36,10 @@ public sealed class GarageUI : MonoBehaviour
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
 
-        host.AddComponent<GarageUI>();
+        GarageUI ui = host.AddComponent<GarageUI>();
         host.SetActive(false);
+
+        return ui;
     }
 
     public void Show(BeyController target, Action done)

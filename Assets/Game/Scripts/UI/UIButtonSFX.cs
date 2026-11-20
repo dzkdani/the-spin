@@ -21,6 +21,12 @@ public class UIButtonSFX : MonoBehaviour,
             hoverTarget = transform as RectTransform;
     }
 
+    private void OnDestroy()
+    {
+        if (hoverTarget != null)
+            hoverTarget.DOKill();
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         ServiceLocator.Get<TitleAudioManager>()?.PlayHover();
