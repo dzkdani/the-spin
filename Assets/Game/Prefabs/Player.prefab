@@ -159,7 +159,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeyVisual
   visualPivot: {fileID: 3614454535861319724}
-  maxRPM: 3000
 --- !u!1 &1523852731119669546
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +449,7 @@ GameObject:
   - component: {fileID: 8659105866794387965}
   - component: {fileID: 4968648668799547481}
   - component: {fileID: 1900000000000000101}
+  - component: {fileID: 5511144342149486655}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -548,7 +548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c88bf28846068141833a265436ee5ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeyData
-  _currentRPM: 0
   <Base>k__BackingField: {fileID: 11400000, guid: 5625aa388c3491f4ea0721d39a97120c, type: 2}
   blueprint: {fileID: 11400000, guid: a8b9c0d1e2f3a4b5c6d7e8f901234567, type: 2}
 --- !u!114 &6111620060060163710
@@ -615,3 +614,19 @@ MonoBehaviour:
   outerLayer: {fileID: 5015929683903707256}
   middleLayer: {fileID: 8921491448117665603}
   innerLayer: {fileID: 7738308273016393432}
+--- !u!114 &5511144342149486655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7373601026641001770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df16c21a33e459b9e49599b2c1b3148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerIndicator
+  sprite: {fileID: 21300000, guid: ea75e8b684e14ce0ba00e8d993dcc9d0, type: 3}
+  height: 1.2
+  holdSeconds: 2
+  fadeSeconds: 0.5

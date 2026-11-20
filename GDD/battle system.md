@@ -1128,6 +1128,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - Move SFX, shake, and VFX to subscribers. Remove `ServiceLocator` from combat.
 - **Exit:** combat tests run with no presentation attached.
 - **Status: complete.** `BattleEvents` + `ImpactEvent` (attacker/defender/result/point/shake). `SFXPlayer`, `CameraShake`, and `HitEffectSpawner` subscribe in `OnEnable` and unsubscribe in `OnDisable`; `BeyData` raises `RpmChanged`, `BeyPhysics` raises `DashStarted`/`DashEnded`, and `BeyCombat` raises `ImpactPending`/`ImpactResolved`. No `ServiceLocator` reference remains in combat. Golden unchanged.
+- **Indicators.** `PlayerIndicator` shows a cyan downward triangle above the player for 2 s on each wave, then fades. `TargetPointer` follows the mouse with an RGB hue cycle and a Y-axis spin on the same triangle; it is hidden during launch, pause, and game over, and the OS cursor is restored while hidden.
 
 ### Track B: Systems
 
@@ -1400,6 +1401,7 @@ Fill in as each phase lands.
 | 11 | Same-spin, clash, and dash-hit multipliers added (same-spin neutral by default) | §14.1, §15 |
 | 11 | Opposite spin steals RPM | §14.1 |
 | 11 | Finish reasons: RPM depleted, ring-out, burst | §17 |
+| 11 | Player indicator above the bey each wave; RGB Y-axis triangle mouse target pointer | §20.3 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 
 **v4 re-baseline note (no runtime change):** audit re-run at `63a0a0e`; B3 and the double-subscription item retired; M3 widened to both input producers; M5 corrected; B5, D7, M6, M7, M8, M9 added; Phase 1 scope updated; Open Questions 19–22 and 24 answered from code.
