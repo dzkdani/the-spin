@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     [Header("Arena")]
     [SerializeField] private ArenaBounds arena;
 
+    [Header("Launch")]
+    [SerializeField] private LaunchController launch;
+
     [Header("UI")]
     [SerializeField] private BeyUI playerUI;
     [SerializeField] private BeyUI enemyUI;
@@ -93,6 +96,18 @@ public class GameManager : MonoBehaviour
         subscribedPlayer.OnRPMDepleted += ResolveBattle;
         playerUI.Bind(player.Data);
 
+        BeginWave();
+    }
+
+    private void BeginWave()
+    {
+        if (launch != null && launch.Enabled)
+        {
+            launch.Begin(player, arena, SpawnNextEnemy);
+            return;
+        }
+
+        ResetPlayerForNextWave();
         SpawnNextEnemy();
     }
 
@@ -174,6 +189,9 @@ public class GameManager : MonoBehaviour
                 enemyInput.SetArena(arena.Center, arena.Radii);
         }
 
+        if (launch != null)
+            launch.ApplyEnemyLaunch(currentEnemy);
+
         enemyUI.Bind(currentEnemy);
 
         currentEnemy.OnRPMDepleted += EnemyDefeated;
@@ -236,8 +254,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        ResetPlayerForNextWave();
-        SpawnNextEnemy();
+        BeginWave();
     }
 
     private void ResolveBattle()

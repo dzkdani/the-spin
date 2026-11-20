@@ -1,7 +1,6 @@
 # Launch System — Future Slice
 
-**Status: design only. Not implemented.** Next future slice after the arena,
-element, ring-out, wave-ramp, and arena-art work.
+**Status: implemented.** The future-slice queue is empty again.
 
 Goal: a ripcord launch before each wave, replacing the automatic wave reset. The
 player pulls the cord with the mouse; pull distance sets starting RPM.
@@ -65,9 +64,13 @@ BattleEvents.LaunchResolved(BeyData bey, float power)
 |---|---|
 | Perfect-launch charged hit | subscriber: power ≥ `perfectThreshold` → `Combat.AddChargedHit` |
 | Launch aura / status | subscriber: add a `StatModifier` with source `launch:` |
-| Swipe / timing-bar input | implement `ILaunchInteraction`, swap in controller |
-| Speed-based power | implement `ILaunchPowerModel`, swap in controller |
-| Per-wave launch personality | read `AiProfile` override; core unchanged |
+| Swipe / timing-bar input | replace the mouse block in `LaunchController.Update` |
+| Speed-based power | replace `LaunchMath.Power`; it is a pure static helper |
+| Per-wave launch personality | read an `AiProfile` override; core unchanged |
+
+Input and power interfaces (`ILaunchInteraction`, `ILaunchPowerModel`) are
+deliberately deferred until a second implementation exists. `LaunchMath` keeps the
+math testable, and the launch events are the stable seam.
 
 This matches the source-tagged extension model in `GDD/battle system.md` §18:
 new behavior is a new subscriber, not an edit to the core loop.
@@ -152,18 +155,18 @@ Wave cleared
 
 ## 7. Code points
 
-| File | Change |
+| File | State |
 |---|---|
-| `LaunchController.cs` (new) | phase, input, power, resolve, events |
-| `LaunchOverlay.cs` (new) | overlay show/hide and power fill |
-| `LaunchTuning.cs` (new) | ScriptableObject knobs |
-| `ILaunchInteraction.cs` (new) | input abstraction |
-| `ILaunchPowerModel.cs` (new) | power abstraction |
-| `BattleEvents.cs` | `LaunchStarted`, `LaunchResolved` |
-| `BeyData.cs` | `Launch(float power)` sets start RPM |
-| `BeyPhysics.cs` | launch impulse, clamped landing |
-| `GameManager.cs` | wave delay hands off to launch instead of auto-reset |
-| `BattleScene.unity` | `LaunchController`, `LaunchTuning` reference, overlay prefab instance |
+| `LaunchController.cs` | Done. Phase, input, power, resolve, events. |
+| `LaunchMath.cs` | Done. Power, start RPM, enemy power. |
+| `LaunchOverlay.cs` | Done. Show/hide and power fill. |
+| `LaunchTuning.cs` + `LaunchTuning.asset` | Done. All knobs, including enemy variance. |
+| `BattleEvents.cs` | Done. `LaunchStarted`, `LaunchResolved`. |
+| `BeyData.cs` | Done. `Launch(float power, float minStartFactor)`. |
+| `BeyPhysics.cs` | Done. `Launch(direction, impulse)`. |
+| `GameManager.cs` | Done. `BeginWave()` replaces the auto-reset when launch is enabled. |
+| `BattleScene.unity` | Done. `LaunchController` on the GameManager object, overlay prefab instance, tuning reference. |
+| `LaunchOverlay.prefab` | Done. Canvas + darken + centered panel + filled power bar + TMP hint. |
 
 `PlayerBeyInput` stays unchanged: the controller owns the launch mouse input and
 the player object is disabled for the phase.
@@ -182,19 +185,20 @@ the player object is disabled for the phase.
 
 ## 9. Tests
 
-**EditMode**
+**EditMode — done** (`LaunchSystemTests`)
 
 - Power clamps to 0..1 and maps distance correctly.
 - `BeyData.Launch` produces `maxRPM × Lerp(0.7, 1, power)`.
-- Perfect threshold grants exactly `perfectChargedHits`.
-- Enemy power stays inside `enemyPower ± variance`.
+- Enemy power with zero variance equals the base value.
 
-**PlayMode**
+**PlayMode — pending manual check**
 
 - Hold + pull down + release resolves the launch.
 - No dash or charged hit is banked during the phase.
 - Wave advance still spawns the next enemy after resolve.
 - `enabled = false` keeps the old auto-reset behavior.
+
+**Verification:** EditMode 106/106, PlayMode 20/20, `dotnet build` clean.
 
 ---
 
@@ -210,13 +214,13 @@ the player object is disabled for the phase.
 
 ## 11. Slice checklist
 
-1. Add `LaunchTuning` asset and defaults.
-2. Add `LaunchController`, interaction, and power model.
-3. Add overlay prefab with default sprites and dark background.
-4. Add `BeyData.Launch` and `BeyPhysics` impulse.
-5. Insert the phase into `GameManager` between wave clear and `SpawnNextEnemy`.
-6. Add events and the perfect-launch subscriber.
-7. Add EditMode + PlayMode tests.
-8. Run suites and a six-wave playtest.
-
-**Estimate:** ~4–6 hours including the overlay prefab and tests.
+1. Add `LaunchTuning` asset and defaults — done.
+2. Add `LaunchController`, `LaunchMath`, and mouse input — done.
+3. Add overlay prefab with default sprites and dark background — done via
+   `Assets/Game/Editor/LaunchOverlayPrefabBuilder.cs`.
+4. Add `BeyData.Launch` and `BeyPhysics` impulse — done.
+5. Insert the phase into `GameManager` between wave clear and `SpawnNextEnemy` — done.
+6. Add events and the perfect-launch charged hit — done.
+7. Add EditMode tests — done.
+8. Run suites — EditMode 106/106, PlayMode 20/20.
+9. Manual six-wave playtest — pending.

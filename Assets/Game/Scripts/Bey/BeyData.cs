@@ -129,6 +129,11 @@ public class BeyData : MonoBehaviour
         SetRPM(MaxRPM);
     }
 
+    public void Launch(float power, float minStartFactor)
+    {
+        SetRPM(LaunchMath.StartRpm(MaxRPM, power, minStartFactor));
+    }
+
     private void SetRPM(float value)
     {
         if (Base == null || MaxRPM <= 0f)

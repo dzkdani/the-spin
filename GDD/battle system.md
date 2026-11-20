@@ -10,7 +10,7 @@
 
 Names are used as written in the brief: elements **Pyre, Crye, Gyre, Hydre, Sparke**, plus **Neutral**. Part slots use **Blade, Ratchet, Bit** as the default set. All names need confirmation before content is authored (Open Questions 1 and 7).
 
-**Extension docs:** `GDD/elemental system.md` (elements), `GDD/arena system.md` (oval arena), completed slice specs (`GDD/ring out feature.md`, `GDD/wave ramp feature.md`, `GDD/arena art feature.md`), and the next future slice: `GDD/launch system.md` (pre-wave ripcord launch).
+**Extension docs:** `GDD/elemental system.md` (elements), `GDD/arena system.md` (oval arena), and completed slice specs (`GDD/ring out feature.md`, `GDD/wave ramp feature.md`, `GDD/arena art feature.md`, `GDD/launch system.md`).
 
 ---
 
@@ -998,9 +998,10 @@ public struct AiCommand
 
 Arena geometry, art, camera framing, and physics boundary are documented in
 `GDD/arena system.md`. Ring-out is implemented (player lose, enemy win/advance) and
-documented in `GDD/ring out feature.md`. Wave ramp and arena art are also implemented
-(`GDD/wave ramp feature.md`, `GDD/arena art feature.md`). The next future slice is
-the pre-wave ripcord launch: `GDD/launch system.md`.
+documented in `GDD/ring out feature.md`. Wave ramp, arena art, and the pre-wave
+ripcord launch are also implemented (`GDD/wave ramp feature.md`,
+`GDD/arena art feature.md`, `GDD/launch system.md`); the future-slice queue is
+empty.
 
 `BattleController` runs `Countdown → Fighting → Finished(result)` and evaluates the `IWinCondition` list each tick.
 
@@ -1382,6 +1383,7 @@ Fill in as each phase lands.
 | 11 | Ring-out implemented: 0.05 s tick, player lose, enemy win/advance, `DefeatEnemy()` shared path | §17 |
 | 9 | Wave ramp applied to six AI profiles; dead dash-chance fields removed | §16 |
 | 20 | Arena art replaced with textured oval; geometry and code unchanged | §3, `GDD/arena system.md` |
+| 11 | Pre-wave ripcord launch: hold/pull down/release, tuning asset, overlay prefab, launch events | §15, `GDD/launch system.md` |
 | 8b | Same-element 2-piece part synergy: +5% attack and defense | §13.8 |
 | 8b | Player/enemy prefabs assemble from `BeyBlueprint` through `BeyBuilder` | §13.3 |
 | 9 | Snapshot carries active readiness/cooldowns; input gate injected instead of resolved per input | §16 |

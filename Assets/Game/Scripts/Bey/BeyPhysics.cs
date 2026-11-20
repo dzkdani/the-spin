@@ -112,6 +112,21 @@ public class BeyPhysics : MonoBehaviour
         return true;
     }
 
+    public void Launch(Vector2 direction, float impulse)
+    {
+        if (rb == null)
+            return;
+
+        rb.linearVelocity = Vector2.zero;
+
+        if (direction.sqrMagnitude < 0.0001f || impulse <= 0f)
+            return;
+
+        rb.AddForce(
+            direction.normalized * impulse,
+            ForceMode2D.Impulse);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         BeyController other =
