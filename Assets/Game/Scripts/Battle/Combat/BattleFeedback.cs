@@ -37,12 +37,14 @@ public sealed class BattleFeedback : MonoBehaviour
     {
         BattleEvents.Burst += OnBurst;
         BattleEvents.AbilityActivated += OnAbilityActivated;
+        BattleEvents.AbilityProcced += OnAbilityProcced;
     }
 
     private void OnDisable()
     {
         BattleEvents.Burst -= OnBurst;
         BattleEvents.AbilityActivated -= OnAbilityActivated;
+        BattleEvents.AbilityProcced -= OnAbilityProcced;
 
         if (flash != null)
             flash.DOKill();
@@ -72,7 +74,7 @@ public sealed class BattleFeedback : MonoBehaviour
     private void OnBurst(BeyData loser)
     {
         ServiceLocator.Get<SFXPlayer>()?.PlayBurst();
-        SpawnEffect(loser);
+        SpawnEffect(loser, null, 2f);
 
         if (flash == null)
             return;
@@ -89,14 +91,38 @@ public sealed class BattleFeedback : MonoBehaviour
     private void OnAbilityActivated(BeyData bey, string abilityId)
     {
         ServiceLocator.Get<SFXPlayer>()?.PlayAbility();
-        SpawnEffect(bey);
+        SpawnEffect(bey, abilityId, 1f);
     }
 
-    private static void SpawnEffect(BeyData bey)
+    private void OnAbilityProcced(BeyData bey, string abilityId)
+    {
+        SpawnEffect(bey, abilityId, 0.6f);
+    }
+
+    private static void SpawnEffect(
+        BeyData bey,
+        string abilityId,
+        float procScale)
     {
         if (bey == null || bey.transform == null)
             return;
 
-        ServiceLocator.Get<HitEffectSpawner>()?.Spawn(bey.transform.position);
+        AbilityDefinition definition =
+            ContentRegistry.Get<AbilityDefinition>(abilityId);
+
+        Color color = definition != null && definition.accent.a > 0f
+            ? definition.accent
+            : (bey.Elements.Current != null
+                ? bey.Elements.Current.color
+                : Color.white);
+
+        float scale = definition != null
+            ? definition.vfxScale * procScale
+            : procScale;
+
+        ServiceLocator.Get<HitEffectSpawner>()?.Spawn(
+            bey.transform.position,
+            color,
+            scale);
     }
 }

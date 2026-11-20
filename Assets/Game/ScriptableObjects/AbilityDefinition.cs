@@ -25,4 +25,9 @@ public class AbilityDefinition : ContentDefinition
         new List<IAbilityEffect>();
 
     public ActiveSpec active = new ActiveSpec();
+
+    [Header("Feedback")]
+    public Color accent = Color.white;
+
+    public float vfxScale = 1f;
 }

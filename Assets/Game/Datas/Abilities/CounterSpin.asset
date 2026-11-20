@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinition
   id: counter_spin
   displayName: Counter Spin
+  accent: {r: 0.75, g: 0.5, b: 1, a: 1}
+  vfxScale: 1
   kind: 0
   mode: 0
   tags: []

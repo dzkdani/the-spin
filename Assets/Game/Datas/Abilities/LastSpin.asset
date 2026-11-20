@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinition
   id: last_spin
   displayName: Last Spin
+  accent: {r: 1, g: 0.35, b: 0.75, a: 1}
+  vfxScale: 1.2
   kind: 0
   mode: 0
   tags: []

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinition
   id: burst_dash
   displayName: Burst Dash
+  accent: {r: 0.7, g: 0.4, b: 1, a: 1}
+  vfxScale: 0.9
   kind: 1
   mode: 0
   tags:

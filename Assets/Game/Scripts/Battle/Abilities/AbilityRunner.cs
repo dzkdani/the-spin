@@ -572,6 +572,9 @@ public class AbilityRunner : MonoBehaviour, IBeyActions, IBeyView
 
         for (int i = 0; i < runtime.Definition.effects.Count; i++)
             runtime.Definition.effects[i].Apply(context);
+
+        if (runtime.Definition.kind == AbilityKind.Passive)
+            BattleEvents.RaiseAbilityProcced(data, runtime.Definition.id);
     }
 
     private AbilityContext CreateContext(Runtime runtime, ImpactEvent? impact)

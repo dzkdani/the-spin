@@ -65,6 +65,11 @@ public class HitEffectSpawner : MonoBehaviour
 
     public void Spawn(Vector3 pos)
     {
+        Spawn(pos, Color.white, 1f);
+    }
+
+    public void Spawn(Vector3 pos, Color color, float scale)
+    {
         if (hitPrefab == null)
         {
             Debug.LogError("HitEffectSpawner requires a hit particle prefab.", this);
@@ -76,7 +81,12 @@ public class HitEffectSpawner : MonoBehaviour
         ParticleSystem effect = Take();
 
         effect.transform.SetPositionAndRotation(pos, Quaternion.identity);
+        effect.transform.localScale = Vector3.one * scale;
         effect.gameObject.SetActive(true);
+
+        ParticleSystem.MainModule main = effect.main;
+        main.startColor = color;
+
         effect.Clear(true);
         effect.Play(true);
 

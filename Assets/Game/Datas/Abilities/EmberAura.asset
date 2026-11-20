@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinition
   id: ember_aura
   displayName: Ember Aura
+  accent: {r: 1, g: 0.4, b: 0.1, a: 1}
+  vfxScale: 1.4
   kind: 0
   mode: 1
   tags: []
