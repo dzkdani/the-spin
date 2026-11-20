@@ -185,7 +185,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    outline: []
+    - serializedVersion: 2
+      name: RPMBar_Left
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 68
+        width: 485
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4ee37f8fc0446cc9147ddd7502e8e52
+      internalID: -8111111111111111111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPMBar_Right
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 68
+        width: 477
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63e026c79c8046e3b921f2d7fc4ff181
+      internalID: -8222222222222222222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []    outline: []
     customData: 
     physicsShape: []
     bones: []
@@ -203,6 +246,8 @@ TextureImporter:
     nameFileIdTable:
       Battle Ui_0: -6511111416118674912
       Battle Ui_1: 7520610228329874481
+      RPMBar_Left: -8111111111111111111
+      RPMBar_Right: -8222222222222222222
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

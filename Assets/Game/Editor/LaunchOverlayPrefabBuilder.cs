@@ -52,35 +52,35 @@ public static class LaunchOverlayPrefabBuilder
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.pivot = new Vector2(0.5f, 0.5f);
-        panelRect.sizeDelta = new Vector2(420f, 260f);
+        panelRect.sizeDelta = new Vector2(300f, 460f);
         panelRect.anchoredPosition = Vector2.zero;
 
         TMP_Text title = CreateText(
             "Title", panel.transform, font, "LAUNCH", 34f);
 
-        Place(title.rectTransform, new Vector2(380f, 44f), new Vector2(0f, 78f));
+        Place(title.rectTransform, new Vector2(260f, 50f), new Vector2(0f, 180f));
 
         Image powerBg = CreateImage(
             "PowerBg", panel.transform, uiSprite,
             new Color(0.25f, 0.2f, 0.15f, 1f));
 
-        Place(powerBg.rectTransform, new Vector2(340f, 28f), new Vector2(0f, -6f));
+        Place(powerBg.rectTransform, new Vector2(80f, 260f), new Vector2(0f, 10f));
 
         Image powerFill = CreateImage(
             "PowerFill", panel.transform, uiSprite,
             new Color(0.95f, 0.75f, 0.2f, 1f));
 
-        Place(powerFill.rectTransform, new Vector2(340f, 28f), new Vector2(0f, -6f));
+        Place(powerFill.rectTransform, new Vector2(80f, 260f), new Vector2(0f, 10f));
         powerFill.type = Image.Type.Filled;
-        powerFill.fillMethod = Image.FillMethod.Horizontal;
+        powerFill.fillMethod = Image.FillMethod.Vertical;
         powerFill.fillOrigin = 0;
         powerFill.fillAmount = 0f;
 
         TMP_Text hint = CreateText(
             "Hint", panel.transform, font,
-            "HOLD · PULL DOWN · RELEASE", 24f);
+            "PULL DOWN", 24f);
 
-        Place(hint.rectTransform, new Vector2(380f, 44f), new Vector2(0f, -70f));
+        Place(hint.rectTransform, new Vector2(260f, 50f), new Vector2(0f, -190f));
 
         LaunchOverlay overlay = root.AddComponent<LaunchOverlay>();
 

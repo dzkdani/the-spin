@@ -115,11 +115,12 @@ background.
 LaunchOverlay (Canvas: Screen Space Overlay, high sorting order)
 ├── Darken   Image, default Background sprite, full-screen stretch,
 │            color (0, 0, 0, 0.55)
-├── Panel    Image, default UISprite, ~400 × 240, anchored center
-│   ├── PowerBg    Image, default UISprite, ~320 × 24
-│   ├── PowerFill  Image, default UISprite, type Filled, horizontal,
-│   │              fillOrigin 0, 0 → 1 with pull
-│   └── Hint       TMP text: "HOLD · PULL DOWN · RELEASE"
+├── Panel    Image, default UISprite, ~300 × 460, anchored center
+│   ├── Title      TMP text: "LAUNCH" at the top
+│   ├── PowerBg    Image, default UISprite, ~80 × 260, vertical
+│   ├── PowerFill  Image, default UISprite, type Filled, vertical,
+│   │              fillOrigin 0 (bottom), fills upward as you pull down
+│   └── Hint       TMP text: "PULL DOWN" at the bottom
 └── LaunchOverlay.cs  listens to launch events, drives fill, shows/hides root
 ```
 

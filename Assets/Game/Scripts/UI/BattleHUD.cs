@@ -68,6 +68,20 @@ public sealed class BattleHUD : MonoBehaviour
         if (player == null || enemy == null)
             return;
 
+        BeyBlueprint blueprint = enemy.Blueprint;
+
+        string enemyName =
+            blueprint != null && !string.IsNullOrEmpty(blueprint.displayName)
+                ? blueprint.displayName
+                : "Enemy";
+
+        string enemyType =
+            blueprint != null && blueprint.type != null
+                ? blueprint.type.id.ToUpperInvariant()
+                : string.Empty;
+
+        GUILayout.Label($"{enemyName}  [{enemyType}]");
+
         ElementDefinition from = player.Elements.Current;
         ElementDefinition to = enemy.Elements.Current;
 
