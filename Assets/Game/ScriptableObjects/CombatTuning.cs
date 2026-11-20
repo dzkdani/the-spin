@@ -22,6 +22,9 @@ public class CombatTuning : ScriptableObject
 
     public float chargeMultiplier = 1.75f;
 
+    [Header("Burst")]
+    public float chargedClashBurstThreshold = 0.32f;
+
     [Header("Spin and Dash")]
     public float sameSpinMultiplier = 1f;
 

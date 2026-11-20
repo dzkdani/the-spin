@@ -94,6 +94,12 @@ public class BeyCombat : MonoBehaviour
 
         ImpactResult result = ImpactSolver.Resolve(input);
 
+        bool attackerCharged =
+            result.PendingModsUsedA != null &&
+            result.PendingModsUsedA.Contains("charge");
+
+        bool clash = input.DashingA && input.DashingB;
+
         Vector2 point = GetPoint(collision);
 
         float shake = Mathf.Lerp(
@@ -109,7 +115,9 @@ public class BeyCombat : MonoBehaviour
                 point,
                 shake,
                 input.Speed,
-                input.OppositeSpin));
+                input.OppositeSpin,
+                attackerCharged,
+                clash));
 
         data.ReduceRPM(result.DamageToA);
         other.Data.ReduceRPM(result.DamageToB);
@@ -150,7 +158,9 @@ public class BeyCombat : MonoBehaviour
                 point,
                 shake,
                 input.Speed,
-                input.OppositeSpin));
+                input.OppositeSpin,
+                attackerCharged,
+                clash));
 
         HitStop.Play(Mathf.Lerp(0.02f, 0.06f, result.Intensity));
     }

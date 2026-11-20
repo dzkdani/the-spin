@@ -39,4 +39,22 @@ public class BurstThresholdTests
             Object.DestroyImmediate(target);
         }
     }
+
+    [Test]
+    public void ChargedClashBurstUsesLowerThreshold()
+    {
+        Assert.IsTrue((bool)ProductionReflection.CallStatic(
+            "GameManager",
+            "IsChargedClashBurst",
+            322f,
+            1000f,
+            0.32f));
+
+        Assert.IsFalse((bool)ProductionReflection.CallStatic(
+            "GameManager",
+            "IsChargedClashBurst",
+            319f,
+            1000f,
+            0.32f));
+    }
 }

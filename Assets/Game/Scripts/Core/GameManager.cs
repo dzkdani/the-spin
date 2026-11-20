@@ -274,6 +274,9 @@ public class GameManager : MonoBehaviour
         if (!result.HasValue)
             return;
 
+        if (battle.Reason == FinishReason.Burst)
+            ServiceLocator.Get<CameraShake>()?.Shake(0.6f);
+
         ServiceLocator.Get<GameUIManager>()?.ShowGameOver(
             result.Value,
             battle.Reason ?? FinishReason.RpmDepleted);
@@ -324,6 +327,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (impact.Attacker == subscribedPlayer &&
+            impact.AttackerCharged &&
+            impact.Clash &&
+            currentEnemy != null &&
+            IsChargedClashBurst(
+                impact.Result.DamageToB,
+                currentEnemy))
+        {
+            enemyBurst = true;
+        }
+
         if (playerBurst || enemyBurst)
             ResolveBattle();
     }
@@ -336,5 +350,29 @@ public class GameManager : MonoBehaviour
             target.Base != null &&
             target.Base.maxRPM > 0f &&
             damage >= target.Base.maxRPM * BurstThreshold;
+    }
+
+    public static bool IsChargedClashBurst(
+        float damage,
+        float maxRPM,
+        float threshold)
+    {
+        return maxRPM > 0f && damage >= maxRPM * threshold;
+    }
+
+    public static bool IsChargedClashBurst(float damage, BeyData target)
+    {
+        if (target == null || target.Base == null || target.Base.maxRPM <= 0f)
+            return false;
+
+        CombatTuning tuning = ContentRegistry.Tuning;
+        float threshold = tuning != null
+            ? tuning.chargedClashBurstThreshold
+            : 0.32f;
+
+        return IsChargedClashBurst(
+            damage,
+            target.Base.maxRPM,
+            threshold);
     }
 }

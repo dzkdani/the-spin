@@ -9,6 +9,8 @@ public readonly struct ImpactEvent
     public readonly float Shake;
     public readonly float Speed;
     public readonly bool OppositeSpin;
+    public readonly bool AttackerCharged;
+    public readonly bool Clash;
 
     public ImpactEvent(
         BeyData attacker,
@@ -17,7 +19,9 @@ public readonly struct ImpactEvent
         Vector2 point,
         float shake,
         float speed,
-        bool oppositeSpin)
+        bool oppositeSpin,
+        bool attackerCharged = false,
+        bool clash = false)
     {
         Attacker = attacker;
         Defender = defender;
@@ -26,5 +30,7 @@ public readonly struct ImpactEvent
         Shake = shake;
         Speed = speed;
         OppositeSpin = oppositeSpin;
+        AttackerCharged = attackerCharged;
+        Clash = clash;
     }
 }

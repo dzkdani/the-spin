@@ -17,6 +17,7 @@ MonoBehaviour:
   damageMultiplier: 2
   oppositeSpinMultiplier: 1.5
   chargeMultiplier: 1.75
+  chargedClashBurstThreshold: 0.32
   sameSpinMultiplier: 1
   dashHitMultiplier: 1.25
   clashMultiplier: 1.5

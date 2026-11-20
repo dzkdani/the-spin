@@ -1129,6 +1129,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 - **Exit:** combat tests run with no presentation attached.
 - **Status: complete.** `BattleEvents` + `ImpactEvent` (attacker/defender/result/point/shake). `SFXPlayer`, `CameraShake`, and `HitEffectSpawner` subscribe in `OnEnable` and unsubscribe in `OnDisable`; `BeyData` raises `RpmChanged`, `BeyPhysics` raises `DashStarted`/`DashEnded`, and `BeyCombat` raises `ImpactPending`/`ImpactResolved`. No `ServiceLocator` reference remains in combat. Golden unchanged.
 - **Indicators.** `PlayerIndicator` draws a soft glow ring around the player on each launch resolve (when the player object re-activates): three pulses of 0.35 s each, scaling 1.0 → 1.35 and fading 0.85 → 0, then disabled. The ring is tinted to the player element (Crye cyan) and compensates for the prefab root's 0.4 scale so it renders at its true world size; the original triangle was shrunk to a speck by that scale and never read on screen. `TargetPointer` keeps the triangle: it follows the mouse with an RGB hue cycle and a Y-axis spin, hidden during launch, pause, and game over, restoring the OS cursor while hidden.
+- **Menu presentation.** `MenuCursor` installs a high-contrast dark/white ring cursor from `Assets/Resources/MenuCursor.png` on scene load and keeps it across scenes via a `DontDestroyOnLoad` host. `TargetPointer` still hides the OS cursor during battle input and restores it on pause/game over. `UIButtonSFX` now implements `IPointerExitHandler` and scales its button RectTransform to 1.08 on hover (0.12 s, DOTween), reverting on exit; wired onto the three battle buttons as well as the existing title buttons.
 
 ### Track B: Systems
 
@@ -1236,7 +1237,7 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights. A temporary 9000 player pool made the demo too forgiving, so the skill pass settled on **player 6000 vs enemy 5000**. Damage per hit does not scale with max RPM. Player burst threshold is 4800, enemy 4000. `dashRPMCost` is **150** on both sides, so a dash costs ~2.5% of the player pool and remains a real decision. Enemies now use three chassis at the same 5000 RPM: ATK is light and fast (weight 3.5, velocity 12, acceleration 32), BAL is the original middle (5 / 10 / 25), and DEF is heavy and slow (8 / 8 / 18). Type identity now reaches movement, not just stats.
 
-**Burst is asymmetric at these pools.** A fully stacked impact (dash + clash + charge + opposite spin) reaches roughly 4600 raw before mitigation — above the enemy's 4000 threshold but below the player's 4800. Burst is therefore an enemy-only finisher in practice. If a player burst is wanted, lower `GameManager.BurstThreshold` and retest for one-shots.
+**Burst is now player-reachable through a charged clash.** A fully stacked impact (dash + clash + charge + opposite spin) reaches roughly 4600 raw before mitigation — above the enemy's 4000 threshold but below the player's 4800, so the raw `IsBurst` path still favors the enemy. A player who lands a charged hit (the `charge` pending mod is consumed) while both beys are dashing now bursts at `CombatTuning.chargedClashBurstThreshold` (default 0.32, i.e. ~1600 damage against a 5000 pool). `ImpactEvent` carries `AttackerCharged` and `Clash` from the resolved impact; `GameManager.OnImpactPending` uses them to set `enemyBurst`, which `BurstCondition(false)` turns into a win. Burst also adds a 0.6 camera shake. The charge + simultaneous-dash requirement keeps ordinary hits from one-shotting.
 
 **Part exit criteria met.** Every part sits inside the Bit/Blade/Ratchet slot band, the 18-build reference matrix stays 40–60%, and the golden row is unchanged. `budgetCost` remains a design estimate; the simulation does not price it directly.
 
@@ -1403,6 +1404,8 @@ Fill in as each phase lands.
 | 11 | Finish reasons: RPM depleted, ring-out, burst | §17 |
 | 11 | Player indicator above the bey each wave; RGB Y-axis triangle mouse target pointer | §20.3 |
 | 11 | Player indicator reworked to a scale-compensated 3-pulse glow ring on launch resolve | §20.3 |
+| 11 | Player charged clash bursts at 32% of target max RPM; impact events carry charge/clash flags | §17 |
+| 11 | High-contrast menu cursor and button hover scale on title and battle menus | §20.3 |
 | 10 | Three enemy chassis by type: ATK light/fast, BAL middle, DEF heavy/slow | §20.4 |
 | 11 | Ring-out lose condition with arena radius | §17 |
 
