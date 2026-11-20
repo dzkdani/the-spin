@@ -136,7 +136,7 @@ public class PartSimulationTests
         IList rows = (IList)ProductionReflection.Property(first, "Rows");
 
         Assert.AreEqual(parts.Count, rows.Count);
-        Assert.AreEqual(7, rows.Count);
+        Assert.AreEqual(13, rows.Count);
     }
 
     private static object Control()
