@@ -15,6 +15,8 @@ public sealed class LaunchController : MonoBehaviour
     private Vector2 rotationCenter;
     private Vector2 lastDirection;
     private float accumulatedAngle;
+    private bool fillClockwise;
+    private bool directionLocked;
     private float power;
 
     public bool Enabled => tuning != null && tuning.enabled;
@@ -47,6 +49,8 @@ public sealed class LaunchController : MonoBehaviour
         pulling = false;
         accumulatedAngle = 0f;
         lastDirection = Vector2.zero;
+        fillClockwise = true;
+        directionLocked = false;
         power = 0f;
 
         if (player != null)
@@ -103,9 +107,17 @@ public sealed class LaunchController : MonoBehaviour
             {
                 if (lastDirection.sqrMagnitude > 0.0001f)
                 {
-                    accumulatedAngle += Vector2.SignedAngle(
+                    float delta = Vector2.SignedAngle(
                         lastDirection,
                         direction);
+
+                    if (!directionLocked && Mathf.Abs(delta) > 0.5f)
+                    {
+                        fillClockwise = delta < 0f;
+                        directionLocked = true;
+                    }
+
+                    accumulatedAngle += delta;
                 }
 
                 lastDirection = direction;
@@ -173,7 +185,7 @@ public sealed class LaunchController : MonoBehaviour
         power = Mathf.Clamp01(value);
 
         if (overlay != null)
-            overlay.SetPower(power);
+            overlay.SetPower(power, fillClockwise);
     }
 
     private Vector3 MouseWorld()

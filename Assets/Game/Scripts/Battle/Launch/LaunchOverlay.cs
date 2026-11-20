@@ -15,7 +15,7 @@ public sealed class LaunchOverlay : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
-        SetPower(0f);
+        SetPower(0f, true);
     }
 
     public void Hide()
@@ -23,9 +23,12 @@ public sealed class LaunchOverlay : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetPower(float power)
+    public void SetPower(float power, bool clockwise)
     {
-        if (powerFill != null)
-            powerFill.fillAmount = Mathf.Clamp01(power);
+        if (powerFill == null)
+            return;
+
+        powerFill.fillClockwise = clockwise;
+        powerFill.fillAmount = Mathf.Clamp01(power);
     }
 }

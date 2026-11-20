@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LaunchSystemTests
 {
@@ -86,6 +87,37 @@ public class LaunchSystemTests
         Assert.Greater(
             (float)ProductionReflection.Field(tuning, "enemyPowerRamp"),
             0f);
+    }
+
+    [Test]
+    public void OverlayFillFollowsClockwiseFlag()
+    {
+        GameObject host = new GameObject("LaunchOverlay");
+        host.SetActive(false);
+
+        try
+        {
+            Component overlay = host.AddComponent(
+                ProductionReflection.TypeOf("LaunchOverlay"));
+
+            Image fill = host.AddComponent<Image>();
+
+            ProductionReflection.SetField(overlay, "powerFill", fill);
+
+            ProductionReflection.Call(overlay, "SetPower", 0.6f, false);
+
+            Assert.IsFalse(fill.fillClockwise);
+            Assert.AreEqual(0.6f, fill.fillAmount, 0.0001f);
+
+            ProductionReflection.Call(overlay, "SetPower", 0.3f, true);
+
+            Assert.IsTrue(fill.fillClockwise);
+            Assert.AreEqual(0.3f, fill.fillAmount, 0.0001f);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(host);
+        }
     }
 
     [Test]

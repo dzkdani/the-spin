@@ -122,7 +122,8 @@ LaunchOverlay (Canvas: Screen Space Overlay, high sorting order)
 │   ├── Title      TMP text: "LAUNCH" at the top
 │   ├── PowerBg    Image, default Knob sprite (circle), ~300 × 300
 │   ├── PowerFill  same circle, type Filled, fillMethod Radial360,
-│   │              fillOrigin 0 (bottom), fills clockwise as you circle
+│   │              fillOrigin 0 (bottom), fillClockwise locked from the
+│   │              first circle direction; reversing unwinds the fill
 │   └── Hint       TMP text: "HOLD · CIRCLE · RELEASE" at the bottom
 └── LaunchOverlay.cs  listens to launch events, drives fill, shows/hides root
 ```
