@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -88,6 +89,39 @@ public class LaunchSystemTests
     }
 
     [Test]
+    public void DisabledLaunchFallsBackToCallback()
+    {
+        GameObject host = new GameObject("DisabledLaunch");
+        host.SetActive(false);
+
+        try
+        {
+            Component controller = host.AddComponent(
+                ProductionReflection.TypeOf("LaunchController"));
+
+            object tuning = ScriptableObject.CreateInstance(
+                ProductionReflection.TypeOf("LaunchTuning"));
+
+            ProductionReflection.SetField(tuning, "enabled", false);
+            ProductionReflection.SetField(controller, "tuning", tuning);
+
+            bool called = false;
+            Action callback = () => called = true;
+
+            ProductionReflection.Call(
+                controller, "Begin", null, null, callback);
+
+            Assert.IsTrue(called);
+            Assert.IsFalse(
+                (bool)ProductionReflection.Property(controller, "IsLaunching"));
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(host);
+        }
+    }
+
+    [Test]
     public void BeyDataLaunchUsesElementFloor()
     {
         GameObject bey = new GameObject("LaunchBey");
@@ -118,7 +152,7 @@ public class LaunchSystemTests
         }
         finally
         {
-            Object.DestroyImmediate(bey);
+            UnityEngine.Object.DestroyImmediate(bey);
         }
     }
 }

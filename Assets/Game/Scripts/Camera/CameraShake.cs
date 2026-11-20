@@ -39,9 +39,9 @@ public class CameraShake : MonoBehaviour
         Shake(impact.Shake);
     }
 
-    private void OnLaunchResolved(BeyData bey, float power)
+    private void OnLaunchResolved(BeyData bey, float power, bool playerLaunch)
     {
-        Shake(0.12f + 0.4f * power);
+        Shake(playerLaunch ? 0.12f + 0.4f * power : 0.05f * power);
     }
 
     public void Shake(float amount)

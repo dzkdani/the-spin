@@ -73,12 +73,12 @@ public sealed class LaunchController : MonoBehaviour
 
         enemy.Launch(enemyPower, tuning.minStartFactor);
 
-        BattleEvents.RaiseLaunchResolved(enemy, enemyPower);
+        BattleEvents.RaiseLaunchResolved(enemy, enemyPower, false);
     }
 
     private void Update()
     {
-        if (!active)
+        if (!active || Time.timeScale <= 0f)
             return;
 
         if (!pulling)
@@ -139,8 +139,7 @@ public sealed class LaunchController : MonoBehaviour
                     0f,
                     arena.Radii.y * tuning.launchSpotFactor);
 
-                player.transform.position = spot;
-                player.Data.Stats.RemoveBySourcePrefix("element:");
+                WaveReset.Prepare(player, spot);
                 player.Data.Launch(power, tuning.minStartFactor);
 
                 Vector2 direction = (arena.Center - spot).normalized;
@@ -150,7 +149,7 @@ public sealed class LaunchController : MonoBehaviour
                         direction,
                         tuning.launchImpulse * power);
 
-                BattleEvents.RaiseLaunchResolved(player.Data, power);
+                BattleEvents.RaiseLaunchResolved(player.Data, power, true);
 
                 if (power >= tuning.perfectThreshold &&
                     player.Combat != null)

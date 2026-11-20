@@ -39,7 +39,7 @@ public class BeyVisual : MonoBehaviour
             Punch(0.08f, 0.12f);
     }
 
-    private void OnLaunchResolved(BeyData bey, float power)
+    private void OnLaunchResolved(BeyData bey, float power, bool playerLaunch)
     {
         if (bey == data)
             Punch(0.1f + 0.15f * power, 0.25f);

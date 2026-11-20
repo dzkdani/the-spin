@@ -237,15 +237,8 @@ public class GameManager : MonoBehaviour
         if (player == null || player.Data == null)
             return;
 
+        WaveReset.Prepare(player, Vector3.zero);
         player.Data.RestoreRPM();
-        player.Data.Stats.RemoveBySourcePrefix("element:");
-        player.transform.position = Vector3.zero;
-
-        if (player.Physics != null &&
-            player.Physics.Rigidbody != null)
-        {
-            player.Physics.Rigidbody.linearVelocity = Vector2.zero;
-        }
 
         waveResetAt = Time.time;
     }
@@ -253,6 +246,9 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnNextAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        if (battle == null || battle.Finished)
+            yield break;
 
         BeginWave();
     }

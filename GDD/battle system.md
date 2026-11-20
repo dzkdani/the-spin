@@ -1235,6 +1235,8 @@ Four tracks. Each phase is one reviewable branch. Don't start a phase until the 
 
 **Adjusted from playtest.** Player and enemy `maxRPM` normalized, first to 3000 (the earlier 5200/600 split made damage-to-health feel inconsistent), then raised to 5000 to lengthen fights. A temporary 9000 player pool made the demo too forgiving, so the skill pass settled on **player 6000 vs enemy 5000**. Damage per hit does not scale with max RPM. Player burst threshold is 4800, enemy 4000. `dashRPMCost` is **150** on both sides, so a dash costs ~2.5% of the player pool and remains a real decision.
 
+**Burst is asymmetric at these pools.** A fully stacked impact (dash + clash + charge + opposite spin) reaches roughly 4600 raw before mitigation — above the enemy's 4000 threshold but below the player's 4800. Burst is therefore an enemy-only finisher in practice. If a player burst is wanted, lower `GameManager.BurstThreshold` and retest for one-shots.
+
 **Part exit criteria met.** Every part sits inside the Bit/Blade/Ratchet slot band, the 18-build reference matrix stays 40–60%, and the golden row is unchanged. `budgetCost` remains a design estimate; the simulation does not price it directly.
 
 Simulation drives numbers. Playtests decide whether fights feel readable. Both are needed.

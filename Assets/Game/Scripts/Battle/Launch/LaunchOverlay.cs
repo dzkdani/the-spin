@@ -7,6 +7,11 @@ public sealed class LaunchOverlay : MonoBehaviour
     [SerializeField] private Image powerFill;
     [SerializeField] private TMP_Text hint;
 
+    private void Awake()
+    {
+        Hide();
+    }
+
     public void Show()
     {
         gameObject.SetActive(true);

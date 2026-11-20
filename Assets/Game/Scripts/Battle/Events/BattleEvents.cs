@@ -9,7 +9,7 @@ public static class BattleEvents
     public static event Action<BeyData> DashEnded;
     public static event Action<BeyData> DashWindUpStarted;
     public static event Action<BeyData> LaunchStarted;
-    public static event Action<BeyData, float> LaunchResolved;
+    public static event Action<BeyData, float, bool> LaunchResolved;
     public static event Action<BeyData, float> RpmChanged;
     public static event Action<BeyData, string> AbilityActivated;
     public static event Action<BeyData, string> CastComplete;
@@ -60,9 +60,12 @@ public static class BattleEvents
         LaunchStarted?.Invoke(bey);
     }
 
-    public static void RaiseLaunchResolved(BeyData bey, float power)
+    public static void RaiseLaunchResolved(
+        BeyData bey,
+        float power,
+        bool playerLaunch)
     {
-        LaunchResolved?.Invoke(bey, power);
+        LaunchResolved?.Invoke(bey, power, playerLaunch);
     }
 
     public static void RaiseRpmChanged(BeyData bey, float rpm)
